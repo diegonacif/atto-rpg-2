@@ -1,0 +1,23 @@
+.menu-container {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  @include responsive-padding;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu-item {
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    
+    &.selected {
+      border-bottom: 4px solid blue;
+    }
+  }
+
+}
