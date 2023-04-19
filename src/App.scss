@@ -1,5 +1,54 @@
+// Color palette
+$gray-300: #cacaca;
+
+// Media Variables
+$tablet-size: "min-width: 510px";
+$notebook-size: "min-width: 768px";
+$desktop-size: "min-width: 1024px";
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  -webkit-tap-highlight-color: transparent; // remove color highlight on tap
+
+  // Remove arrows/spinners from numeric inputs
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    appearance: textfield;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    &:focus-visible, &:focus-within, &:focus, &:active, &:target {
+      border: 0;
+      outline: 0;
+      background-color: transparent;
+    }
+  }
 }
+
+@mixin responsive-padding($pt: 0, $pb: 0) {
+  padding: $pt 0.75rem $pb;
+
+  @media only screen and ($tablet-size) {
+    padding: $pt 4rem $pb;
+  }
+  @media only screen and ($notebook-size) {
+    padding: $pt 6rem $pb;
+  }
+  @media only screen and ($desktop-size) {
+    padding: $pt calc(8rem + 10vw) $pb;
+  }
+}
+
+@import './components/Header/Header';
