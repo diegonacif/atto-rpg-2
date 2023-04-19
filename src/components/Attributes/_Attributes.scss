@@ -1,0 +1,31 @@
+.attributes-container {
+  margin-top: 2rem;
+  @include responsive-padding;
+
+  .attributes-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1rem;
+
+    .attribute-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+
+      span {
+        width: fit-content;
+      }
+      
+      input[type="number"] {
+        width: 2.5rem;
+        height: 2rem;
+        border-radius: 4px;
+        border: 2px solid #0000005b;
+      }
+
+      & + .attribute-wrapper {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
