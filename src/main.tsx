@@ -8,6 +8,9 @@ import {
 } from "react-router-dom";
 import { Attributes } from './components/Attributes/Attributes';
 import { Perks } from './components/Perks/Perks';
+import { Flaws } from './components/Flaws/Flaws';
+import { Skills } from './components/Skills/Skills';
+import { Equips } from './components/Equips/Equips';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -16,6 +19,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path={"/"} element={<App />}>
           <Route index element={<Attributes />}/>
           <Route path={"perks"} element={<Perks />}/>
+          <Route path={"flaws"} element={<Flaws />}/>
+          <Route path={"skills"} element={<Skills />}/>
+          <Route path={"equips"} element={<Equips />}/>
         </Route>
       </Routes>
     </BrowserRouter>
