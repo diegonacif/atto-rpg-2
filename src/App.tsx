@@ -1,17 +1,17 @@
+import { Outlet } from 'react-router-dom'
 import './App.scss'
 import { Attributes } from './components/Attributes/Attributes'
 import { Header } from './components/Header/Header'
 import { Menu } from './components/Menu/Menu'
+import { Perks } from './components/Perks/Perks'
 
-function App() {
+export const App = () => {
 
   return (
     <div className="App">
       <Header />
       <Menu />
-      <Attributes />
+      <Outlet />
     </div>
   )
 }
-
-export default App
