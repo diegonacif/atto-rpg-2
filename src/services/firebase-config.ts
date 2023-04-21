@@ -12,6 +12,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_API_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(
+  typeof window !== 'undefined' ? firebaseConfig : {}
+);
 
 export const auth = getAuth(app);
