@@ -1,0 +1,16 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+
+  .login-wrapper {
+    button {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 2px solid $gray-400;
+      cursor: pointer;
+    }
+  }
+}
