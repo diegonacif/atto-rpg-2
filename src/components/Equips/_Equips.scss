@@ -1,17 +1,17 @@
-.skills-container {
+.equips-container {
   display: flex;
   flex-direction: column;
   width: 100vw;
   overflow-x: auto;
   @include responsive-padding(2rem, 2rem);
 
-  .skills-row {
+  .equips-row {
     display: grid;
-    grid-template-columns: auto 2.5rem 2.5rem 2.5rem 2.5rem;
+    grid-template-columns: auto 3rem 3rem;
     column-gap: 0.25rem;
     width: 100%;
 
-    & + .skills-row {
+    & + .equips-row {
       margin-top: 0.5rem;
     }
 
@@ -24,7 +24,7 @@
       text-align: center;
 
       &:first-child {
-        min-width: 10rem;
+        min-width: 11rem;
       }
     }
 

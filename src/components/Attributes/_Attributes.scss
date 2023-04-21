@@ -2,9 +2,6 @@
   margin-top: 2rem;
   @include responsive-padding;
 
-  
-  
-
   .attributes-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -66,6 +63,10 @@
             outline: none;
           }
         }
+      }
+
+      .attribute-cost {
+        padding-left: 0.5rem;
       }
 
       & + .attribute-wrapper {
