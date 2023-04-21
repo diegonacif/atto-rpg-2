@@ -21,7 +21,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <AuthGoogleProvider>
       <Routes>
         <Route path={"/"} element={<Login />} />
-        <Route element={<PrivateRoutes />} />
+        <Route element={<PrivateRoutes />}>
+          <Route element={<App />}>
+            <Route path={"home"} element={<Attributes />} />
+            <Route path={"perks"} element={<Perks />} />
+            <Route path={"flaws"} element={<Flaws />} />
+            <Route path={"skills"} element={<Skills />} />
+            <Route path={"equips"} element={<Equips />} />
+          </Route>
+        </Route>
       </Routes>
     </AuthGoogleProvider>
     </BrowserRouter>

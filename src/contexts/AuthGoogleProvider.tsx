@@ -38,11 +38,20 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
 
   const [userState, loading, error] = useAuthState(auth);
 
+  onAuthStateChanged(auth, (currentUser) => {
+    if (loading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+      console.log(currentUser)
+    }
+  })
+
   async function handleGoogleSignIn() {
     await signInWithPopup(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      setUserCredential(credential?.accessToken)
+      setUserCredential(credential?.accessToken);
     })
     .catch((error) => {
       const errorCode = error.code;

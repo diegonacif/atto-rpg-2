@@ -7,7 +7,7 @@ export const Menu = () => {
 
   const handleCurrentMenu = (currentMenu: string) => {
     setCurrentMenu(currentMenu)
-    navigate(currentMenu === "attributes" ? "/" : currentMenu)
+    navigate(currentMenu === "attributes" ? "/home" : currentMenu)
   }
 
   console.log(currentMenu);
