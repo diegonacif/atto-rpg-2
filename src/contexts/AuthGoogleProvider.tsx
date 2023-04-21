@@ -4,6 +4,7 @@ import { auth } from '../services/firebase-config';
 import { collection, getDocs, setDoc, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSessionStorage } from 'usehooks-ts'
+import { useNavigate } from "react-router-dom";
 // import { UserDataContext } from "./UserDataProvider";
 
 interface AuthContextProps {
@@ -36,14 +37,35 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
+  const navigate = useNavigate();
+
   const [userState, loading, error] = useAuthState(auth);
 
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading])
+
+  // console.log({
+  //   isSignedIn: isSignedIn,
+  //   loading: loading
+  // });
+
+  // useEffect(() => {
+  //   if(isLoading) {
+  //     return;
+  //   } else {
+  //     isSignedIn ?
+  //     null :
+  //     navigate("/")
+  //   }
+  // }, [isSignedIn, isLoading, userState])
+  
+
   onAuthStateChanged(auth, (currentUser) => {
-    if (loading) {
-      setIsLoading(true);
+    if (currentUser) {
+      setIsSignedIn(true)
     } else {
-      setIsLoading(false);
-      console.log(currentUser)
+      setIsSignedIn(false)
     }
   })
 
@@ -63,8 +85,12 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
   }
 
   function handleGoogleSignOut() {
-    sessionStorage.clear();
-    signOut(auth).then(() => console.log("sign out sucessfully"));
+    signOut(auth)
+    .then(() => {
+      console.log("sign out sucessfully");
+      setUserCredential("");
+      console.log("store clear");
+    });
   }
 
   // Current user Photo URL
