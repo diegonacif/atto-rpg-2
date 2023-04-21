@@ -1,12 +1,14 @@
 import { useContext } from "react"
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthEmailContext } from "./contexts/AuthEmailProvider"
+import { AuthGoogleContext } from "./contexts/AuthGoogleProvider";
 
 export const PrivateRoutes = () => {
-  const { isSignedIn, isLoading } = useContext(AuthEmailContext);
+  const { isSignedIn, isLoading, userCredential } = useContext(AuthGoogleContext);
   
+  console.log( isSignedIn )
+
   return isLoading ?
   null :
-  isSignedIn ? <Outlet /> : <Navigate to="/" />;
+  userCredential !== undefined ? <Outlet /> : <Navigate to="/" />;
 
 }

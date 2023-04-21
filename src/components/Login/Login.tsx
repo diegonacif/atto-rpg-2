@@ -12,7 +12,7 @@ export const Login = () => {
   return (
     <div className="login-container">
       <div className="login-wrapper">
-        <button onClick={() => handleGoogleSignIn}>Login com Google</button>
+        <button onClick={() => handleGoogleSignIn()}>Login com Google</button>
       </div>
     </div>
   )

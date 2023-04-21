@@ -13,6 +13,7 @@ import { Skills } from './components/Skills/Skills';
 import { Equips } from './components/Equips/Equips';
 import { Login } from './components/Login/Login';
 import { AuthGoogleProvider } from './contexts/AuthGoogleProvider';
+import { PrivateRoutes } from './PrivateRoutes';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -20,12 +21,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <AuthGoogleProvider>
       <Routes>
         <Route path={"/"} element={<Login />} />
-        <Route path={"/home"} element={<App />}>
-          <Route index element={<Attributes />}/>
-          <Route path={"perks"} element={<Perks />}/>
-          <Route path={"flaws"} element={<Flaws />}/>
-          <Route path={"skills"} element={<Skills />}/>
-          <Route path={"equips"} element={<Equips />}/>
+        <Route element={<PrivateRoutes />}>
+          <Route path={"/home"} element={<App />}>
+            <Route index element={<Attributes />}/>
+            <Route path={"perks"} element={<Perks />}/>
+            <Route path={"flaws"} element={<Flaws />}/>
+            <Route path={"skills"} element={<Skills />}/>
+            <Route path={"equips"} element={<Equips />}/>
+          </Route>
         </Route>
       </Routes>
     </AuthGoogleProvider>

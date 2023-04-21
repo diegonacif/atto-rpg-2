@@ -11,6 +11,7 @@ interface AuthContextProps {
   handleGoogleSignOut: () => void;
   isSignedIn: boolean;
   isLoading: boolean;
+  userCredential: string | undefined,
   signed: boolean;
 }
 
@@ -21,11 +22,12 @@ export const AuthGoogleContext = createContext<AuthContextProps>({
   handleGoogleSignOut: () => {},
   isSignedIn: false,
   isLoading: false,
+  userCredential: "",
   signed: false,
 });
 
 export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
-  const [userCredential , setUserCredential] = useState();
+  const [userCredential , setUserCredential] = useSessionStorage<string | undefined>("accessToken", "");
   const [user, setUser] = useState({});
   const [users, setUsers] = useState({});
   const [userId, setUserId] = useState("");
@@ -34,34 +36,20 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
-  // const usersCollectionRef = collection(db, "users");
-  
   const [userState, loading, error] = useAuthState(auth);
 
-  onAuthStateChanged(auth, (currentUser) => {
-    if (loading) {
-      // console.log("loading user state")
-      setIsLoading(true);
-    } else {
-      setUser(() => currentUser);
-      setIsSignedIn(!!currentUser);
-      // setUserId(userState?.uid);
-      setIsLoading(false);
-    }
-  })
-  
   async function handleGoogleSignIn() {
     await signInWithPopup(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      console.log(credential)
-      const user = result.user;
+      setUserCredential(credential?.accessToken)
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       const email = error.email;
       const credential = GoogleAuthProvider.credentialFromError(error);
+      console.log(credential)
     });
   }
 
@@ -80,6 +68,7 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
       handleGoogleSignIn, 
       handleGoogleSignOut,
       isLoading,
+      userCredential,
       isSignedIn,
       signed: !!user, 
     }}>
