@@ -37,29 +37,11 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const navigate = useNavigate();
-
   const [userState, loading, error] = useAuthState(auth);
 
   useEffect(() => {
     setIsLoading(loading);
   }, [loading])
-
-  // console.log({
-  //   isSignedIn: isSignedIn,
-  //   loading: loading
-  // });
-
-  // useEffect(() => {
-  //   if(isLoading) {
-  //     return;
-  //   } else {
-  //     isSignedIn ?
-  //     null :
-  //     navigate("/")
-  //   }
-  // }, [isSignedIn, isLoading, userState])
-  
 
   onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {

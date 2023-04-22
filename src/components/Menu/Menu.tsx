@@ -1,46 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Menu = () => {
   const [currentMenu, setCurrentMenu] = useState("attributes");
   const navigate = useNavigate();
 
-  const handleCurrentMenu = (currentMenu: string) => {
-    setCurrentMenu(currentMenu)
-    navigate(currentMenu === "attributes" ? "/home" : currentMenu)
-  }
-
-  console.log(currentMenu);
+  useEffect(() => {
+    navigate(currentMenu === "attributes" ? "" : `${currentMenu}`)
+  }, [currentMenu])
   
   return (
     <div className="menu-container">
       <h4 
         className={`menu-item ${currentMenu === "attributes" && "selected"}`}
-        onClick={() => handleCurrentMenu("attributes")}
+        onClick={() => setCurrentMenu("attributes")}
       >
         Atributos
       </h4>
       <h4 
         className={`menu-item ${currentMenu === "perks" && "selected"}`}
-        onClick={() => handleCurrentMenu("perks")}
+        onClick={() => setCurrentMenu("perks")}
       >
         Vantagens
       </h4>
       <h4 
         className={`menu-item ${currentMenu === "flaws" && "selected"}`}
-        onClick={() => handleCurrentMenu("flaws")}
+        onClick={() => setCurrentMenu("flaws")}
       >
         Desvantagens
       </h4>
       <h4 
         className={`menu-item ${currentMenu === "skills" && "selected"}`}
-        onClick={() => handleCurrentMenu("skills")}
+        onClick={() => setCurrentMenu("skills")}
       >
         Perícias
       </h4>
       <h4 
         className={`menu-item ${currentMenu === "equips" && "selected"}`}
-        onClick={() => handleCurrentMenu("equips")}
+        onClick={() => setCurrentMenu("equips")}
       >
         Equipamentos
       </h4>
