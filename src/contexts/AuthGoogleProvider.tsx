@@ -3,7 +3,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, getAu
 import { auth } from '../services/firebase-config';
 import { collection, getDocs, setDoc, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSessionStorage } from 'usehooks-ts'
+import { useSessionStorage } from 'usehooks-ts';
 import { useNavigate } from "react-router-dom";
 // import { UserDataContext } from "./UserDataProvider";
 
