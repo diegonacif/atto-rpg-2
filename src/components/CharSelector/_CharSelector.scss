@@ -1,0 +1,16 @@
+.char-selector-container {
+  @include responsive-padding(2rem, 2rem);
+
+  ul {
+    list-style-type: none;
+
+    li {
+      width: fit-content;
+      cursor: pointer;
+
+      & + li {
+        margin-top: .5rem;
+      }
+    }
+  }
+}

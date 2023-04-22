@@ -1,0 +1,65 @@
+// char architecture //
+
+attributes {
+  strength { value: 10 },
+  dexterity { value: 10 },
+  intelligence { value: 10 },
+  health { value: 10 },
+  hit-points { value: 10 },
+  will { value: 10 },
+  perception { value: 10 },
+  fatigue-points { value: 10 }
+}
+
+perks {
+  01 { 
+    description: "",
+    points: 0
+  },
+  02 { 
+    description: "",
+    points: 0
+  }
+  ...
+}
+
+flaws {
+  01 { 
+    description: "",
+    points: 0
+  },
+  02 { 
+    description: "",
+    points: 0
+  }
+  ...
+}
+
+skills {
+  01 {
+    description: "",
+    mods: 0,
+    nh: 0,
+    relative: "",
+    points: 0
+  },
+  02 {
+    description: "",
+    mods: 0,
+    nh: 0,
+    relative: "",
+    points: 0
+  }
+}
+
+equips {
+  01 {
+    description: "",
+    weight: 0,
+    cost: 0
+  }
+}
+
+// Flow //
+
+user > char selector > char

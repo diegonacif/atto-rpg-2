@@ -49,6 +49,7 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
     if (currentUser) {
       setIsSignedIn(true)
       setUserPhotoUrl(currentUser?.photoURL ?? "")
+      setUserId(currentUser?.uid ?? "")
     } else {
       setIsSignedIn(false)
     }
@@ -77,11 +78,6 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
       console.log("store clear");
     });
   }
-
-  // Current user Photo URL
-  // useEffect(() => {
-  //   setUserPhotoUrl(user?.photoURL);
-  // }, [user])
 
   return (
     <AuthGoogleContext.Provider value={{ 
