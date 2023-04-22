@@ -13,6 +13,7 @@ interface AuthContextProps {
   isSignedIn: boolean;
   isLoading: boolean;
   userCredential: string | undefined,
+  userPhotoUrl: string,
   signed: boolean;
 }
 
@@ -24,6 +25,7 @@ export const AuthGoogleContext = createContext<AuthContextProps>({
   isSignedIn: false,
   isLoading: false,
   userCredential: "",
+  userPhotoUrl: "",
   signed: false,
 });
 
@@ -46,6 +48,7 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
   onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
       setIsSignedIn(true)
+      setUserPhotoUrl(currentUser?.photoURL ?? "")
     } else {
       setIsSignedIn(false)
     }
@@ -87,6 +90,7 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
       isLoading,
       userCredential,
       isSignedIn,
+      userPhotoUrl,
       signed: !!user, 
     }}>
       {children}
