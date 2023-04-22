@@ -12,6 +12,7 @@ interface AuthContextProps {
   handleGoogleSignOut: () => void;
   isSignedIn: boolean;
   isLoading: boolean;
+  userId: string,
   userCredential: string | undefined,
   userPhotoUrl: string,
   signed: boolean;
@@ -24,6 +25,7 @@ export const AuthGoogleContext = createContext<AuthContextProps>({
   handleGoogleSignOut: () => {},
   isSignedIn: false,
   isLoading: false,
+  userId: "",
   userCredential: "",
   userPhotoUrl: "",
   signed: false,
@@ -84,6 +86,7 @@ export const AuthGoogleProvider = ({ children }: { children: ReactNode }) => {
       handleGoogleSignIn, 
       handleGoogleSignOut,
       isLoading,
+      userId,
       userCredential,
       isSignedIn,
       userPhotoUrl,
