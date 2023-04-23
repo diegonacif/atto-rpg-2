@@ -1,16 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import '../../App.scss';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+import firebase from 'firebase/compat/app';
+import type { DocumentReference, DocumentSnapshot, CollectionReference } from 'firebase/firestore';
 
-interface IUser {
-  id: string
+import '../../App.scss';
+
+interface IUser { id: string }
+interface IregisterChar { charDocRef: DocumentReference<firebase.firestore.DocumentData> }
+interface IRegisterUserProps {
+  userDocRef: DocumentReference<firebase.firestore.DocumentData>;
+  userDoc: DocumentSnapshot<firebase.firestore.DocumentData>;
 }
-// interface IUsers {
-//   users: IUser[];
-// }
+interface IRegisterCharContent {
+  charsCollectionRef: CollectionReference<firebase.firestore.DocumentData>;
+  charDocRef: DocumentReference<firebase.firestore.DocumentData>;
+}
 
 export const CharSelector = () => {
   const { userId } = useContext(AuthGoogleContext);
@@ -21,9 +28,7 @@ export const CharSelector = () => {
 
   const [charName, setCharName] = useState("")
 
-  const IdsArray = firestoreLoading ? [] : users?.map((user) => user.id)
-  
-  console.log(alreadyRegistered, userId)
+  // const IdsArray = firestoreLoading ? [] : users?.map((user) => user.id)
 
   // Firestore loading
   const [value, loading, error] = useCollection(usersCollectionRef,
@@ -42,32 +47,18 @@ export const CharSelector = () => {
     getUsers();
   }, [])
 
-  // // Already Exists ?
-  // useEffect(() => {
-  //   if(firestoreLoading) {
-  //     return;
-  //   } else {
-  //     const handleAlreadyExists = () => {
-  //       setAlreadyRegistered(IdsArray.includes(userId))
-  //     }
-  //     handleAlreadyExists();
-  //   }
-  // }, [IdsArray])
 
-  // Create user data
-  async function registerUser() {
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-    // const docRef = doc(db, "users", userId, "characters", "id-unica-do-boneco-1");
-
+  // Create user and char data
+  async function registerUser({ userDocRef, userDoc }: IRegisterUserProps) {
     if(!userDoc.exists()) {
       console.info(`User document does not exist. Creating: ${userId}`);
-      await setDoc(userDocRef, {});
+      return await setDoc(userDocRef, {});
+    } else {
+      return;
     }
+  }
 
-    const charsCollectionRef = collection(userDocRef, 'characters');
-    const charDocRef = doc(charsCollectionRef, "char1");
-
+  async function registerChar({ charDocRef }: IregisterChar) {
     return await setDoc(charDocRef, {
       name: charName
     })
@@ -77,10 +68,54 @@ export const CharSelector = () => {
     });
   }
 
+  async function registerCharContent({ charsCollectionRef, charDocRef }:IRegisterCharContent) {
+    const attributes = ['strength', 'dexterity', 'intelligence', 'health', 'hit-points', 'will', 'perception', 'fatigue-points']
+
+    for (const attribute of attributes) {
+      await setDoc(doc(charDocRef, 'attributes', attribute), { value: 10 });
+    }
+
+    const perksRef = collection(charDocRef, "perks");
+    await addDoc(perksRef, {});
+
+    for (let i = 1; i <= 15; i++) {
+      await setDoc(doc(charDocRef, 'flaws', i.toString()), { description: "" });
+    }
+
+    for (let i = 1; i <= 15; i++) {
+      await setDoc(doc(charDocRef, 'skills', i.toString()), { 
+        description: "",
+        mod: 0,
+        nh: 0,
+        attRelative: "",
+        points: 0
+      });
+    }
+
+    for (let i = 1; i <= 15; i++) {
+      await setDoc(doc(charDocRef, 'equips', i.toString()), { 
+        description: "",
+        weight: 0,
+        cost: 0
+      });
+    }
+  }
+
+  async function createChar() {
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    const charsCollectionRef = collection(userDocRef, 'characters');
+    const charDocRef = doc(charsCollectionRef, "char2");
+
+    await registerUser({ userDocRef, userDoc });
+    await registerChar({ charDocRef });
+    await registerCharContent({ charsCollectionRef, charDocRef });
+  }
+
   return (
     <div className="char-selector-container">
       <input type="text" onChange={(e) => setCharName(e.target.value)}/>
-      <button onClick={() => registerUser()}>Criar boneco</button>
+      <button onClick={() => createChar()}>Criar boneco</button>
       <ul>
         <li>Char 1</li>
         <li>Char 2</li>
