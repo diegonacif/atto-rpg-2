@@ -3,8 +3,9 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'fir
 import { db } from '../../services/firebase-config';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import firebase from 'firebase/compat/app';
 import type { DocumentReference, DocumentSnapshot, CollectionReference } from 'firebase/firestore';
+import firebase from 'firebase/compat/app';
+import { v4 as uuidv4 } from 'uuid';
 
 import '../../App.scss';
 
@@ -105,10 +106,11 @@ export const CharSelector = () => {
   }
 
   async function createChar() {
+    const uid = uuidv4();
     const userDocRef = doc(db, 'users', userId);
     const userDoc = await getDoc(userDocRef);
     const charsCollectionRef = collection(userDocRef, 'characters');
-    const charDocRef = doc(charsCollectionRef, "char2");
+    const charDocRef = doc(charsCollectionRef, uid);
 
     await registerUser({ userDocRef, userDoc });
     await registerChar({ charDocRef });
