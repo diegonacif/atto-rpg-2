@@ -16,11 +16,13 @@ import { AuthGoogleProvider } from './contexts/AuthGoogleProvider';
 import { PrivateRoutes } from './PrivateRoutes';
 import { Character } from './components/Character/Character';
 import { CharSelector } from './components/CharSelector/CharSelector';
+import { CharactersProvider } from './contexts/CharactersProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
     <AuthGoogleProvider>
+    <CharactersProvider>
       <Routes>
         <Route path={"/"} element={<Login />} />
         <Route element={<PrivateRoutes />}>
@@ -36,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           </Route>
         </Route>
       </Routes>
+    </CharactersProvider>
     </AuthGoogleProvider>
     </BrowserRouter>
   </React.StrictMode>,

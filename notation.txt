@@ -51,6 +51,9 @@ user > char selector > char
 
 (ok) Mudar código para um registro inicial da primeira linha de cada categoria, exceto attributes.
 (ok) Implementar uid para criação de chars e derivados.
-() Listar e deletar chars no char selector.
+(ok) Listar e deletar chars no char selector.
+() Criar contexto que controla as informações que entram e saem do database.
 () Linkar cada uma das categorias, com sua página específica.
 () 
+
+obs: lembrar dos tokens de design
