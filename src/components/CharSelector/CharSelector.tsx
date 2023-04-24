@@ -76,29 +76,32 @@ export const CharSelector = () => {
     }
 
     const perksRef = collection(charDocRef, "perks");
-    await addDoc(perksRef, {});
+    await setDoc(doc(perksRef), {
+      description: "",
+      points: 0
+    });
 
-    for (let i = 1; i <= 15; i++) {
-      await setDoc(doc(charDocRef, 'flaws', i.toString()), { description: "" });
-    }
+    const flawsRef = collection(charDocRef, "flaws");
+    await setDoc(doc(flawsRef), {
+      description: "",
+      points: 0
+    });
 
-    for (let i = 1; i <= 15; i++) {
-      await setDoc(doc(charDocRef, 'skills', i.toString()), { 
-        description: "",
-        mod: 0,
-        nh: 0,
-        attRelative: "",
-        points: 0
-      });
-    }
+    const skillsRef = collection(charDocRef, "skills");
+    await setDoc(doc(skillsRef), {
+      description: "",
+      mod: 0,
+      nh: 0,
+      attRelative: "",
+      points: 0
+    });
 
-    for (let i = 1; i <= 15; i++) {
-      await setDoc(doc(charDocRef, 'equips', i.toString()), { 
-        description: "",
-        weight: 0,
-        cost: 0
-      });
-    }
+    const equipsRef = collection(charDocRef, "equips");
+    await setDoc(doc(equipsRef), {
+      description: "",
+      weight: 0,
+      cost: 0
+    });
   }
 
   async function createChar() {

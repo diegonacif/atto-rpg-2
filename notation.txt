@@ -12,38 +12,21 @@ attributes {
 }
 
 perks {
-  01 { 
-    description: "",
-    points: 0
-  },
-  02 { 
+  uid { 
     description: "",
     points: 0
   }
-  ...
 }
 
 flaws {
-  01 { 
-    description: "",
-    points: 0
-  },
-  02 { 
+  uid { 
     description: "",
     points: 0
   }
-  ...
 }
 
 skills {
-  01 {
-    description: "",
-    mods: 0,
-    nh: 0,
-    relative: "",
-    points: 0
-  },
-  02 {
+  uid {
     description: "",
     mods: 0,
     nh: 0,
@@ -53,7 +36,7 @@ skills {
 }
 
 equips {
-  01 {
+  uid {
     description: "",
     weight: 0,
     cost: 0
@@ -63,3 +46,11 @@ equips {
 // Flow //
 
 user > char selector > char
+
+// Steps //
+
+(ok) Mudar código para um registro inicial da primeira linha de cada categoria, exceto attributes.
+() Implementar uid para criação de chars e derivados.
+() Listar e deletar chars no char selector.
+() Linkar cada uma das categorias, com sua página específica.
+() 
