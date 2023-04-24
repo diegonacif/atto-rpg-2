@@ -50,7 +50,7 @@ user > char selector > char
 // Steps //
 
 (ok) Mudar código para um registro inicial da primeira linha de cada categoria, exceto attributes.
-() Implementar uid para criação de chars e derivados.
+(ok) Implementar uid para criação de chars e derivados.
 () Listar e deletar chars no char selector.
 () Linkar cada uma das categorias, com sua página específica.
 () 

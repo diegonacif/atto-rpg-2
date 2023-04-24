@@ -9,7 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 import '../../App.scss';
 
-interface IUser { id: string }
+interface IChars { 
+  id: string,
+  name: string
+}
 interface IregisterChar { charDocRef: DocumentReference<firebase.firestore.DocumentData> }
 interface IRegisterUserProps {
   userDocRef: DocumentReference<firebase.firestore.DocumentData>;
@@ -24,8 +27,12 @@ export const CharSelector = () => {
   const { userId } = useContext(AuthGoogleContext);
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const usersCollectionRef = collection(db, "users");
-  const [users, setUsers] = useState<IUser[]>([])
-  const [alreadyRegistered, setAlreadyRegistered] = useState(false)
+  const charsCollectionRef = collection(db, "users", userId, "characters");
+  const [chars, setChars] = useState<IChars[]>([])
+  const [charSelectorRefresh, setCharSelectorRefresh] = useState(false);
+  // const [alreadyRegistered, setAlreadyRegistered] = useState(false)
+
+  console.log(chars)
 
   const [charName, setCharName] = useState("")
 
@@ -39,14 +46,14 @@ export const CharSelector = () => {
     setFirestoreLoading(loading);
   }, [loading])
 
-  // Users Data
+  // Chars Data
   useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const getChars = async () => {
+      const data = await getDocs(charsCollectionRef);
+      setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido" })));
     }
-    getUsers();
-  }, [])
+    getChars();
+  }, [charSelectorRefresh])
 
 
   // Create user and char data
@@ -115,16 +122,25 @@ export const CharSelector = () => {
     await registerUser({ userDocRef, userDoc });
     await registerChar({ charDocRef });
     await registerCharContent({ charsCollectionRef, charDocRef });
+
+    setCharName("")
+    setCharSelectorRefresh(current => !current);
   }
+
+  // async function deleteChar() {
+
+  // }
 
   return (
     <div className="char-selector-container">
-      <input type="text" onChange={(e) => setCharName(e.target.value)}/>
+      <input type="text" value={charName} onChange={(e) => setCharName(e.target.value)}/>
       <button onClick={() => createChar()}>Criar boneco</button>
       <ul>
-        <li>Char 1</li>
-        <li>Char 2</li>
-        <li>Char 3</li>
+        {
+          chars.map(char => (
+            <li key={char.id}>{char?.name}</li>
+          ))
+        }
       </ul>
     </div>
   )
