@@ -8,6 +8,7 @@ import firebase from 'firebase/compat/app';
 import { v4 as uuidv4 } from 'uuid';
 
 import '../../App.scss';
+import { MinusCircle } from '@phosphor-icons/react';
 
 interface IChars { 
   id: string,
@@ -127,9 +128,11 @@ export const CharSelector = () => {
     setCharSelectorRefresh(current => !current);
   }
 
-  // async function deleteChar() {
-
-  // }
+  async function deleteChar(id: string) {
+    const charDocRef = doc(db, 'users', userId, 'characters', id);
+    await deleteDoc(charDocRef);
+    setCharSelectorRefresh(current => !current);
+  }
 
   return (
     <div className="char-selector-container">
@@ -138,7 +141,12 @@ export const CharSelector = () => {
       <ul>
         {
           chars.map(char => (
-            <li key={char.id}>{char?.name}</li>
+            <div className="char-row">
+              <li key={char.id}>{char?.name}</li>
+              <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
+                <MinusCircle size={32} />
+              </button>
+            </div>
           ))
         }
       </ul>

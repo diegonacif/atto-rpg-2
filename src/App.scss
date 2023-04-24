@@ -51,6 +51,15 @@ $desktop-size: "min-width: 1024px";
       background-color: transparent;
     }
   }
+
+  button {
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+  }
 }
 
 @mixin responsive-padding($pt: 0, $pb: 0) {

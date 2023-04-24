@@ -5,13 +5,33 @@
     list-style-type: none;
     margin-top: 1rem;
 
-    li {
-      width: fit-content;
-      cursor: pointer;
+    .char-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.3s;
 
-      & + li {
+      &:hover {
+        background-color: $gray-200;
+        transition: background-color 0.3s;
+      }
+
+      & + .char-row {
         margin-top: .5rem;
       }
+
+      li {
+        width: fit-content;
+        cursor: pointer;
+      }
+
+      .delete-char-button {
+        display: flex;
+        // background: green;
+        max-height: fit-content;
+        border-radius: 9999px;
+      }
     }
+
   }
 }
