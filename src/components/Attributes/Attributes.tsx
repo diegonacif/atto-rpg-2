@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { useParams } from "react-router-dom";
+
 import '../../App.scss';
 
 interface IFormData {
@@ -12,7 +14,9 @@ interface IFormData {
   fatiguePoints: string,
 }
 
+
 export const Attributes = () => {
+  const { id } = useParams<{ id: string }>();
 
   // Hook Form Controller
   const {

@@ -6,6 +6,7 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import type { DocumentReference, DocumentSnapshot, CollectionReference } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from "react-router-dom";
 
 import '../../App.scss';
 import { MinusCircle } from '@phosphor-icons/react';
@@ -36,6 +37,8 @@ export const CharSelector = () => {
   console.log(chars)
 
   const [charName, setCharName] = useState("")
+
+  const navigate = useNavigate();
 
   // const IdsArray = firestoreLoading ? [] : users?.map((user) => user.id)
 
@@ -134,15 +137,19 @@ export const CharSelector = () => {
     setCharSelectorRefresh(current => !current);
   }
 
+  async function handleSelectChar(id: string) {
+    navigate(`/home/character/${id}`);
+  }
+
   return (
     <div className="char-selector-container">
-      <input type="text" value={charName} onChange={(e) => setCharName(e.target.value)}/>
+      <input type="text" value={charName} onChange={(e) => setCharName(e.target.value)} />
       <button onClick={() => createChar()}>Criar boneco</button>
       <ul>
         {
           chars.map(char => (
-            <div className="char-row">
-              <li key={char.id}>{char?.name}</li>
+            <div className="char-row" key={char.id}>
+              <li onClick={() => handleSelectChar(char.id)}>{char?.name}</li>
               <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
                 <MinusCircle size={32} />
               </button>
