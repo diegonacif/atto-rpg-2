@@ -34,8 +34,6 @@ export const CharSelector = () => {
   const [charSelectorRefresh, setCharSelectorRefresh] = useState(false);
   // const [alreadyRegistered, setAlreadyRegistered] = useState(false)
 
-  console.log(chars)
-
   const [charName, setCharName] = useState("")
 
   const navigate = useNavigate();

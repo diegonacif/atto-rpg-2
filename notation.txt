@@ -53,9 +53,12 @@ user > char selector > char
 (ok) Implementar uid para criação de chars e derivados.
 (ok) Listar e deletar chars no char selector.
 (ok) Criar lógica para calcular custos dos atributos.
-(ok) Salva alterações nos atributos.
+(ok) Verificação de alteração nos atributos com relação ao banco atual
+() Salva alterações nos atributos.
 () Criar contexto que controla as informações que entram e saem do database.
 () Linkar cada uma das categorias, com sua página específica.
 () 
 
-obs: lembrar dos tokens de design
+obs: 
+* lembrar dos tokens de design.
+* pra alterar hexágonos quando ativos, alterar background-color do hexágono da camada mais abaixo.

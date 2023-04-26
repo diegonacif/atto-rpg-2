@@ -1,11 +1,12 @@
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from "react-router-dom";
-
-import '../../App.scss';
-import { useContext, useEffect, useState } from 'react';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+
+import '../../App.scss';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 interface IFormData {
   strength: string,
@@ -26,10 +27,19 @@ export const Attributes = () => {
   const dexterityRef = doc(attributesCollectionRef, 'dexterity');
   const intelligenceRef = doc(attributesCollectionRef, 'intelligence');
   const healthRef = doc(attributesCollectionRef, 'health');
-  const hitPointsRef = doc(attributesCollectionRef, 'hitPoints');
+  const hitPointsRef = doc(attributesCollectionRef, 'hit-points');
   const willRef = doc(attributesCollectionRef, 'will');
   const perceptionRef = doc(attributesCollectionRef, 'perception');
-  const fatiguePointsRef = doc(attributesCollectionRef, 'fatiguePoints');
+  const fatiguePointsRef = doc(attributesCollectionRef, 'fatigue-points');
+  const [firestoreLoading, setFirestoreLoading] = useState(true);
+
+  // Firestore loading
+  const [value, loading, error] = useCollection(attributesCollectionRef,
+    { snapshotListenOptions: { includeMetadataChanges: true } }
+  );
+  useEffect(() => {
+    setFirestoreLoading(loading);
+  }, [loading])
 
   // const [attributes, setAttributes] = useState<{}>();
   
@@ -125,90 +135,133 @@ export const Attributes = () => {
     setValue('fatiguePoints', watch('fatiguePoints'))
   }, [watch('fatiguePoints'), watch('health')]);
 
+  // Save button condition
+  const [saveButtonShow, setSaveButtonShow] = useState(false);
+  const [originalStrength, setOriginalStrength] = useState(0);
+  const [originalDexterity, setOriginalDexterity] = useState(0);
+  const [originalIntelligence, setOriginalIntelligence] = useState(0);
+  const [originalHealth, setOriginalHealth] = useState(0);
+  const [originalHitpoints, setOriginalHitpoints] = useState(0);
+  const [originalWill, setOriginalWill] = useState(0);
+  const [originalPerception, setOriginalPerception] = useState(0);
+  const [originalFatiguePoints, setOriginalFatiguePoints] = useState(0);
+
+  useEffect(() => {
+    if(
+      originalStrength !== parseInt(getValues("strength")) ||
+      originalDexterity !== parseInt(getValues("dexterity")) ||
+      originalIntelligence !== parseInt(getValues("intelligence")) ||
+      originalHealth !== parseInt(getValues("health")) ||
+      originalHitpoints !== parseInt(getValues("hitPoints")) ||
+      originalWill !== parseInt(getValues("will")) ||
+      originalPerception !== parseInt(getValues("perception")) ||
+      originalFatiguePoints !== parseInt(getValues("fatiguePoints"))
+    ) {
+      return setSaveButtonShow(true);
+    } else {
+      return setSaveButtonShow(false);
+    }
+  }, [watch()])
+
   // Getting Attributes Data
-  const getAttributeData = async (attributeRef: any, formRegister: any) => {
+  const getAttributeData = async (
+      attributeRef: DocumentReference<DocumentData>,
+      formRegister: any,
+      setter: React.Dispatch<React.SetStateAction<number>>,
+    ) => {
     const docSnap = await getDoc(attributeRef);
     if (docSnap.exists()) {
       const attributeData = docSnap.data() as { value: number };
-      setValue(formRegister, attributeData.value)
+      setValue(formRegister, attributeData.value);
+      setter(attributeData.value)
     }
   }
 
   useEffect(() => {
-    getAttributeData(strengthRef, 'strength')
-    getAttributeData(dexterityRef, 'dexterity')
-    getAttributeData(intelligenceRef, 'intelligence')
-    getAttributeData(healthRef, 'health')
-    getAttributeData(hitPointsRef, 'hitPoints')
-    getAttributeData(willRef, 'will')
-    getAttributeData(perceptionRef, 'perception')
-    getAttributeData(fatiguePointsRef, 'fatiguePoints')
+    getAttributeData(strengthRef, 'strength', setOriginalStrength)
+    getAttributeData(dexterityRef, 'dexterity', setOriginalDexterity)
+    getAttributeData(intelligenceRef, 'intelligence', setOriginalIntelligence)
+    getAttributeData(healthRef, 'health', setOriginalHealth)
+    getAttributeData(hitPointsRef, 'hitPoints', setOriginalHitpoints)
+    getAttributeData(willRef, 'will', setOriginalWill)
+    getAttributeData(perceptionRef, 'perception', setOriginalPerception)
+    getAttributeData(fatiguePointsRef, 'fatiguePoints', setOriginalFatiguePoints)
   }, [])
 
   return (
     <div className="attributes-container">
-      <div className="attributes-wrapper">
-        <div className="attributes-primary">
-          <div className="attribute-wrapper">
-            <span>For</span>
-            <div className="hexagon">
-              <input type="number" {...register("strength")}/> 
+      {
+        firestoreLoading ?
+        <span>Carregando...</span> :
+        <div className="attributes-wrapper">
+          <div className="attributes-primary">
+            <div className="attribute-wrapper">
+              <span>For</span>
+              <div className="hexagon">
+                <input type="number" {...register("strength")}/> 
+              </div>
+              <span className="attribute-cost">{strCost}</span>
             </div>
-            <span className="attribute-cost">{strCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>Des</span>
-            <div className="hexagon">
-              <input type="number" {...register("dexterity")}/> 
+            <div className="attribute-wrapper">
+              <span>Des</span>
+              <div className="hexagon">
+                <input type="number" {...register("dexterity")}/> 
+              </div>
+              <span className="attribute-cost">{dexCost}</span>
             </div>
-            <span className="attribute-cost">{dexCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>Int</span>
-            <div className="hexagon">
-              <input type="number" {...register("intelligence")}/> 
+            <div className="attribute-wrapper">
+              <span>Int</span>
+              <div className="hexagon">
+                <input type="number" {...register("intelligence")}/> 
+              </div>
+              <span className="attribute-cost">{intCost}</span>
             </div>
-            <span className="attribute-cost">{intCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>Vit</span>
-            <div className="hexagon">
-              <input type="number" {...register("health")}/> 
+            <div className="attribute-wrapper">
+              <span>Vit</span>
+              <div className="hexagon">
+                <input type="number" {...register("health")}/> 
+              </div>
+              <span className="attribute-cost">{hthCost}</span>
             </div>
-            <span className="attribute-cost">{hthCost}</span>
           </div>
+          <div className="attributes-secondary">
+            <div className="attribute-wrapper">
+              <span>PV</span>
+              <div className="hexagon">
+                <input type="number" {...register("hitPoints")}/> 
+              </div>
+              <span className="attribute-cost">{hpCost}</span>
+            </div>
+            <div className="attribute-wrapper">
+              <span>Vont</span>
+              <div className="hexagon">
+                <input type="number" {...register("will")}/> 
+              </div>
+              <span className="attribute-cost">{willCost}</span>
+            </div>
+            <div className="attribute-wrapper">
+              <span>Per</span>
+              <div className="hexagon">
+                <input type="number" {...register("perception")}/> 
+              </div>
+              <span className="attribute-cost">{perCost}</span>
+            </div>
+            <div className="attribute-wrapper">
+              <span>PF</span>
+              <div className="hexagon">
+                <input type="number" {...register("fatiguePoints")}/> 
+              </div>
+              <span className="attribute-cost">{fpCost}</span>
+            </div>
+          </div>
+          {
+            saveButtonShow &&
+            <div className="save-button-wrapper">
+              <button>Save</button>
+            </div>
+          }
         </div>
-        <div className="attributes-secondary">
-          <div className="attribute-wrapper">
-            <span>PV</span>
-            <div className="hexagon">
-              <input type="number" {...register("hitPoints")}/> 
-            </div>
-            <span className="attribute-cost">{hpCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>Vont</span>
-            <div className="hexagon">
-              <input type="number" {...register("will")}/> 
-            </div>
-            <span className="attribute-cost">{willCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>Per</span>
-            <div className="hexagon">
-              <input type="number" {...register("perception")}/> 
-            </div>
-            <span className="attribute-cost">{perCost}</span>
-          </div>
-          <div className="attribute-wrapper">
-            <span>PF</span>
-            <div className="hexagon">
-              <input type="number" {...register("fatiguePoints")}/> 
-            </div>
-            <span className="attribute-cost">{fpCost}</span>
-          </div>
-        </div>
-      </div>
+      }
     </div>
   )
 }
