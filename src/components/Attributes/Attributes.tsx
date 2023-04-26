@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from "react-router-dom";
-import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 
@@ -32,6 +32,7 @@ export const Attributes = () => {
   const perceptionRef = doc(attributesCollectionRef, 'perception');
   const fatiguePointsRef = doc(attributesCollectionRef, 'fatigue-points');
   const [firestoreLoading, setFirestoreLoading] = useState(true);
+  const [refreshAttributes, setRefreshAttributes] = useState(false);
 
   // Firestore loading
   const [value, loading, error] = useCollection(attributesCollectionRef,
@@ -156,11 +157,8 @@ export const Attributes = () => {
       originalWill !== parseInt(getValues("will")) ||
       originalPerception !== parseInt(getValues("perception")) ||
       originalFatiguePoints !== parseInt(getValues("fatiguePoints"))
-    ) {
-      return setSaveButtonShow(true);
-    } else {
-      return setSaveButtonShow(false);
-    }
+    ) { return setSaveButtonShow(true); } 
+    else { return setSaveButtonShow(false); }
   }, [watch()])
 
   // Getting Attributes Data
@@ -186,7 +184,24 @@ export const Attributes = () => {
     getAttributeData(willRef, 'will', setOriginalWill)
     getAttributeData(perceptionRef, 'perception', setOriginalPerception)
     getAttributeData(fatiguePointsRef, 'fatiguePoints', setOriginalFatiguePoints)
-  }, [])
+  }, [refreshAttributes])
+
+  // Update attributes data
+  const updateAttributesData = async () => {
+    try{
+      await setDoc(strengthRef, {value: parseInt(getValues('strength'))});
+      await setDoc(dexterityRef, {value: parseInt(getValues('dexterity'))});
+      await setDoc(intelligenceRef, {value: parseInt(getValues('intelligence'))});
+      await setDoc(healthRef, {value: parseInt(getValues('health'))});
+      await setDoc(hitPointsRef, {value: parseInt(getValues('hitPoints'))});
+      await setDoc(willRef, {value: parseInt(getValues('will'))});
+      await setDoc(perceptionRef, {value: parseInt(getValues('perception'))});
+      await setDoc(fatiguePointsRef, {value: parseInt(getValues('fatiguePoints'))});
+      setRefreshAttributes(current => !current)
+    } catch (error) {
+      console.error("Erro ao atualizar registro: ", error)
+    }
+  }
 
   return (
     <div className="attributes-container">
@@ -257,7 +272,17 @@ export const Attributes = () => {
           {
             saveButtonShow &&
             <div className="save-button-wrapper">
-              <button>Save</button>
+              <button
+                onClick={() => updateAttributesData()}
+                style={{ 
+                  margin: "2rem 0 0 1rem", 
+                  padding: "0.25rem 0.5rem", 
+                  backgroundColor: "#D1D5DB", 
+                  borderRadius: "4px" 
+                }} 
+              >
+                Save
+              </button>
             </div>
           }
         </div>

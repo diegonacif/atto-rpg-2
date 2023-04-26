@@ -54,7 +54,7 @@ user > char selector > char
 (ok) Listar e deletar chars no char selector.
 (ok) Criar lógica para calcular custos dos atributos.
 (ok) Verificação de alteração nos atributos com relação ao banco atual
-() Salva alterações nos atributos.
+(ok) Salva alterações nos atributos.
 () Criar contexto que controla as informações que entram e saem do database.
 () Linkar cada uma das categorias, com sua página específica.
 () 
