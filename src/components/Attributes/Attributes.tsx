@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from 'react';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import { numberMask } from '../../utils/numberMask';
 
 interface IFormData {
   strength: string,
@@ -101,19 +100,28 @@ export const Attributes = () => {
 
   const [willCost, setWillCost] = useState(0);
   useEffect(() => {
-    setWillCost((parseInt(getValues("will")) - parseInt(getValues("intelligence"))) * 5);
+    const will = parseInt(getValues("will"));
+    const intelligence = parseInt(getValues("intelligence"));
+    if(isNaN(will) || isNaN(intelligence)) { return setWillCost(0); }
+    setWillCost((will - intelligence) * 5);
     setValue('will', watch('will'))
   }, [watch('will'), watch('intelligence')]);
   
   const [perCost, setPerCost] = useState(0);
   useEffect(() => {
-    setPerCost((parseInt(getValues("perception")) - parseInt(getValues("intelligence"))) * 5);
+    const perception = parseInt(getValues("perception"));
+    const intelligence = parseInt(getValues("intelligence"));
+    if(isNaN(perception) || isNaN(intelligence)) { return setPerCost(0); }
+    setPerCost((perception - intelligence) * 5);
     setValue('perception', watch('perception'))
   }, [watch('perception'), watch('intelligence')]);
   
   const [fpCost, setFpCost] = useState(0);
   useEffect(() => {
-    setFpCost((parseInt(getValues("fatiguePoints")) - parseInt(getValues("health"))) * 3);
+    const fatiguePoints = parseInt(getValues("fatiguePoints"));
+    const health = parseInt(getValues("health"));
+    if(isNaN(fatiguePoints) || isNaN(health)) { return setFpCost(0); }
+    setFpCost((fatiguePoints - health) * 3);
     setValue('fatiguePoints', watch('fatiguePoints'))
   }, [watch('fatiguePoints'), watch('health')]);
 
