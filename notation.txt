@@ -55,6 +55,8 @@ user > char selector > char
 (ok) Criar lógica para calcular custos dos atributos.
 (ok) Verificação de alteração nos atributos com relação ao banco atual
 (ok) Salva alterações nos atributos.
+(ok) Ao excluir chars, entrada permanesce no banco porque existem documentos nas suas subcoleções. Criar função para solucionar.
+() Dados estáticos de perks, flaws e skills precisam estar disponíveis.
 () Criar contexto que controla as informações que entram e saem do database.
 () Linkar cada uma das categorias, com sua página específica.
 () 
@@ -62,3 +64,9 @@ user > char selector > char
 obs: 
 * lembrar dos tokens de design.
 * pra alterar hexágonos quando ativos, alterar background-color do hexágono da camada mais abaixo.
+
+
+
+*renderizar cada documento salvo no banco, no formato de linha.
+*botão para adicionar nova linha
+*ao clicar em cada linha, abrir um modal para editar, salvar ou excluir linha

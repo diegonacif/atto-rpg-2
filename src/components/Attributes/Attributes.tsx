@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 import '../../App.scss';
-import { useCollection } from 'react-firebase-hooks/firestore';
 
 interface IFormData {
   strength: string,
