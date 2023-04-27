@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDCru3lkqktzUFyd5uclg9rucWZa_37uhE",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "atto-rpg.firebaseapp.com",
   projectId: "atto-rpg",
   storageBucket: "atto-rpg.appspot.com",

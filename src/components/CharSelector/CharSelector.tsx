@@ -5,11 +5,14 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import type { DocumentReference, DocumentSnapshot, CollectionReference } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
+import "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
+import { MinusCircle } from '@phosphor-icons/react';
+
+
 
 import '../../App.scss';
-import { MinusCircle } from '@phosphor-icons/react';
 
 interface IChars { 
   id: string,
@@ -130,8 +133,9 @@ export const CharSelector = () => {
   }
 
   async function deleteChar(id: string) {
-    const charDocRef = doc(db, 'users', userId, 'characters', id);
-    await deleteDoc(charDocRef);
+    
+    const deleteRef = doc(db, 'users', userId, 'characters', id);
+    await deleteDoc(deleteRef);
     setCharSelectorRefresh(current => !current);
   }
 
