@@ -133,9 +133,37 @@ export const CharSelector = () => {
   }
 
   async function deleteChar(id: string) {
-    
+
     const deleteRef = doc(db, 'users', userId, 'characters', id);
+    const attributesRef = collection(deleteRef, 'attributes')
+    const perksRef = collection(deleteRef, 'perks')
+    const flawsRef = collection(deleteRef, 'flaws')
+    const skillsRef = collection(deleteRef, 'skills')
+    const equipsRef = collection(deleteRef, 'equips')
+
+    const attributesSnapshot = await getDocs(attributesRef);
+    attributesSnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    const perksSnapshot = await getDocs(perksRef);
+    perksSnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    const flawsSnapshot = await getDocs(flawsRef);
+    flawsSnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    const skillsSnapshot = await getDocs(skillsRef);
+    skillsSnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    const equipsSnapshot = await getDocs(equipsRef);
+    equipsSnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+
     await deleteDoc(deleteRef);
+
     setCharSelectorRefresh(current => !current);
   }
 
