@@ -67,6 +67,7 @@ obs:
 
 
 
-*renderizar cada documento salvo no banco, no formato de linha.
-*botão para adicionar nova linha
-*ao clicar em cada linha, abrir um modal para editar, salvar ou excluir linha
+* renderizar cada documento salvo no banco, no formato de linha.
+* modal das vantagens
+* botão para adicionar nova linha
+* ao clicar em cada linha, abrir um modal para editar, salvar ou excluir linha

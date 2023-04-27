@@ -62,6 +62,21 @@ $desktop-size: "min-width: 1024px";
   }
 }
 
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+  background-color: rgba(0, 116, 183, 0.35) !important;
+  backdrop-filter: blur(2px);
+}
+
+.ReactModal__Overlay--after-open{
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+    opacity: 0;
+}
+
 @mixin responsive-padding($pt: 0, $pb: 0) {
   padding: $pt 0.75rem $pb;
 

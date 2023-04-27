@@ -4,6 +4,9 @@ import { collection, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+import ReactModal from 'react-modal';
+
+import '../../App.scss';
 
 interface IPerksData {
   id: string;
@@ -12,34 +15,85 @@ interface IPerksData {
   points: number;
 }
 
-const PerksRow = ({ perkData }: { perkData: IPerksData }) => {
-  const [selectedOption, setSelectedOption] = useState('');
-  // const levelPointsCalculator = () => {
+interface ILevelPoints {
+  [key: number]: number;
+}
 
-  // };
-  console.log(perkData)
+// PERKS ROW //
+const PerksRow = ({ perkData, openModalHandler }: {
+  perkData: IPerksData, 
+  openModalHandler: (perkData: IPerksData) => void,
+}) => {
+  const levelPoints: ILevelPoints = {
+    1: 5,
+    2: 10,
+    3: 20,
+    4: 30,
+    5: 50,
+  };
+
+  const calculatePoints = (level: number): number => {
+    return levelPoints[level] || 0;
+  };
 
   return (
     <div className="perks-row">
-    {/* <select 
-      id="perk-1-name"
-      onChange={(e) => setSelectedOption(e.target.value)}
-      value={perkData?.description}
-    >
-      <option value="">Selecione uma vantagem</option>
-      {perksData.map((option) => (
-        <option key={option.name} value={option.name}>
-          {option.name}
-        </option>
-      ))}
-    </select> */}
-    <span>{perkData.description}</span>
+    
+    <span onClick={() => openModalHandler(perkData)}>{perkData.description}</span>
     <span>{perkData.level}</span>
-    <span>{perkData.points}</span>
+    <span>{calculatePoints(perkData.level)}</span>
   </div>
   )
 };
 
+// PERKS MODAL //
+const PerksModal = ({ currentPerkData }: {currentPerkData: IPerksData}) => {
+  const [selectedPerk, setSelectedPerk] = useState(currentPerkData.description);
+  const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level)
+  const [currentSelectedPerk, setCurrentSelectedPerk] = useState({
+    name: "",
+    levels: [{}]
+  })
+
+  console.log(currentSelectedPerk.levels.map(level => level))
+
+  return (
+    <div className="perks-modal">
+      <select 
+        id="perk-1-name"
+        onChange={(e) => {
+          const selectedPerk = perksData.find(perk => perk.name === e.target.value);
+          setSelectedPerk(e.target.value);
+          selectedPerk && setCurrentSelectedPerk(selectedPerk)
+        }}
+        value={selectedPerk}
+      >
+        <option value="">Selecione uma vantagem</option>
+        {perksData.map((option) => (
+          <option key={option.name} value={option.name}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+      <select 
+        id="perk-1-level"
+        onChange={(e) => setSelectedLevel(Number(e.target.value))}
+        value={selectedLevel}
+      >
+        {currentSelectedPerk ?
+          currentSelectedPerk.levels.map((level) => (
+            <option key={`${level}`} value={`${level}`}>
+              {`${level}`}
+            </option>
+        )):
+        <option value="">Selecione uma vantagem primeiro</option>
+      }
+      </select>
+    </div>
+  )
+}
+
+// PERKS //
 export const Perks = () => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
@@ -50,8 +104,18 @@ export const Perks = () => {
     level: 0,
     points: 0,
   }])
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPerkData, setCurrentPerkData] = useState<IPerksData>({
+    id: "",
+    description: "",
+    level: 0,
+    points: 0,
+  })
 
-  // console.log(perksData)
+  const handleModalOpen = (perkData: IPerksData) => {
+    setCurrentPerkData(perkData)
+    setIsModalOpen(true);
+  };
 
   // Getting Perks Data
   useEffect(() => {
@@ -69,13 +133,38 @@ export const Perks = () => {
     getPerksData();
   }, [])
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      padding: '1rem',
+
+    },
+  };
+
   return (
     <div className="perks-container">
       {
         perksData.map((perk) => (
-          <PerksRow perkData={perk}/>
+          <PerksRow 
+            perkData={perk} 
+            openModalHandler={handleModalOpen}
+          />
         ))
       }
+      <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        style={customStyles}
+        closeTimeoutMS={150}
+        ariaHideApp={false}
+      >
+        <PerksModal currentPerkData={currentPerkData} />
+      </ReactModal>
     </div>
   )
 };
