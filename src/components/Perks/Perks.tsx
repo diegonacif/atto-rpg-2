@@ -13,11 +13,16 @@ interface IPerksData {
   description: string;
   level: number;
   points: number;
-}
+};
 
 interface ILevelPoints {
   [key: number]: number;
-}
+};
+
+interface ISelectedPerk {
+  name: string,
+  levels: number[];
+};
 
 // PERKS ROW //
 const PerksRow = ({ perkData, openModalHandler }: {
@@ -47,16 +52,55 @@ const PerksRow = ({ perkData, openModalHandler }: {
 };
 
 // PERKS MODAL //
-const PerksModal = ({ currentPerkData }: {currentPerkData: IPerksData}) => {
+const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, newPerk: boolean}) => {
   const [selectedPerk, setSelectedPerk] = useState(currentPerkData.description);
   const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level)
-  const [currentSelectedPerk, setCurrentSelectedPerk] = useState({
+  const [selectedPoints, setSelectedPoints] = useState(0)
+  const [currentSelectedPerk, setCurrentSelectedPerk] = useState<ISelectedPerk>({
     name: "",
-    levels: [{}]
+    levels: [],
   })
+  const levelPoints: ILevelPoints = {
+    1: 5,
+    2: 10,
+    3: 20,
+    4: 30,
+    5: 50,
+  };
 
-  console.log(currentSelectedPerk.levels.map(level => level))
+  const calculatePoints = (level: number): number => {
+    return levelPoints[level] || 0;
+  };
 
+  // console.log(selectedPoints)
+  // console.log({
+  //   selectedPerk: selectedPerk,
+  //   selectedLevel: selectedLevel,
+  //   currentSelectedPerk: currentSelectedPerk
+  // })
+
+  useEffect(() => {
+    const currentPerk = perksData.find((perk: ISelectedPerk) => perk.name === selectedPerk);
+    setCurrentSelectedPerk({
+      name: currentPerk?.name ?? "",
+      levels: currentPerk?.levels ?? []
+    });
+    setSelectedPoints(calculatePoints(selectedLevel));
+    console.log(selectedLevel)
+  }, [selectedPerk, selectedLevel])
+
+  const handleNewPerk = () => {
+    alert("new perk")
+  }
+
+  const handleUpdatePerk = () => {
+    alert("update perk")
+  }
+
+  const handleDeletePerk = () => {
+    alert("delete perk")
+  }
+  
   return (
     <div className="perks-modal">
       <select 
@@ -80,18 +124,27 @@ const PerksModal = ({ currentPerkData }: {currentPerkData: IPerksData}) => {
         onChange={(e) => setSelectedLevel(Number(e.target.value))}
         value={selectedLevel}
       >
-        {currentSelectedPerk ?
+        <option value="">0</option>
+        {currentSelectedPerk?
           currentSelectedPerk.levels.map((level) => (
             <option key={`${level}`} value={`${level}`}>
               {`${level}`}
             </option>
         )):
-        <option value="">Selecione uma vantagem primeiro</option>
+        <option value="">0</option>
       }
       </select>
+      <span>{calculatePoints(selectedLevel)}</span>
+      {newPerk ? 
+        <button onClick={() => handleNewPerk()}>Save</button>  :
+        <>
+          <button onClick={() => handleUpdatePerk()}>Update</button>
+          <button onClick={() => handleDeletePerk()}>Delete</button>
+        </>
+      }
     </div>
   )
-}
+};
 
 // PERKS //
 export const Perks = () => {
@@ -111,11 +164,24 @@ export const Perks = () => {
     level: 0,
     points: 0,
   })
+  const [isNewPerk, setIsNewPerk] = useState(false);
 
   const handleModalOpen = (perkData: IPerksData) => {
     setCurrentPerkData(perkData)
+    setIsNewPerk(false);
     setIsModalOpen(true);
   };
+
+  const handleNewPerkModalOpen = () => {
+    setCurrentPerkData({
+      id: "",
+      description: "",
+      level: 0,
+      points: 0,
+    });
+    setIsNewPerk(true);
+    setIsModalOpen(true);
+  }
 
   // Getting Perks Data
   useEffect(() => {
@@ -156,6 +222,7 @@ export const Perks = () => {
           />
         ))
       }
+      <button onClick={() => handleNewPerkModalOpen()}>Nova vantagem</button>
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -163,7 +230,7 @@ export const Perks = () => {
         closeTimeoutMS={150}
         ariaHideApp={false}
       >
-        <PerksModal currentPerkData={currentPerkData} />
+        <PerksModal currentPerkData={currentPerkData} newPerk={isNewPerk} />
       </ReactModal>
     </div>
   )
