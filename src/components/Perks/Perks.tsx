@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { perksData } from '../../services/gameData';
-import { collection, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
@@ -52,7 +52,12 @@ const PerksRow = ({ perkData, openModalHandler }: {
 };
 
 // PERKS MODAL //
-const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, newPerk: boolean}) => {
+const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }: 
+  {currentPerkData: IPerksData, newPerk: boolean, setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+  const { id } = useParams<{ id: string }>();
+  const { userId } = useContext(AuthGoogleContext);
+  const perksCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "perks")
+
   const [selectedPerk, setSelectedPerk] = useState(currentPerkData.description);
   const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level)
   const [selectedPoints, setSelectedPoints] = useState(0)
@@ -73,11 +78,12 @@ const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, 
   };
 
   // console.log(selectedPoints)
-  // console.log({
-  //   selectedPerk: selectedPerk,
-  //   selectedLevel: selectedLevel,
-  //   currentSelectedPerk: currentSelectedPerk
-  // })
+  console.log({
+    // selectedPerk: selectedPerk,
+    // selectedLevel: selectedLevel,
+    // selectedPoints: selectedPoints,
+    // currentPerkData: currentPerkData
+  })
 
   useEffect(() => {
     const currentPerk = perksData.find((perk: ISelectedPerk) => perk.name === selectedPerk);
@@ -89,22 +95,43 @@ const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, 
     console.log(selectedLevel)
   }, [selectedPerk, selectedLevel])
 
-  const handleNewPerk = () => {
-    alert("new perk")
+  const isMounted = useRef(false);
+  useEffect(() => {
+    if(!isMounted.current) {
+      setTimeout(() => {
+        isMounted.current = true;
+      }, 200);
+    } else {
+      setSelectedPoints(0);
+      setSelectedLevel(0);
+    }
+  }, [selectedPerk])
+
+  const addNewPerk = async () => {
+    try {
+      await addDoc(perksCollectionRef, {
+        description: selectedPerk,
+        level: selectedLevel,
+        points: selectedPoints
+      })
+      setIsModalOpen(false)
+    } catch (error) {
+      console.error('Erro ao criar documento :', error)
+    }
   }
 
-  const handleUpdatePerk = () => {
+  const updatePerk = () => {
     alert("update perk")
   }
 
-  const handleDeletePerk = () => {
+  const deletePerk = () => {
     alert("delete perk")
   }
   
   return (
     <div className="perks-modal">
       <select 
-        id="perk-1-name"
+        id="perk-name"
         onChange={(e) => {
           const selectedPerk = perksData.find(perk => perk.name === e.target.value);
           setSelectedPerk(e.target.value);
@@ -120,7 +147,7 @@ const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, 
         ))}
       </select>
       <select 
-        id="perk-1-level"
+        id="perk-level"
         onChange={(e) => setSelectedLevel(Number(e.target.value))}
         value={selectedLevel}
       >
@@ -134,12 +161,12 @@ const PerksModal = ({ currentPerkData, newPerk }: {currentPerkData: IPerksData, 
         <option value="">0</option>
       }
       </select>
-      <span>{calculatePoints(selectedLevel)}</span>
+      <span>{selectedPoints}</span>
       {newPerk ? 
-        <button onClick={() => handleNewPerk()}>Save</button>  :
+        <button onClick={() => addNewPerk()}>Save</button>  :
         <>
-          <button onClick={() => handleUpdatePerk()}>Update</button>
-          <button onClick={() => handleDeletePerk()}>Delete</button>
+          <button onClick={() => updatePerk()}>Update</button>
+          <button onClick={() => deletePerk()}>Delete</button>
         </>
       }
     </div>
@@ -197,7 +224,7 @@ export const Perks = () => {
       setPerksData(docs)
     }
     getPerksData();
-  }, [])
+  }, [isModalOpen])
 
   const customStyles = {
     content: {
@@ -230,7 +257,11 @@ export const Perks = () => {
         closeTimeoutMS={150}
         ariaHideApp={false}
       >
-        <PerksModal currentPerkData={currentPerkData} newPerk={isNewPerk} />
+        <PerksModal 
+          currentPerkData={currentPerkData} 
+          newPerk={isNewPerk} 
+          setIsModalOpen={setIsModalOpen}
+        />
       </ReactModal>
     </div>
   )
