@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { db } from '../../services/firebase-config';
@@ -77,7 +77,7 @@ export const Flaws = () => {
     }, 200);
   };
 
-  console.log(isNewFlaw)
+  console.log(currentFlawData.id)
 
   // Getting Perks Data
   useEffect(() => {
@@ -166,8 +166,37 @@ export const Flaws = () => {
       console.error('Erro ao criar documento :', error)
     }
   }
-  const updateFlaw = async () => { console.log("update flaw") }
-  const deleteFlaw = async () => { console.log("delete flaw") }
+  const updateFlaw = async () => {
+    const docRef = doc(flawsCollectionRef, currentFlawData.id)
+    try {
+      await setDoc(docRef, {
+        description: selectedFlaw,
+        level: selectedLevel,
+        points: selectedPoints
+      }).then(
+        () => {
+          handleCloseModal();
+          console.log("Documento atualizado com sucesso!");
+        }
+      )
+    } catch (error) {
+      console.error('Erro ao atualizar documento :', error)
+    }
+  }
+  const deleteFlaw = async () => {
+    const docRef = doc(flawsCollectionRef, currentFlawData.id)
+    try {
+      await deleteDoc(docRef)
+      .then(
+        () => {
+          handleCloseModal();
+          console.log("Documento excluído com sucesso!");
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao excluir documento", error);
+    }
+  }
 
   return (
     <div className="flaws-container">
