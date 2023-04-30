@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { perksData } from '../../services/gameData';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
@@ -112,8 +112,19 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     }
   }
 
-  const updatePerk = () => {
-    alert("update perk")
+  const updatePerk = async () => {
+    const docRef = doc(perksCollectionRef, currentPerkData.id)
+    try {
+      await setDoc(docRef, {
+        description: selectedPerk,
+        level: selectedLevel,
+        points: selectedPoints
+      });
+      console.log("Documento atualizado com sucesso!");
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Erro ao atualizar documento :', error)
+    }
   }
 
   const deletePerk = async () => {
