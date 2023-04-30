@@ -5,6 +5,8 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { db } from '../../services/firebase-config';
 import ReactModal from 'react-modal';
 import { flawsData as flawsStaticData} from '../../services/gameData';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 import '../../App.scss';
 
 interface IFlawsData {
@@ -33,6 +35,15 @@ export const Flaws = () => {
     level: 0,
     points: 0,
   }])
+  const [firestoreLoading, setFirestoreLoading] = useState(true)
+
+  // Firestore loading
+  const [value, loading, error] = useCollection(flawsCollectionRef,
+    { snapshotListenOptions: { includeMetadataChanges: true } }
+  );
+  useEffect(() => {
+    setFirestoreLoading(loading);
+  }, [loading])
 
   // Modal Data
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -201,67 +212,72 @@ export const Flaws = () => {
   return (
     <div className="flaws-container">
       {
-        flawsData.map((flaw) => (
-          <div className="flaws-row">
-            <span onClick={() => handleModalOpen(flaw)} id="flaw-name">{flaw.description}</span>
-            <span id="flaw-level">{flaw.level}</span>
-            <span id="flaw-points">{flaw.points}</span>
-          </div>
-        ))
+        firestoreLoading ?
+        <LoadingSquare /> :
+        <>
+          {
+            flawsData.map((flaw) => (
+              <div className="flaws-row">
+                <span onClick={() => handleModalOpen(flaw)} id="flaw-name">{flaw.description}</span>
+                <span id="flaw-level">{flaw.level}</span>
+                <span id="flaw-points">{flaw.points}</span>
+              </div>
+            ))
+          }
+
+          <button onClick={() => handleNewFlawModalOpen()} id="new-flaw-button">Nova desvantagem</button>
+
+          <ReactModal
+            isOpen={isModalOpen}
+            onRequestClose={() => handleCloseModal()}
+            style={modalCustomStyles}
+            closeTimeoutMS={150}
+            ariaHideApp={false}
+          >
+            <div className="flaws-modal">
+              <select 
+                id="perk-name"
+                onChange={(e) => {
+                  const currentFlaw = flawsStaticData.find(flaw => flaw.name === e.target.value);
+                  setSelectedFlaw(e.target.value);
+                  selectedFlaw && setCurrentSeletedFlaw(currentFlaw)
+                }}
+                value={selectedFlaw}
+              >
+                <option value="">Selecione uma vantagem</option>
+                {flawsStaticData.map((option) => (
+                  <option key={option.name} value={option.name}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+              <select 
+                id="perk-level"
+                onChange={(e) => setSelectedLevel(Number(e.target.value))}
+                value={selectedLevel}
+              >
+                <option value="">0</option>
+                {currentSelectedFlaw ?
+                  currentSelectedFlaw?.levels.map((level) => (
+                    <option key={`${level}`} value={`${level}`}>
+                      {`${level}`}
+                    </option>
+                )):
+                <option value="">0</option>
+              }
+              </select>
+              <span>{selectedPoints}</span>
+              {isNewFlaw ? 
+                <button onClick={() => addNewFlaw()}>Save</button>  :
+                <>
+                  <button onClick={() => updateFlaw()}>Update</button>
+                  <button onClick={() => deleteFlaw()}>Delete</button>
+                </>
+              }
+            </div>
+          </ReactModal>
+        </>
       }
-
-      <button onClick={() => handleNewFlawModalOpen()} id="new-flaw-button">Nova desvantagem</button>
-
-      <ReactModal
-        isOpen={isModalOpen}
-        onRequestClose={() => handleCloseModal()}
-        style={modalCustomStyles}
-        closeTimeoutMS={150}
-        ariaHideApp={false}
-      >
-        <div className="flaws-modal">
-          <select 
-            id="perk-name"
-            onChange={(e) => {
-              const currentFlaw = flawsStaticData.find(flaw => flaw.name === e.target.value);
-              setSelectedFlaw(e.target.value);
-              selectedFlaw && setCurrentSeletedFlaw(currentFlaw)
-            }}
-            value={selectedFlaw}
-          >
-            <option value="">Selecione uma vantagem</option>
-            {flawsStaticData.map((option) => (
-              <option key={option.name} value={option.name}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select 
-            id="perk-level"
-            onChange={(e) => setSelectedLevel(Number(e.target.value))}
-            value={selectedLevel}
-          >
-            <option value="">0</option>
-            {currentSelectedFlaw?
-              currentSelectedFlaw.levels.map((level) => (
-                <option key={`${level}`} value={`${level}`}>
-                  {`${level}`}
-                </option>
-            )):
-            <option value="">0</option>
-          }
-          </select>
-          <span>{selectedPoints}</span>
-          {isNewFlaw ? 
-            <button onClick={() => addNewFlaw()}>Save</button>  :
-            <>
-              <button onClick={() => updateFlaw()}>Update</button>
-              <button onClick={() => deleteFlaw()}>Delete</button>
-            </>
-          }
-        </div>
-      </ReactModal>
-        
     </div>
   )
 }

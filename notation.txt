@@ -57,6 +57,9 @@ user > char selector > char
 (ok) Salva alterações nos atributos.
 (ok) Ao excluir chars, entrada permanesce no banco porque existem documentos nas suas subcoleções. Criar função para solucionar.
 (ok) Dados estáticos de perks, flaws e skills precisam estar disponíveis.
+(ok) CRUD Vantagens
+(ok) CRUD Desvantagens
+() CRUD Perícias
 () Criar contexto que controla as informações que entram e saem do database.
 () Linkar cada uma das categorias, com sua página específica.
 () 

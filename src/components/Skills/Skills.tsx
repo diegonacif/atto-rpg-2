@@ -1,85 +1,72 @@
+import { useParams } from 'react-router-dom';
 import '../../App.scss';
+import { useContext, useEffect, useState } from 'react';
+import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../services/firebase-config';
+
+interface ISkillsData {
+  id: string;
+  description: string;
+  mod: number;
+  nh: number;
+  attRelative: {attribute: string ; difficulty: string}[];
+  points: number;
+};
 
 export const Skills = () => {
+  const { id } = useParams<{ id: string }>();
+  const { userId } = useContext(AuthGoogleContext);
+  const skillsCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "skills")
+  const [skillsData, setSkillsData] = useState<ISkillsData[]>([{
+    id: "",
+    description: "",
+    mod: 0,
+    nh: 0,
+    attRelative: [],
+    points: 0,
+  }])
+  
+  console.log(skillsData)
+
+  // Getting Skills Data
+  useEffect(() => {
+    const getFlawsData = async () => {
+      const querySnapshot = await getDocs(skillsCollectionRef);
+      const docs = querySnapshot.docs.map((doc) => (({ 
+        id: doc.id, 
+        description: doc.data().description,
+        mod: doc.data().mod,
+        nh: doc.data().nh,
+        attRelative: doc.data().attRelative,
+        points: doc.data().points,
+        ...doc.data()
+      })));
+      setSkillsData(docs)
+    }
+    getFlawsData();
+  }, [])
+  
   return (
     <div className="skills-container">
-      <div className="skills-row">
-        <input type="text" id="skill-1-name" />
-        <input type="text" id="skill-1-mods" />
-        <input type="text" id="skill-1-nh" />
-        <input type="text" id="skill-1-relative" />
-        <input type="text" id="skill-1-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-2-name" />
-        <input type="text" id="skill-2-mods" />
-        <input type="text" id="skill-2-nh" />
-        <input type="text" id="skill-2-relative" />
-        <input type="text" id="skill-2-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-3-name" />
-        <input type="text" id="skill-3-mods" />
-        <input type="text" id="skill-3-nh" />
-        <input type="text" id="skill-3-relative" />
-        <input type="text" id="skill-3-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-4-name" />
-        <input type="text" id="skill-4-mods" />
-        <input type="text" id="skill-4-nh" />
-        <input type="text" id="skill-4-relative" />
-        <input type="text" id="skill-4-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-5-name" />
-        <input type="text" id="skill-5-mods" />
-        <input type="text" id="skill-5-nh" />
-        <input type="text" id="skill-5-relative" />
-        <input type="text" id="skill-5-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-6-name" />
-        <input type="text" id="skill-6-mods" />
-        <input type="text" id="skill-6-nh" />
-        <input type="text" id="skill-6-relative" />
-        <input type="text" id="skill-6-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-7-name" />
-        <input type="text" id="skill-7-mods" />
-        <input type="text" id="skill-7-nh" />
-        <input type="text" id="skill-7-relative" />
-        <input type="text" id="skill-7-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-8-name" />
-        <input type="text" id="skill-8-mods" />
-        <input type="text" id="skill-8-nh" />
-        <input type="text" id="skill-8-relative" />
-        <input type="text" id="skill-8-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-9-name" />
-        <input type="text" id="skill-9-mods" />
-        <input type="text" id="skill-9-nh" />
-        <input type="text" id="skill-9-relative" />
-        <input type="text" id="skill-9-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-10-name" />
-        <input type="text" id="skill-10-mods" />
-        <input type="text" id="skill-10-nh" />
-        <input type="text" id="skill-10-relative" />
-        <input type="text" id="skill-10-points" />
-      </div>
-      <div className="skills-row">
-        <input type="text" id="skill-11-name" />
-        <input type="text" id="skill-11-mods" />
-        <input type="text" id="skill-11-nh" />
-        <input type="text" id="skill-11-relative" />
-        <input type="text" id="skill-11-points" />
-      </div>
+      {
+        skillsData.map((skill) => {
+          const attributeValue = skill.attRelative.find(obj => obj.attribute)?.attribute;
+          const difficultyValue = skill.attRelative.find(obj => obj.difficulty)?.difficulty;
+          
+          return (
+            <div className="skills-row">
+              <span id="skill-name">{skill.description}</span>
+              <span id="skill-mod">{skill.mod}</span>
+              <span id="skill-nh">{skill.nh}</span>
+              <span id="skill-attRelative">
+              {attributeValue && difficultyValue && `${attributeValue.toUpperCase()} / ${difficultyValue.toUpperCase()}`}
+              </span>
+              <span id="skill-points">{skill.points}</span>
+            </div>
+          )
+        })
+      }
     </div>
   )
 }
