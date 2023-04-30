@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { perksData } from '../../services/gameData';
-import { addDoc, collection, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
@@ -77,14 +77,6 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     return levelPoints[level] || 0;
   };
 
-  // console.log(selectedPoints)
-  console.log({
-    // selectedPerk: selectedPerk,
-    // selectedLevel: selectedLevel,
-    // selectedPoints: selectedPoints,
-    // currentPerkData: currentPerkData
-  })
-
   useEffect(() => {
     const currentPerk = perksData.find((perk: ISelectedPerk) => perk.name === selectedPerk);
     setCurrentSelectedPerk({
@@ -124,9 +116,16 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     alert("update perk")
   }
 
-  const deletePerk = () => {
-    alert("delete perk")
-  }
+  const deletePerk = async () => {
+    const docRef = doc(perksCollectionRef, currentPerkData.id)
+    try {
+      await deleteDoc(docRef);
+      console.log("Documento excluído com sucesso!");
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Erro ao excluir documento", error);
+    }
+  } 
   
   return (
     <div className="perks-modal">
