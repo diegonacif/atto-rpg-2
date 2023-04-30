@@ -31,24 +31,12 @@ const PerksRow = ({ perkData, openModalHandler }: {
   perkData: IPerksData, 
   openModalHandler: (perkData: IPerksData) => void,
 }) => {
-  const levelPoints: ILevelPoints = {
-    1: 5,
-    2: 10,
-    3: 20,
-    4: 30,
-    5: 50,
-  };
-
-  const calculatePoints = (level: number): number => {
-    return levelPoints[level] || 0;
-  };
-
   return (
     <div className="perks-row">
     
     <span onClick={() => openModalHandler(perkData)}>{perkData.description}</span>
     <span>{perkData.level}</span>
-    <span>{calculatePoints(perkData.level)}</span>
+    <span>{perkData.points}</span>
   </div>
   )
 };
@@ -67,6 +55,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     name: "",
     levels: [],
   })
+  console.log(selectedPerk);
   const levelPoints: ILevelPoints = {
     1: 5,
     2: 10,
@@ -81,6 +70,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
 
   useEffect(() => {
     const currentPerk = perksData.find((perk: ISelectedPerk) => perk.name === selectedPerk);
+    console.log(currentPerk)
     setCurrentSelectedPerk({
       name: currentPerk?.name ?? "",
       levels: currentPerk?.levels ?? []
@@ -264,7 +254,6 @@ export const Perks = () => {
     <div className="perks-container">
       {
         firestoreLoading ?
-        // true ?
         <LoadingSquare /> :
         <>
           {
