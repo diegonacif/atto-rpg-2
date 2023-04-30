@@ -7,6 +7,7 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 import '../../App.scss';
+import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 interface IFormData {
   strength: string,
@@ -207,7 +208,7 @@ export const Attributes = () => {
     <div className="attributes-container">
       {
         firestoreLoading ?
-        <span>Carregando...</span> :
+        <LoadingSquare /> :
         <div className="attributes-wrapper">
           <div className="attributes-primary">
             <div className="attribute-wrapper">

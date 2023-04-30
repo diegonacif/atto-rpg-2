@@ -7,6 +7,8 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import ReactModal from 'react-modal';
 
 import '../../App.scss';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 interface IPerksData {
   id: string;
@@ -84,7 +86,6 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       levels: currentPerk?.levels ?? []
     });
     setSelectedPoints(calculatePoints(selectedLevel));
-    console.log(selectedLevel)
   }, [selectedPerk, selectedLevel])
 
   const isMounted = useRef(false);
@@ -202,7 +203,17 @@ export const Perks = () => {
     points: 0,
   })
   const [isNewPerk, setIsNewPerk] = useState(false);
+  const [firestoreLoading, setFirestoreLoading] = useState(true)
 
+  // Firestore loading
+  const [value, loading, error] = useCollection(perksCollectionRef,
+    { snapshotListenOptions: { includeMetadataChanges: true } }
+  );
+  useEffect(() => {
+    setFirestoreLoading(loading);
+  }, [loading])
+
+  // Handling Modals
   const handleModalOpen = (perkData: IPerksData) => {
     setCurrentPerkData(perkData)
     setIsNewPerk(false);
@@ -252,27 +263,34 @@ export const Perks = () => {
   return (
     <div className="perks-container">
       {
-        perksData.map((perk) => (
-          <PerksRow 
-            perkData={perk} 
-            openModalHandler={handleModalOpen}
-          />
-        ))
+        firestoreLoading ?
+        // true ?
+        <LoadingSquare /> :
+        <>
+          {
+            perksData.map((perk) => (
+              <PerksRow 
+                perkData={perk} 
+                openModalHandler={handleModalOpen}
+              />
+            ))
+          }
+          <button onClick={() => handleNewPerkModalOpen()}>Nova vantagem</button>
+          <ReactModal
+            isOpen={isModalOpen}
+            onRequestClose={() => setIsModalOpen(false)}
+            style={customStyles}
+            closeTimeoutMS={150}
+            ariaHideApp={false}
+          >
+            <PerksModal 
+              currentPerkData={currentPerkData} 
+              newPerk={isNewPerk} 
+              setIsModalOpen={setIsModalOpen}
+            />
+          </ReactModal>
+        </>
       }
-      <button onClick={() => handleNewPerkModalOpen()}>Nova vantagem</button>
-      <ReactModal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        style={customStyles}
-        closeTimeoutMS={150}
-        ariaHideApp={false}
-      >
-        <PerksModal 
-          currentPerkData={currentPerkData} 
-          newPerk={isNewPerk} 
-          setIsModalOpen={setIsModalOpen}
-        />
-      </ReactModal>
     </div>
   )
 };
