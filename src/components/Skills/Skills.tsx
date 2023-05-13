@@ -10,7 +10,10 @@ interface ISkillsData {
   description: string;
   mod: number;
   nh: number;
-  attRelative: {attribute: string ; difficulty: string}[];
+  attRelative: {
+    attribute: string;
+    difficulty: string;
+  };
   points: number;
 };
 
@@ -23,11 +26,14 @@ export const Skills = () => {
     description: "",
     mod: 0,
     nh: 0,
-    attRelative: [],
+    attRelative: {
+      attribute: "",
+      difficulty: ""
+    },
     points: 0,
   }])
   
-  console.log(skillsData)
+  console.log(skillsData[0].attRelative)
 
   // Getting Skills Data
   useEffect(() => {
@@ -51,8 +57,8 @@ export const Skills = () => {
     <div className="skills-container">
       {
         skillsData.map((skill) => {
-          const attributeValue = skill.attRelative.find(obj => obj.attribute)?.attribute;
-          const difficultyValue = skill.attRelative.find(obj => obj.difficulty)?.difficulty;
+          const attributeValue = skill.attRelative?.attribute;
+          const difficultyValue = skill.attRelative?.difficulty;
           
           return (
             <div className="skills-row">
