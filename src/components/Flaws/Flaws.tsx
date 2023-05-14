@@ -16,7 +16,7 @@ interface IFlawsData {
   points: number;
 };
 
-interface ISelectedPerk {
+interface ISelectedFlaw {
   name: string,
   levels: number[];
 };
@@ -56,7 +56,7 @@ export const Flaws = () => {
     level: 0,
     points: 0,
   });
-  const [currentSelectedFlaw, setCurrentSeletedFlaw] = useState<ISelectedPerk | undefined>({
+  const [currentSelectedFlaw, setCurrentSeletedFlaw] = useState<ISelectedFlaw | undefined>({
     name: "",
     levels: [],
   });

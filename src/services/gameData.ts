@@ -7,6 +7,14 @@ interface IFlaws {
   levels: number[];
 }
 
+interface ISkills {
+  name: string;
+  attRelative: {
+    attribute: string;
+    difficulty: string;
+  }
+}
+
 export const perksData: IPerks[] = [
   { name: "Aparência", levels: [1, 2, 3] },
   { name: "Aptidão Mágica", levels: [1, 2, 3, 4, 5] },
@@ -51,3 +59,97 @@ export const flawsData: IFlaws[] = [
   { name: "Veracidade", levels: [1] },
   { name: "Vício", levels: [1, 2, 3] },
 ];
+
+export const skillsData: ISkills[] = [
+  {
+    name: "Mobilidade",
+    attRelative: {
+      attribute: "des",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Armas Brancas",
+    attRelative: {
+      attribute: "des",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Armas de Alcance",
+    attRelative: {
+      attribute: "des",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Combate Desarmado",
+    attRelative: {
+      attribute: "des",
+      difficulty: "m",
+    }
+  },
+  {
+    name: "Sobrevivência",
+    attRelative: {
+      attribute: "int",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Socialização",
+    attRelative: {
+      attribute: "int",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Ciências Mágicas",
+    attRelative: {
+      attribute: "int",
+      difficulty: "md",
+    }
+  },
+  {
+    name: "Ciências Mundanas",
+    attRelative: {
+      attribute: "int",
+      difficulty: "md",
+    }
+  },
+  {
+    name: "Defesa Ativa",
+    attRelative: {
+      attribute: "des",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Ofícios",
+    attRelative: {
+      attribute: "int",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Furtividade",
+    attRelative: {
+      attribute: "des",
+      difficulty: "d",
+    }
+  },
+  {
+    name: "Condução",
+    attRelative: {
+      attribute: "des",
+      difficulty: "m",
+    }
+  },
+  {
+    name: "Medicina",
+    attRelative: {
+      attribute: "int",
+      difficulty: "md",
+    }
+  },
+]
