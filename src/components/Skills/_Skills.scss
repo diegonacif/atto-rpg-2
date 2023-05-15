@@ -35,3 +35,11 @@
     }
   }
 }
+
+.ReactModal__Content {
+  .skills-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

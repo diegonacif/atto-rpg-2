@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import '../../App.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import ReactModal from 'react-modal';
 import { skillsData as skillsStaticData } from '../../services/gameData';
@@ -43,10 +43,20 @@ export const Skills = () => {
     points: 0,
   }])
 
+  // Points List
+  const pointsList = [
+    1, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80
+  ]
+
   // Modal Data
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState(0);
+  const [selectedMod, setSelectedMod] = useState(0);
+  const [selectedNh, setSelectedNh] = useState(0);
+  const [selectedAttRelative, setSelectedAttRelative] = useState<{attribute: string | undefined, difficulty: string | undefined}>({
+    attribute: "",
+    difficulty: ""
+  });
   const [selectedPoints, setSelectedPoints] = useState(0);
   const [currentSkillData, setCurrentSkillData] = useState<ISkillsData>({
     id: "",
@@ -67,12 +77,17 @@ export const Skills = () => {
     }
   });
   const [isNewSkill, setIsNewSkill] = useState(false);
+
+  console.log(selectedSkill)
   
   // Handling Modals
   const handleModalOpen = (skill: ISkillsData) => {
     setCurrentSkillData(skill);
     setSelectedSkill(skill.description);
-    // setSelectedLevel(skill.level);
+    setSelectedAttRelative({
+      attribute: skill.attRelative?.attribute,
+      difficulty: skill.attRelative?.difficulty
+    })
     setSelectedPoints(skill.points);
     setIsNewSkill(false);
     setIsModalOpen(true);
@@ -80,7 +95,6 @@ export const Skills = () => {
 
   const handleNewSkillModalOpen = () => {
     setSelectedSkill("");
-    setSelectedLevel(0);
     setSelectedPoints(0);
     setIsNewSkill(true);
     setIsModalOpen(true);
@@ -130,9 +144,30 @@ export const Skills = () => {
   const addNewSkill = async () => {
     console.log("add new skill");
   }
+
   const updateSkill = async () => {
-    console.log("update new skill");
+    const docRef = doc(skillsCollectionRef, currentSkillData.id)
+    try {
+      await setDoc(docRef, {
+        description: selectedSkill,
+        mod: selectedMod,
+        nh: selectedNh,
+        attRelative: {
+          attribute: selectedAttRelative.attribute,
+          difficulty: selectedAttRelative.difficulty
+        },
+        points: selectedPoints,
+      }).then(
+        () => {
+          handleCloseModal();
+          console.log("perícia atualizada com sucesso!")
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao atualizar perícia: ", error)
+    }
   }
+
   const deleteSkill = async () => {
     console.log("delete new skill");
   }
@@ -171,33 +206,43 @@ export const Skills = () => {
             onChange={(e) => {
               const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
               setSelectedSkill(e.target.value);
-              selectedSkill && setCurrentSeletedSkill(currentSkill)
+              // selectedSkill && setCurrentSeletedSkill(currentSkill)
+              setSelectedAttRelative({
+                attribute: currentSkill?.attRelative?.attribute,
+                difficulty: currentSkill?.attRelative?.difficulty
+              })
             }}
             value={selectedSkill}
           >
-            <option value="">Selecione uma vantagem</option>
+            <option value="">Selecione uma perícia</option>
             {skillsStaticData.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
               </option>
             ))}
           </select>
-          {/* <select 
-            id="skill-level"
-            onChange={(e) => setSelectedLevel(Number(e.target.value))}
-            value={selectedLevel}
+          <span>{selectedAttRelative?.attribute} / {selectedAttRelative.difficulty}</span>
+          <input 
+            type="string"
+            id="skill-mod"
+            value={selectedMod}
+            onChange={(e) => setSelectedMod(Number(e.target.value))}
+          />
+          <span>nh: {selectedNh}</span>
+          <select 
+            name="select-points" 
+            id="select-points"
+            value={selectedPoints}
+            onChange={(e) => setSelectedPoints(Number(e.target.value))}
           >
-            <option value="">0</option>
-            {currentSelectedSkill ?
-              currentSelectedSkill?.levels.map((level) => (
-                <option key={`${level}`} value={`${level}`}>
-                  {`${level}`}
+            {
+              pointsList.map((option) => (
+                <option key={option} value={option}>
+                  {option}
                 </option>
-            )):
-            <option value="">0</option>
-          }
-          </select> */}
-          <span>{selectedPoints}</span>
+              ))
+            }
+          </select>
           {isNewSkill ? 
             <button onClick={() => addNewSkill()}>Save</button>  :
             <>
