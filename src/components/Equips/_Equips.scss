@@ -15,24 +15,22 @@
       margin-top: 0.5rem;
     }
 
-    input {
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       height: 1.75rem;
       width: 100%;
       padding: 0 0.25rem;
       border-radius: 4px;
       border: 1px solid $gray-400;
       text-align: center;
+      color: $gray-800;
+      cursor: default;
 
       &:first-child {
         min-width: 11rem;
       }
-    }
-
-    span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: $gray-800;
     }
   }
 }

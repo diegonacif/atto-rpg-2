@@ -220,7 +220,7 @@ export const Flaws = () => {
         <>
           {
             flawsData.map((flaw) => (
-              <div className="flaws-row">
+              <div className="flaws-row" key={`flaw-${flaw.id}`}>
                 <span onClick={() => handleModalOpen(flaw)} id="flaw-name">{flaw.description}</span>
                 <span id="flaw-level">{flaw.level}</span>
                 <span id="flaw-points">{flaw.points}</span>

@@ -304,7 +304,7 @@ export const Skills = () => {
               const difficultyValue = skill.attRelative?.difficulty;
               
               return (
-                <div className="skills-row">
+                <div className="skills-row" key={`skill-${skill.id}`}>
                   <span onClick={() => handleModalOpen(skill)} id="skill-name">{skill.description}</span>
                   <span id="skill-mod">{skill.mod}</span>
                   <span id="skill-nh">{skill.nh}</span>
