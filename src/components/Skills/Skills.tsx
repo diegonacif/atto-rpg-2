@@ -246,7 +246,7 @@ export const Skills = () => {
       }).then(
         () => {
           handleCloseModal();
-          console.log("perícia criada com sucesso");
+          console.log("perícia criada com sucesso!");
         }
       )
     } catch (error) {

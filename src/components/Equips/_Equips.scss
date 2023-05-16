@@ -30,7 +30,25 @@
 
       &:first-child {
         min-width: 11rem;
+        cursor: pointer;
       }
     }
+  }
+
+  #new-equip-button {
+    align-self: center;
+    margin-top: 1rem;
+    background-color: rgb(184, 149, 241);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: rgb(49, 49, 49);
+  }
+}
+
+.ReactModal__Content {
+  .equips-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }

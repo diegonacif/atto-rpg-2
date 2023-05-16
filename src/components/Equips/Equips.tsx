@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import '../../App.scss';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
@@ -38,6 +38,7 @@ export const Equips = () => {
 
   // Modal Data
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("")
   const [selectedEquip, setSelectedEquip] = useState("");
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedCost, setSelectedCost] = useState(0);
@@ -45,17 +46,14 @@ export const Equips = () => {
   const [isNewEquip, setIsNewEquip] = useState(false);
 
   // Handling Modals
-  // const handleModalOpen = (skill: ISkillsData) => {
-  //   setCurrentSkillData(skill);
-  //   setSelectedSkill(skill.description);
-  //   setSelectedAttRelative({
-  //     attribute: skill.attRelative?.attribute,
-  //     difficulty: skill.attRelative?.difficulty
-  //   })
-  //   setSelectedPoints(skill.points);
-  //   setIsNewSkill(false);
-  //   setIsModalOpen(true);
-  // };
+  const handleModalOpen = (equip: IEquipsData) => {
+    setSelectedId(equip.id)
+    setSelectedEquip(equip.description);
+    setSelectedWeight(equip.weight);
+    setSelectedCost(equip.cost);
+    setIsNewEquip(false);
+    setIsModalOpen(true);
+  };
 
   const handleNewSkillModalOpen = () => {
     setSelectedEquip("");
@@ -120,7 +118,19 @@ export const Equips = () => {
   };
 
   const updateEquip = async () => {
-    console.log("update equip")
+    const docRef = doc(equipsCollectionRef, selectedId);
+    try {
+      await setDoc(docRef, {
+        description: selectedEquip,
+        weight: selectedWeight,
+        cost: selectedCost
+      }).then (() => {
+        handleCloseModal();
+        console.log("Equipamento atualizado com sucesso!")
+      })
+    } catch (error) {
+      console.log("Erro ao atualizar equipamento: ", error)
+    }
   }
 
   const deleteEquip = async () => {
@@ -136,14 +146,14 @@ export const Equips = () => {
           {
             equipsData.map((equip) => (
               <div className="equips-row" key={`equip-${equip.id}`}>
-                <span id="equip-name">{equip.description}</span>
+                <span onClick={() => handleModalOpen(equip)} id="equip-name">{equip.description}</span>
                 <span id="equip-weight">{equip.weight}</span>
                 <span id="equip-cost">{equip.cost}</span>
               </div>
             ))
           }
 
-          <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">Nova perícia</button>
+          <button onClick={() => handleNewSkillModalOpen()} id="new-equip-button">Nova perícia</button>
 
           <ReactModal
             isOpen={isModalOpen}
@@ -152,8 +162,7 @@ export const Equips = () => {
             closeTimeoutMS={150}
             ariaHideApp={false}
           >
-            <div className="skills-modal">
-              
+            <div className="equips-modal">
               <input 
                 type="string"
                 id="equip-description"
