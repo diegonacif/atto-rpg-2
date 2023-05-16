@@ -32,12 +32,11 @@ const PerksRow = ({ perkData, openModalHandler }: {
   openModalHandler: (perkData: IPerksData) => void,
 }) => {
   return (
-    <div className="perks-row">
-    
-    <span onClick={() => openModalHandler(perkData)}>{perkData.description}</span>
-    <span>{perkData.level}</span>
-    <span>{perkData.points}</span>
-  </div>
+    <div className="perks-row" key={`perk-${perkData.id}`}>
+      <span onClick={() => openModalHandler(perkData)}>{perkData.description}</span>
+      <span>{perkData.level}</span>
+      <span>{perkData.points}</span>
+    </div>
   )
 };
 
@@ -258,7 +257,8 @@ export const Perks = () => {
         <>
           {
             perksData.map((perk) => (
-              <PerksRow 
+              <PerksRow
+                key={`perk-row-${perk.id}`}
                 perkData={perk} 
                 openModalHandler={handleModalOpen}
               />

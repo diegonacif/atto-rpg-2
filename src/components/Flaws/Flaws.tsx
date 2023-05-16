@@ -88,8 +88,6 @@ export const Flaws = () => {
     }, 200);
   };
 
-  console.log(currentFlawData.id)
-
   // Getting Perks Data
   useEffect(() => {
     const getFlawsData = async () => {
