@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import '../../App.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import ReactModal from 'react-modal';
 import { skillsData as skillsStaticData } from '../../services/gameData';
@@ -78,7 +78,7 @@ export const Skills = () => {
   });
   const [isNewSkill, setIsNewSkill] = useState(false);
 
-  console.log(selectedSkill)
+  console.log(selectedPoints)
   
   // Handling Modals
   const handleModalOpen = (skill: ISkillsData) => {
@@ -99,7 +99,7 @@ export const Skills = () => {
       attribute: "",
       difficulty: ""
     })
-    setSelectedPoints(0);
+    setSelectedPoints(1);
     setIsNewSkill(true);
     setIsModalOpen(true);
   };
@@ -191,7 +191,18 @@ export const Skills = () => {
   }
 
   const deleteSkill = async () => {
-    console.log("delete new skill");
+    const docRef = doc(skillsCollectionRef, currentSkillData.id)
+    try {
+      await deleteDoc(docRef)
+      .then(
+        () => {
+          handleCloseModal();
+          console.log("perícia deletada com sucesso!")
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao deletar perícia", error)
+    };
   }
   
   return (

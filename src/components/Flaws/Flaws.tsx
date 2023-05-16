@@ -171,10 +171,13 @@ export const Flaws = () => {
         level: selectedLevel,
         points: selectedPoints
       }).then(
-        () => handleCloseModal()
+        () => {
+          handleCloseModal();
+          console.log("Desvantagem criada com sucesso");
+        }
       )
     } catch (error) {
-      console.error('Erro ao criar documento :', error)
+      console.error('Erro ao criar desvantagem :', error)
     }
   }
   const updateFlaw = async () => {
@@ -187,11 +190,11 @@ export const Flaws = () => {
       }).then(
         () => {
           handleCloseModal();
-          console.log("Documento atualizado com sucesso!");
+          console.log("Desvantagem atualizada com sucesso!");
         }
       )
     } catch (error) {
-      console.error('Erro ao atualizar documento :', error)
+      console.error('Erro ao atualizar desvantagem :', error)
     }
   }
   const deleteFlaw = async () => {
@@ -201,11 +204,11 @@ export const Flaws = () => {
       .then(
         () => {
           handleCloseModal();
-          console.log("Documento excluído com sucesso!");
+          console.log("Desvantagem excluída com sucesso!");
         }
       )
     } catch (error) {
-      console.error("Erro ao excluir documento", error);
+      console.error("Erro ao excluir desvantagem", error);
     }
   }
 
