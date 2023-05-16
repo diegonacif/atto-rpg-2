@@ -2,10 +2,12 @@ import { useParams } from 'react-router-dom';
 import '../../App.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import { DocumentData, DocumentReference, addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import ReactModal from 'react-modal';
 import { skillsData as skillsStaticData } from '../../services/gameData';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 interface ISkillsData {
   id: string;
@@ -43,9 +45,65 @@ export const Skills = () => {
     points: 0,
   }])
 
+  const [firestoreLoading, setFirestoreLoading] = useState(true)
+
+  // Firestore loading
+  const [value, loading, error] = useCollection(skillsCollectionRef,
+    { snapshotListenOptions: { includeMetadataChanges: true } }
+  );
+  useEffect(() => {
+    setFirestoreLoading(loading);
+  }, [loading])
+
+  // Attributes Data
+  const attributesCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "attributes");
+  const strengthRef = doc(attributesCollectionRef, 'strength');
+  const dexterityRef = doc(attributesCollectionRef, 'dexterity');
+  const intelligenceRef = doc(attributesCollectionRef, 'intelligence');
+  const healthRef = doc(attributesCollectionRef, 'health');
+  const willRef = doc(attributesCollectionRef, 'will');
+  const perceptionRef = doc(attributesCollectionRef, 'perception');
+
+  const [strength, setStrength] = useState(10);
+  const [dexterity, setDexterity] = useState(10);
+  const [intelligence, setIntelligence] = useState(10);
+  const [health, setHealth] = useState(10);
+  const [will, setWill] = useState(10);
+  const [perception, setPerception] = useState(10);
+
+  // console.log({
+  //   strength: strength,
+  //   dexterity: dexterity,
+  //   intelligence: intelligence,
+  //   health: health,
+  //   will: will,
+  //   perception: perception
+  // })
+
+  // Getting Attributes Data
+  const getAttributeData = async (
+    attributeRef: DocumentReference<DocumentData>,
+    setter: React.Dispatch<React.SetStateAction<number>>,
+  ) => {
+    const docSnap = await getDoc(attributeRef);
+    if (docSnap.exists()) {
+      const attributeData = docSnap.data() as { value: number };
+      setter(attributeData.value)
+    }
+  }
+
+  useEffect(() => {
+    getAttributeData(strengthRef, setStrength)
+    getAttributeData(dexterityRef, setDexterity)
+    getAttributeData(intelligenceRef, setIntelligence)
+    getAttributeData(healthRef, setHealth)
+    getAttributeData(willRef, setWill)
+    getAttributeData(perceptionRef, setPerception)
+  }, [])
+
   // Points List
   const pointsList = [
-    1, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80
+    4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80
   ]
 
   // Modal Data
@@ -69,16 +127,16 @@ export const Skills = () => {
     },
     points: 0,
   });
-  const [currentSelectedSkill, setCurrentSeletedSkill] = useState<ISelectedSkill | undefined>({
-    name: "",
-    attRelative: {
-      attribute: "",
-      difficulty: "",
-    }
-  });
+  // const [currentSelectedSkill, setCurrentSeletedSkill] = useState<ISelectedSkill | undefined>({
+  //   name: "",
+  //   attRelative: {
+  //     attribute: "",
+  //     difficulty: "",
+  //   }
+  // });
   const [isNewSkill, setIsNewSkill] = useState(false);
 
-  console.log(selectedPoints)
+  // console.log(selectedPoints)
   
   // Handling Modals
   const handleModalOpen = (skill: ISkillsData) => {
@@ -99,7 +157,8 @@ export const Skills = () => {
       attribute: "",
       difficulty: ""
     })
-    setSelectedPoints(1);
+    setSelectedNh(0);
+    setSelectedPoints(4);
     setIsNewSkill(true);
     setIsModalOpen(true);
   };
@@ -129,6 +188,24 @@ export const Skills = () => {
     }
     getSkillsData();
   }, [isModalOpen]);
+
+  // NH Calculation
+  // const [attributeValue, setAttributeValue] = useState(0);
+
+  useEffect(() => {
+    const attributeValue = 
+      selectedAttRelative.attribute === "" ?
+      0 :
+      selectedAttRelative.attribute === "int" ?
+      intelligence :
+      selectedAttRelative.attribute === "des" ?
+      dexterity :
+      0;
+    
+    setSelectedNh(attributeValue + ((selectedPoints / 4) - 1) + selectedMod)
+    
+
+  }, [selectedPoints, selectedMod, selectedAttRelative, selectedSkill])  
 
   const modalCustomStyles = {
     content: {
@@ -208,85 +285,91 @@ export const Skills = () => {
   return (
     <div className="skills-container">
       {
-        skillsData.map((skill) => {
-          const attributeValue = skill.attRelative?.attribute;
-          const difficultyValue = skill.attRelative?.difficulty;
-          
-          return (
-            <div className="skills-row">
-              <span onClick={() => handleModalOpen(skill)} id="skill-name">{skill.description}</span>
-              <span id="skill-mod">{skill.mod}</span>
-              <span id="skill-nh">{skill.nh}</span>
-              <span id="skill-attRelative">
-              {attributeValue && difficultyValue && `${attributeValue.toUpperCase()} / ${difficultyValue.toUpperCase()}`}
-              </span>
-              <span id="skill-points">{skill.points}</span>
-            </div>
-          )
-        })
-      }
-
-      <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">Nova perícia</button>
-
-      <ReactModal
-        isOpen={isModalOpen}
-        onRequestClose={() => handleCloseModal()}
-        style={modalCustomStyles}
-        closeTimeoutMS={150}
-        ariaHideApp={false}
-      >
-        <div className="skills-modal">
-          <select 
-            id="skill-name"
-            onChange={(e) => {
-              const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
-              setSelectedSkill(e.target.value);
-              // selectedSkill && setCurrentSeletedSkill(currentSkill)
-              setSelectedAttRelative({
-                attribute: currentSkill?.attRelative?.attribute,
-                difficulty: currentSkill?.attRelative?.difficulty
-              })
-            }}
-            value={selectedSkill}
-          >
-            <option value="">Selecione uma perícia</option>
-            {skillsStaticData.map((option) => (
-              <option key={option.name} value={option.name}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <span>{selectedAttRelative?.attribute} / {selectedAttRelative.difficulty}</span>
-          <input 
-            type="string"
-            id="skill-mod"
-            value={selectedMod}
-            onChange={(e) => setSelectedMod(Number(e.target.value))}
-          />
-          <span>nh: {selectedNh}</span>
-          <select 
-            name="select-points" 
-            id="select-points"
-            value={selectedPoints}
-            onChange={(e) => setSelectedPoints(Number(e.target.value))}
-          >
-            {
-              pointsList.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))
-            }
-          </select>
-          {isNewSkill ? 
-            <button onClick={() => addNewSkill()}>Save</button>  :
-            <>
-              <button onClick={() => updateSkill()}>Update</button>
-              <button onClick={() => deleteSkill()}>Delete</button>
-            </>
+        firestoreLoading ?
+        <LoadingSquare /> :
+        <>
+          {
+            skillsData.map((skill) => {
+              const attributeValue = skill.attRelative?.attribute;
+              const difficultyValue = skill.attRelative?.difficulty;
+              
+              return (
+                <div className="skills-row">
+                  <span onClick={() => handleModalOpen(skill)} id="skill-name">{skill.description}</span>
+                  <span id="skill-mod">{skill.mod}</span>
+                  <span id="skill-nh">{skill.nh}</span>
+                  <span id="skill-attRelative">
+                  {attributeValue && difficultyValue && `${attributeValue.toUpperCase()} / ${difficultyValue.toUpperCase()}`}
+                  </span>
+                  <span id="skill-points">{skill.points}</span>
+                </div>
+              )
+            })
           }
-        </div>
-      </ReactModal>
+
+          <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">Nova perícia</button>
+
+          <ReactModal
+            isOpen={isModalOpen}
+            onRequestClose={() => handleCloseModal()}
+            style={modalCustomStyles}
+            closeTimeoutMS={150}
+            ariaHideApp={false}
+          >
+            <div className="skills-modal">
+              <select 
+                id="skill-name"
+                onChange={(e) => {
+                  const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
+                  setSelectedSkill(e.target.value);
+                  // selectedSkill && setCurrentSeletedSkill(currentSkill)
+                  setSelectedAttRelative({
+                    attribute: currentSkill?.attRelative?.attribute,
+                    difficulty: currentSkill?.attRelative?.difficulty
+                  })
+                }}
+                value={selectedSkill}
+              >
+                <option value="">Selecione uma perícia</option>
+                {skillsStaticData.map((option) => (
+                  <option key={option.name} value={option.name}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+              <span>{selectedAttRelative?.attribute} / {selectedAttRelative.difficulty}</span>
+              <input 
+                type="number"
+                id="skill-mod"
+                value={selectedMod}
+                onChange={(e) => setSelectedMod(Number(e.target.value))}
+              />
+              <span>nh: {selectedNh}</span>
+              <select 
+                name="select-points" 
+                id="select-points"
+                value={selectedPoints}
+                onChange={(e) => setSelectedPoints(Number(e.target.value))}
+              >
+                {
+                  pointsList.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))
+                }
+              </select>
+              {isNewSkill ? 
+                <button onClick={() => addNewSkill()}>Save</button>  :
+                <>
+                  <button onClick={() => updateSkill()}>Update</button>
+                  <button onClick={() => deleteSkill()}>Delete</button>
+                </>
+              }
+            </div>
+          </ReactModal>
+        </>
+      }
     </div>
   )
 }
