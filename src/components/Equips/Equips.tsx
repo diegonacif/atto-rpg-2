@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 import '../../App.scss';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
@@ -134,7 +134,16 @@ export const Equips = () => {
   }
 
   const deleteEquip = async () => {
-    console.log("delete equip")
+    const docRef = doc(equipsCollectionRef, selectedId);
+    try {
+      await deleteDoc(docRef)
+      .then(() => {
+        handleCloseModal();
+        console.log("Equipamento deletado com sucesso!")
+      })
+    } catch (error) {
+      console.log("Erro ao deletar equipamento: ", error)
+    }
   }
 
   return (
