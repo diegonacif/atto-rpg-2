@@ -190,8 +190,6 @@ export const Skills = () => {
   }, [isModalOpen]);
 
   // NH Calculation
-  // const [attributeValue, setAttributeValue] = useState(0);
-
   useEffect(() => {
     const attributeValue = 
       selectedAttRelative.attribute === "" ?
@@ -201,8 +199,20 @@ export const Skills = () => {
       selectedAttRelative.attribute === "des" ?
       dexterity :
       0;
+
+    const difficultyValue = 
+    selectedAttRelative.difficulty === "f" ?
+    0 :
+    selectedAttRelative.difficulty === "m" ?
+    -1 :
+    selectedAttRelative.difficulty === "d" ?
+    -2 :
+    selectedAttRelative.difficulty === "md" ?
+    -3 :
+    0;
+
     
-    setSelectedNh(attributeValue + ((selectedPoints / 4) - 1) + selectedMod)
+    setSelectedNh(attributeValue + ((selectedPoints / 4) - 1) + difficultyValue + selectedMod)
     
 
   }, [selectedPoints, selectedMod, selectedAttRelative, selectedSkill])  
