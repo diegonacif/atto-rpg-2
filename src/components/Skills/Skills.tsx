@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import '../../App.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import ReactModal from 'react-modal';
 import { skillsData as skillsStaticData } from '../../services/gameData';
@@ -95,6 +95,10 @@ export const Skills = () => {
 
   const handleNewSkillModalOpen = () => {
     setSelectedSkill("");
+    setSelectedAttRelative({
+      attribute: "",
+      difficulty: ""
+    })
     setSelectedPoints(0);
     setIsNewSkill(true);
     setIsModalOpen(true);
@@ -124,7 +128,7 @@ export const Skills = () => {
       setSkillsData(docs)
     }
     getSkillsData();
-  }, []);
+  }, [isModalOpen]);
 
   const modalCustomStyles = {
     content: {
@@ -142,7 +146,25 @@ export const Skills = () => {
   const isMounted = useRef(false);
 
   const addNewSkill = async () => {
-    console.log("add new skill");
+    try {
+      await addDoc(skillsCollectionRef, {
+        description: selectedSkill,
+        mod: selectedMod,
+        nh: selectedNh,
+        attRelative: {
+          attribute: selectedAttRelative.attribute,
+          difficulty: selectedAttRelative.difficulty
+        },
+        points: selectedPoints,
+      }).then(
+        () => {
+          handleCloseModal();
+          console.log("perícia criada com sucesso");
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao criar perícia: ", error)
+    }
   }
 
   const updateSkill = async () => {
@@ -192,6 +214,8 @@ export const Skills = () => {
           )
         })
       }
+
+      <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">Nova perícia</button>
 
       <ReactModal
         isOpen={isModalOpen}

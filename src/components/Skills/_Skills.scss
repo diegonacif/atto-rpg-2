@@ -34,6 +34,15 @@
       }
     }
   }
+
+  #new-skill-button {
+    align-self: center;
+    margin-top: 1rem;
+    background-color: rgb(200, 237, 100);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: rgb(49, 49, 49);
+  }
 }
 
 .ReactModal__Content {
