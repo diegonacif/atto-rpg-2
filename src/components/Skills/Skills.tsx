@@ -255,7 +255,7 @@ export const Skills = () => {
   }
 
   const updateSkill = async () => {
-    const docRef = doc(skillsCollectionRef, currentSkillData.id)
+    const docRef = doc(skillsCollectionRef, currentSkillData.id);
     try {
       await setDoc(docRef, {
         description: selectedSkill,

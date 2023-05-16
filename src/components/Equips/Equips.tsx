@@ -162,7 +162,7 @@ export const Equips = () => {
             ))
           }
 
-          <button onClick={() => handleNewSkillModalOpen()} id="new-equip-button">Nova perícia</button>
+          <button onClick={() => handleNewSkillModalOpen()} id="new-equip-button">Novo equipamento</button>
 
           <ReactModal
             isOpen={isModalOpen}
