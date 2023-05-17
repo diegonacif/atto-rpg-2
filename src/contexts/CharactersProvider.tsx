@@ -2,27 +2,29 @@ import { createContext, useEffect, useState, ReactNode } from "react";
 
 
 interface CharactersContextProps {
-  attributes: Array<{}>;
-  setAttributes: React.Dispatch<React.SetStateAction<Array<{}>>>;
+  attributesSum: number;
+  setAttributesSum: React.Dispatch<React.SetStateAction<number>>;
   perks: Array<{}>;
   setPerks: React.Dispatch<React.SetStateAction<Array<{}>>>;
 }
 
 export const CharactersContext = createContext<CharactersContextProps>({
-  attributes: [],
-  setAttributes: () => {},
+  attributesSum: 0,
+  setAttributesSum: () => {},
   perks: [],
   setPerks: () => {},
 });
 
 export const CharactersProvider = ({ children }: { children: ReactNode }) => {
-  const [attributes, setAttributes] = useState([{}]);
+  const [attributesSum, setAttributesSum] = useState(0);
   const [perks, setPerks] = useState([{}])
+
+  console.log(attributesSum);
 
 
   return (
     <CharactersContext.Provider value={{ 
-      attributes, setAttributes,
+      attributesSum, setAttributesSum,
       perks, setPerks
     }}>
       {children}

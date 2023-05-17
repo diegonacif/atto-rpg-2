@@ -5,9 +5,9 @@ import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs, setD
 import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 import '../../App.scss';
-import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 interface IFormData {
   strength: string,
@@ -32,8 +32,12 @@ export const Attributes = () => {
   const willRef = doc(attributesCollectionRef, 'will');
   const perceptionRef = doc(attributesCollectionRef, 'perception');
   const fatiguePointsRef = doc(attributesCollectionRef, 'fatigue-points');
+  const attributesSumRef = doc(attributesCollectionRef, 'attributes-sum');
+  const [attributesSum, setAttributesSum] = useState(0);
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const [refreshAttributes, setRefreshAttributes] = useState(false);
+
+  console.log(attributesSum);
 
   // Firestore loading
   const [value, loading, error] = useCollection(attributesCollectionRef,
@@ -137,6 +141,11 @@ export const Attributes = () => {
     setValue('fatiguePoints', watch('fatiguePoints'))
   }, [watch('fatiguePoints'), watch('health')]);
 
+  // Attributes Sum
+  useEffect(() => {
+    setAttributesSum(strCost + dexCost + intCost + hthCost + hpCost + willCost + perCost + fpCost)
+  }, [strCost, dexCost, intCost, hthCost, hpCost, willCost, perCost, fpCost])
+
   // Save button condition
   const [saveButtonShow, setSaveButtonShow] = useState(false);
   const [originalStrength, setOriginalStrength] = useState(0);
@@ -198,6 +207,7 @@ export const Attributes = () => {
       await setDoc(willRef, {value: parseInt(getValues('will'))});
       await setDoc(perceptionRef, {value: parseInt(getValues('perception'))});
       await setDoc(fatiguePointsRef, {value: parseInt(getValues('fatiguePoints'))});
+      await setDoc(attributesSumRef, {value: attributesSum})
       setRefreshAttributes(current => !current)
     } catch (error) {
       console.error("Erro ao atualizar registro: ", error)

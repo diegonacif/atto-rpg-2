@@ -182,7 +182,9 @@ export const Equips = () => {
                 type="number"
                 id="equip-weight"
                 value={selectedWeight}
-                onChange={(e) => setSelectedWeight(Number(e.target.value))}
+                pattern="^[0-9]*$"  
+                onChange={(e) => setSelectedWeight(Number(e.target.value))
+                }
               />
               <input 
                 type="number"
