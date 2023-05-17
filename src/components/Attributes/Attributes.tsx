@@ -8,6 +8,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 import '../../App.scss';
+import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
 
 interface IFormData {
   strength: string,
@@ -37,7 +38,6 @@ export const Attributes = () => {
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const [refreshAttributes, setRefreshAttributes] = useState(false);
 
-  console.log(attributesSum);
 
   // Firestore loading
   const [value, loading, error] = useCollection(attributesCollectionRef,

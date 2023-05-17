@@ -5,10 +5,10 @@ import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import ReactModal from 'react-modal';
-
-import '../../App.scss';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
+
+import '../../App.scss';
 
 interface IPerksData {
   id: string;
@@ -42,7 +42,12 @@ const PerksRow = ({ perkData, openModalHandler }: {
 
 // PERKS MODAL //
 const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }: 
-  {currentPerkData: IPerksData, newPerk: boolean, setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+  {
+    currentPerkData: 
+    IPerksData, 
+    newPerk: boolean, 
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  }) => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
   const perksCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "perks")
@@ -54,7 +59,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     name: "",
     levels: [],
   })
-  console.log(selectedPerk);
+
   const levelPoints: ILevelPoints = {
     1: 5,
     2: 10,
@@ -234,7 +239,12 @@ export const Perks = () => {
       setPerksData(docs)
     }
     getPerksData();
-  }, [isModalOpen])
+  }, [isModalOpen]);
+
+  // Perks Sum
+  const perksSum = perksData.reduce((sum, perk) => {
+    return sum + perk.points;
+  }, 0);
 
   const customStyles = {
     content: {

@@ -19,7 +19,7 @@ export const CharactersProvider = ({ children }: { children: ReactNode }) => {
   const [attributesSum, setAttributesSum] = useState(0);
   const [perks, setPerks] = useState([{}])
 
-  console.log(attributesSum);
+  // console.log(attributesSum);
 
 
   return (

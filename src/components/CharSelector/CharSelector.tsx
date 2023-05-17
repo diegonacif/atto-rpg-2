@@ -9,10 +9,10 @@ import "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { MinusCircle } from '@phosphor-icons/react';
-
-
+import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
 
 import '../../App.scss';
+import { useSessionStorage } from 'usehooks-ts';
 
 interface IChars { 
   id: string,
@@ -29,6 +29,7 @@ interface IRegisterCharContent {
 }
 
 export const CharSelector = () => {
+  const { setId } = useContext(PointsResumeContext)
   const { userId } = useContext(AuthGoogleContext);
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const usersCollectionRef = collection(db, "users");
@@ -167,7 +168,9 @@ export const CharSelector = () => {
     setCharSelectorRefresh(current => !current);
   }
 
+  const [characterId, setCharacterId] = useSessionStorage('character-id', "")
   async function handleSelectChar(id: string) {
+    setCharacterId(id)
     navigate(`/home/character/${id}`);
   }
 
