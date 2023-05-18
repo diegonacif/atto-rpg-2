@@ -2,36 +2,41 @@ import { collection, doc, onSnapshot } from "firebase/firestore";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { db } from "../services/firebase-config";
 import { AuthGoogleContext } from "./AuthGoogleProvider";
+import { useSessionStorage } from "usehooks-ts";
 
 interface PointsResumeContextProps {
-  setId: React.Dispatch<React.SetStateAction<string>>;
+  setCharacterIdSession: React.Dispatch<React.SetStateAction<string>>;
   attributesSum: number;
 }
 
 export const PointsResumeContext = createContext<PointsResumeContextProps>({
-  setId: () => {},
+  setCharacterIdSession: () => {},
   attributesSum: 0,
 });
 
 export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
-  const [id, setId] = useState("");
+  // const [id, setId] = useState("");
   const { userId } = useContext(AuthGoogleContext);
   
   const [attributesSum, setAttributesSum] = useState(0);
-  const characterIdStored = sessionStorage.getItem("character-id");
-  const characterId = JSON.parse(characterIdStored ? characterIdStored : "")
+  const [characterIdSession, setCharacterIdSession] = useSessionStorage('character-id', "")
 
-  console.log({
-    characterId: characterId,
-    userId: userId,
-    attributesSum: attributesSum
-  })
+  // const characterIdStored = sessionStorage.getItem("character-id");
+  // const characterId = characterIdStored ? JSON.parse(characterIdStored) : null;
+
+  // console.log({
+  //   characterIdSession: characterIdSession,
+  //   userId: userId,
+  //   attributesSum: attributesSum
+  // })
 
   // GOLDEN REALTIME SYNC DATABASE
   useEffect(() => {
-    if(characterId && userId) {
-      const attributesCollectionRef = collection(db, "users", userId, "characters", characterId, "attributes")
+    if(characterIdSession && userId) {
+      const attributesCollectionRef = collection(db, "users", userId, "characters", characterIdSession, "attributes")
       const attributesSumCollectionRef = doc(attributesCollectionRef, "attributes-sum")
+
+      console.log(attributesSumCollectionRef)
   
       const unsuscribe = onSnapshot(attributesSumCollectionRef, (snapshot) => {
         if (snapshot.exists()) {
@@ -46,11 +51,11 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
     } else {
       return;
     }
-  }, [characterId, userId]);
+  }, [characterIdSession, userId]);
 
   return (
     <PointsResumeContext.Provider value={{ 
-      setId,
+      setCharacterIdSession,
       attributesSum,
     }}>
       {children}

@@ -29,7 +29,7 @@ interface IRegisterCharContent {
 }
 
 export const CharSelector = () => {
-  const { setId } = useContext(PointsResumeContext)
+  const { setCharacterIdSession } = useContext(PointsResumeContext)
   const { userId } = useContext(AuthGoogleContext);
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const usersCollectionRef = collection(db, "users");
@@ -88,6 +88,7 @@ export const CharSelector = () => {
     for (const attribute of attributes) {
       await setDoc(doc(charDocRef, 'attributes', attribute), { value: 10 });
     }
+    return await setDoc(doc(charDocRef, 'attributes', 'attributes-sum'), { value: 0 });
 
     const perksRef = collection(charDocRef, "perks");
     await setDoc(doc(perksRef), {
@@ -168,9 +169,9 @@ export const CharSelector = () => {
     setCharSelectorRefresh(current => !current);
   }
 
-  const [characterId, setCharacterId] = useSessionStorage('character-id', "")
+  
   async function handleSelectChar(id: string) {
-    setCharacterId(id)
+    setCharacterIdSession(id)
     navigate(`/home/character/${id}`);
   }
 
