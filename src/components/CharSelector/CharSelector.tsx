@@ -88,7 +88,7 @@ export const CharSelector = () => {
     for (const attribute of attributes) {
       await setDoc(doc(charDocRef, 'attributes', attribute), { value: 10 });
     }
-    return await setDoc(doc(charDocRef, 'attributes', 'attributes-sum'), { value: 0 });
+    await setDoc(doc(charDocRef, 'attributes', 'attributes-sum'), { value: 0 });
 
     const perksRef = collection(charDocRef, "perks");
     await setDoc(doc(perksRef), {
