@@ -37,9 +37,6 @@ export const Attributes = () => {
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const [refreshAttributes, setRefreshAttributes] = useState(false);
 
-  console.log(firestoreLoading)
-
-
   // Firestore loading
   const [value, loading, error] = useCollection(attributesCollectionRef,
     { snapshotListenOptions: { includeMetadataChanges: true } }
@@ -222,86 +219,86 @@ export const Attributes = () => {
       {
         firestoreLoading === true?
         <LoadingSquare /> :
-        // <span>Loading</span> :
-        // <span>Carregado</span>
-        <div className="attributes-wrapper">
-          <div className="attributes-primary">
-            <div className="attribute-wrapper">
-              <span>For</span>
-              <div className="hexagon">
-                <input type="number" {...register("strength")}/> 
+        <>
+          <div className="attributes-wrapper">
+            <div className="attributes-primary">
+              <div className="attribute-wrapper">
+                <span>For</span>
+                <div className="hexagon">
+                  <input type="number" {...register("strength")}/> 
+                </div>
+                <span className="attribute-cost">{strCost}</span>
               </div>
-              <span className="attribute-cost">{strCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>Des</span>
-              <div className="hexagon">
-                <input type="number" {...register("dexterity")}/> 
+              <div className="attribute-wrapper">
+                <span>Des</span>
+                <div className="hexagon">
+                  <input type="number" {...register("dexterity")}/> 
+                </div>
+                <span className="attribute-cost">{dexCost}</span>
               </div>
-              <span className="attribute-cost">{dexCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>Int</span>
-              <div className="hexagon">
-                <input type="number" {...register("intelligence")}/> 
+              <div className="attribute-wrapper">
+                <span>Int</span>
+                <div className="hexagon">
+                  <input type="number" {...register("intelligence")}/> 
+                </div>
+                <span className="attribute-cost">{intCost}</span>
               </div>
-              <span className="attribute-cost">{intCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>Vit</span>
-              <div className="hexagon">
-                <input type="number" {...register("health")}/> 
+              <div className="attribute-wrapper">
+                <span>Vit</span>
+                <div className="hexagon">
+                  <input type="number" {...register("health")}/> 
+                </div>
+                <span className="attribute-cost">{hthCost}</span>
               </div>
-              <span className="attribute-cost">{hthCost}</span>
             </div>
+            <div className="attributes-secondary">
+              <div className="attribute-wrapper">
+                <span>PV</span>
+                <div className="hexagon">
+                  <input type="number" {...register("hitPoints")}/> 
+                </div>
+                <span className="attribute-cost">{hpCost}</span>
+              </div>
+              <div className="attribute-wrapper">
+                <span>Vont</span>
+                <div className="hexagon">
+                  <input type="number" {...register("will")}/> 
+                </div>
+                <span className="attribute-cost">{willCost}</span>
+              </div>
+              <div className="attribute-wrapper">
+                <span>Per</span>
+                <div className="hexagon">
+                  <input type="number" {...register("perception")}/> 
+                </div>
+                <span className="attribute-cost">{perCost}</span>
+              </div>
+              <div className="attribute-wrapper">
+                <span>PF</span>
+                <div className="hexagon">
+                  <input type="number" {...register("fatiguePoints")}/> 
+                </div>
+                <span className="attribute-cost">{fpCost}</span>
+              </div>
+            </div>
+            {
+              saveButtonShow &&
+              <div className="save-button-wrapper">
+                <button
+                  onClick={() => updateAttributesData()}
+                  style={{ 
+                    margin: "2rem 0 0 1rem", 
+                    padding: "0.25rem 0.5rem", 
+                    backgroundColor: "#D1D5DB", 
+                    borderRadius: "4px" 
+                  }} 
+                >
+                  Save
+                </button>
+              </div>
+            }
           </div>
-          <div className="attributes-secondary">
-            <div className="attribute-wrapper">
-              <span>PV</span>
-              <div className="hexagon">
-                <input type="number" {...register("hitPoints")}/> 
-              </div>
-              <span className="attribute-cost">{hpCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>Vont</span>
-              <div className="hexagon">
-                <input type="number" {...register("will")}/> 
-              </div>
-              <span className="attribute-cost">{willCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>Per</span>
-              <div className="hexagon">
-                <input type="number" {...register("perception")}/> 
-              </div>
-              <span className="attribute-cost">{perCost}</span>
-            </div>
-            <div className="attribute-wrapper">
-              <span>PF</span>
-              <div className="hexagon">
-                <input type="number" {...register("fatiguePoints")}/> 
-              </div>
-              <span className="attribute-cost">{fpCost}</span>
-            </div>
-          </div>
-          {
-            saveButtonShow &&
-            <div className="save-button-wrapper">
-              <button
-                onClick={() => updateAttributesData()}
-                style={{ 
-                  margin: "2rem 0 0 1rem", 
-                  padding: "0.25rem 0.5rem", 
-                  backgroundColor: "#D1D5DB", 
-                  borderRadius: "4px" 
-                }} 
-              >
-                Save
-              </button>
-            </div>
-          }
-        </div>
+        </>
       }
     </div>
   )

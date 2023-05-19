@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu } from '../Menu/Menu'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { PointsResume } from '../PointsResume/PointsResume';
 
 export const Character = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export const Character = () => {
       >
         Voltar
       </button>
+      <PointsResume />
       <Menu />
       <Outlet />
     </div>

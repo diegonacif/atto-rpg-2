@@ -3,8 +3,10 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { db } from "../services/firebase-config";
 import { AuthGoogleContext } from "./AuthGoogleProvider";
 import { useSessionStorage } from "usehooks-ts";
+import { useLocation } from "react-router-dom";
 
 interface PointsResumeContextProps {
+  characterIdSession: string
   setCharacterIdSession: React.Dispatch<React.SetStateAction<string>>;
   attributesSum: number;
   perksSum: number;
@@ -13,6 +15,7 @@ interface PointsResumeContextProps {
 }
 
 export const PointsResumeContext = createContext<PointsResumeContextProps>({
+  characterIdSession: "",
   setCharacterIdSession: () => {},
   attributesSum: 0,
   perksSum: 0,
@@ -29,6 +32,18 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
   const [skillsSum, setSkillsSum] = useState(0);
   const [characterIdSession, setCharacterIdSession] = useSessionStorage('character-id', "")
 
+  const location = useLocation();
+
+  // Clear Values when not in character url
+  useEffect(() => {
+    if (!location.pathname.startsWith('/home/character')) {
+      setAttributesSum(0);
+      setPerksSum(0);
+      setFlawsSum(0);
+      setSkillsSum(0);
+    }
+  }, [location]);
+
   // GOLDEN REALTIME SYNC DATABASE //
 
   // Attributes
@@ -42,7 +57,6 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
           const attributesSumValue = snapshot.data().value;
           setAttributesSum(attributesSumValue);
           console.log(attributesSumValue);
-          console.log("attribute sum changed");
         }
       });
   
@@ -126,6 +140,7 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <PointsResumeContext.Provider value={{ 
+      characterIdSession,
       setCharacterIdSession,
       attributesSum,
       perksSum,

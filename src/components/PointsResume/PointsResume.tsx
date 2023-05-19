@@ -14,15 +14,15 @@ interface ICoreInfoData {
 }
 
 export const PointsResume = () => {
-  const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
-  const coreInfoRef = doc(db, "users", userId, "characters", id ? id : "");
   const { 
     attributesSum,
     perksSum,
     flawsSum,
-    skillsSum
+    skillsSum,
+    characterIdSession
   } = useContext(PointsResumeContext);
+  const coreInfoRef = doc(db, "users", userId, "characters", characterIdSession ? characterIdSession : "");
   
   const [coreInfoData, setCoreInfoData] = useState<ICoreInfoData>({
     name: "",
@@ -31,8 +31,6 @@ export const PointsResume = () => {
   const [xp, setXp] = useState(0);
   const [pointsLeft, setPointsLeft] = useState(0);
   const [isXpLocked, setIsXpLocked] = useState(true); 
-
-  console.log(coreInfoData);
 
   // Points left update
   useEffect(() => {
@@ -106,7 +104,7 @@ export const PointsResume = () => {
         </div>
         <div className="input-row">
           <label htmlFor="points-left">Pontos disponíveis</label>
-          <input type="number" name="points-left" value={pointsLeft} readOnly />
+          <input type="number" name="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
         </div>
       </section>
     </div>
