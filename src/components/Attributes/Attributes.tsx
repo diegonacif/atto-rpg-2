@@ -45,7 +45,9 @@ export const Attributes = () => {
     { snapshotListenOptions: { includeMetadataChanges: true } }
   );
   useEffect(() => {
-    setFirestoreLoading(loading);
+    setTimeout(() => {
+      setFirestoreLoading(loading);
+    }, 150);
   }, [loading])
 
   // const [attributes, setAttributes] = useState<{}>();
@@ -220,6 +222,8 @@ export const Attributes = () => {
       {
         firestoreLoading === true?
         <LoadingSquare /> :
+        // <span>Loading</span> :
+        // <span>Carregado</span>
         <div className="attributes-wrapper">
           <div className="attributes-primary">
             <div className="attribute-wrapper">

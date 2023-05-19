@@ -33,7 +33,9 @@ export const Equips = () => {
     { snapshotListenOptions: { includeMetadataChanges: true } }
   );
   useEffect(() => {
-    setFirestoreLoading(loading);
+    setTimeout(() => {
+      setFirestoreLoading(loading);
+    }, 100);
   }, [loading])
 
   // Modal Data
