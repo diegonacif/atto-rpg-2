@@ -1,0 +1,6 @@
+.points-resume-container {
+  display: flex;
+  flex-direction: column;
+
+  @include responsive-padding(1rem, 1rem);
+}
