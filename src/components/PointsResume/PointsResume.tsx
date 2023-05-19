@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
-
-import '../../App.scss';
 import { Lock, LockOpen } from '@phosphor-icons/react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+
+import '../../App.scss';
 
 interface ICoreInfoData {
   name: string;
