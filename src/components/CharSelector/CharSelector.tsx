@@ -10,13 +10,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { MinusCircle } from '@phosphor-icons/react';
 import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
+import faceless from '../../assets/charIcons/faceless.png';
 
 import '../../App.scss';
-import { useSessionStorage } from 'usehooks-ts';
 
 interface IChars { 
   id: string,
   name: string
+  xp: number
 }
 interface IregisterChar { charDocRef: DocumentReference<firebase.firestore.DocumentData> }
 interface IRegisterUserProps {
@@ -56,7 +57,7 @@ export const CharSelector = () => {
   useEffect(() => {
     const getChars = async () => {
       const data = await getDocs(charsCollectionRef);
-      setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido" })));
+      setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido", xp: doc.data().xp || 0 })));
     }
     getChars();
   }, [charSelectorRefresh])
@@ -183,7 +184,13 @@ export const CharSelector = () => {
         {
           chars.map(char => (
             <div className="char-row" key={char.id}>
-              <li onClick={() => handleSelectChar(char.id)}>{char?.name}</li>
+              <div className="char-face-wrapper">
+                <img src={faceless} alt="char-face" />
+              </div>
+              <div className="text-content">
+                <li onClick={() => handleSelectChar(char.id)}>{char?.name}</li>
+                <span>XP: {char?.xp}</span>
+              </div>
               <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
                 <MinusCircle size={32} />
               </button>

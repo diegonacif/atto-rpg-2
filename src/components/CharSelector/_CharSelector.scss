@@ -2,6 +2,10 @@
   @include responsive-padding(2rem, 2rem);
 
   ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
     list-style-type: none;
     margin-top: 1rem;
 
@@ -9,16 +13,35 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
+      max-width: 18rem;
+      height: 5rem;
       transition: background-color 0.3s;
+      background-color: $gray-300;
+
+      .char-face-wrapper {
+        height: 100%;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      .text-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+      }
 
       &:hover {
         background-color: $gray-200;
         transition: background-color 0.3s;
       }
 
-      & + .char-row {
-        margin-top: .5rem;
-      }
+      // & + .char-row {
+      //   margin-top: .5rem;
+      // }
 
       li {
         width: fit-content;
@@ -27,9 +50,9 @@
 
       .delete-char-button {
         display: flex;
-        // background: green;
         max-height: fit-content;
         border-radius: 9999px;
+        margin-right: 0.25rem;
       }
     }
 
