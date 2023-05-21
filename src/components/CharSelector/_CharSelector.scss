@@ -1,6 +1,18 @@
 .char-selector-container {
   @include responsive-padding(2rem, 2rem);
 
+  .new-char-button {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: $gray-300;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -18,6 +30,8 @@
       height: 5rem;
       transition: background-color 0.3s;
       background-color: $gray-300;
+      border-radius: 4px;
+      outline: 2px solid transparent;
 
       .char-face-wrapper {
         height: 100%;
@@ -36,12 +50,9 @@
 
       &:hover {
         background-color: $gray-200;
-        transition: background-color 0.3s;
+        outline: 2px solid $green-gurps;
+        transition: background-color 0.3s, outline 0.3s;
       }
-
-      // & + .char-row {
-      //   margin-top: .5rem;
-      // }
 
       li {
         width: fit-content;
@@ -56,5 +67,53 @@
       }
     }
 
+  }
+
+}
+
+.new-char-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  // overflow: hidden;
+
+  .new-char-icon-wrapper {
+    outline: 2px solid $gray-400;
+    border-radius: 8px;
+    height: 6rem;
+    overflow: hidden;
+    cursor: pointer;
+
+    img {
+      height: 100%;
+    }
+
+  }
+
+  input {
+    margin-top: 1rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid $gray-400;
+    text-align: center;
+
+    &:focus-visible {
+      outline: 2px solid $green-gurps;
+    }
+
+    &:first-of-type {
+      margin-top: 1rem;
+    }
+    &:nth-of-type(2) {
+      margin-top: 0.5rem;
+    }
+  }
+
+  button {
+    margin-top: 1.5rem;
+    background-color: $gray-300;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
   }
 }

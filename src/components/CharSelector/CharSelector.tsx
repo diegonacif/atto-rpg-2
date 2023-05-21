@@ -8,11 +8,12 @@ import firebase from 'firebase/compat/app';
 import "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
-import { MinusCircle } from '@phosphor-icons/react';
+import { MinusCircle, UserCirclePlus } from '@phosphor-icons/react';
 import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
 import faceless from '../../assets/charIcons/faceless.png';
 
 import '../../App.scss';
+import ReactModal from 'react-modal';
 
 interface IChars { 
   id: string,
@@ -39,7 +40,8 @@ export const CharSelector = () => {
   const [charSelectorRefresh, setCharSelectorRefresh] = useState(false);
   // const [alreadyRegistered, setAlreadyRegistered] = useState(false)
 
-  const [charName, setCharName] = useState("")
+  const [charName, setCharName] = useState("");
+  const [experienceValue, setExperienceValue] = useState(0);
 
   const navigate = useNavigate();
 
@@ -75,7 +77,8 @@ export const CharSelector = () => {
 
   async function registerChar({ charDocRef }: IregisterChar) {
     return await setDoc(charDocRef, {
-      name: charName
+      name: charName,
+      xp: experienceValue,
     })
     .then(() => console.log("Registered"))
     .catch((error) => {
@@ -131,8 +134,10 @@ export const CharSelector = () => {
     await registerChar({ charDocRef });
     await registerCharContent({ charsCollectionRef, charDocRef });
 
-    setCharName("")
+    setCharName("");
+    setExperienceValue(0);
     setCharSelectorRefresh(current => !current);
+    setIsModalOpen(false);
   }
 
   async function deleteChar(id: string) {
@@ -176,10 +181,32 @@ export const CharSelector = () => {
     navigate(`/home/character/${id}`);
   }
 
+  // Modal Data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  }
+
+  const modalCustomStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      padding: '1rem',
+      borderRadius: '8px'
+    },
+  };
+
   return (
     <div className="char-selector-container">
-      <input type="text" value={charName} onChange={(e) => setCharName(e.target.value)} />
-      <button onClick={() => createChar()}>Criar boneco</button>
+      <div className="new-char-button" onClick={() => setIsModalOpen(true)}>
+        <span>Novo personagem</span>
+        <UserCirclePlus size={32} weight="duotone" id="new-char-icon" />
+      </div>
       <ul>
         {
           chars.map(char => (
@@ -198,6 +225,32 @@ export const CharSelector = () => {
           ))
         }
       </ul>
+      <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={() => handleCloseModal()}
+        style={modalCustomStyles}
+        closeTimeoutMS={150}
+        ariaHideApp={false}
+      >
+        <div className="new-char-modal">
+          <div className="new-char-icon-wrapper">
+            <img src={faceless} alt="" />
+          </div>
+          <input 
+            type="text" 
+            value={charName} 
+            onChange={(e) => setCharName(e.target.value)} 
+            placeholder="Insira o nome"
+          />
+
+          <input 
+            type="number" 
+            onChange={(e) => setExperienceValue(Number(e.target.value))} 
+            placeholder="Insira a experiência"
+          />
+          <button onClick={() => createChar()}>Criar boneco</button>
+        </div>
+      </ReactModal>
     </div>
   )
 }
