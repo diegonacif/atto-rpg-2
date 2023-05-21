@@ -1,9 +1,9 @@
 .points-resume-container {
   display: flex;
-  // flex-direction: column;
   justify-content: space-evenly;
+  width: 100%;
 
-  @include responsive-padding(1rem, 1rem);
+  // @include responsive-padding(1rem, 1rem);
 
   .categories-sum-wrapper {
     display: flex;

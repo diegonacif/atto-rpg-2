@@ -18,18 +18,6 @@ export const Menu = () => {
         Atributos
       </h4>
       <h4 
-        className={`menu-item ${currentMenu === "perks" && "selected"}`}
-        onClick={() => setCurrentMenu("perks")}
-      >
-        Vantagens
-      </h4>
-      <h4 
-        className={`menu-item ${currentMenu === "flaws" && "selected"}`}
-        onClick={() => setCurrentMenu("flaws")}
-      >
-        Desvantagens
-      </h4>
-      <h4 
         className={`menu-item ${currentMenu === "skills" && "selected"}`}
         onClick={() => setCurrentMenu("skills")}
       >
@@ -40,6 +28,18 @@ export const Menu = () => {
         onClick={() => setCurrentMenu("equips")}
       >
         Equipamentos
+      </h4>
+      <h4 
+        className={`menu-item ${currentMenu === "perks" && "selected"}`}
+        onClick={() => setCurrentMenu("perks")}
+      >
+        Vantagens
+      </h4>
+      <h4 
+        className={`menu-item ${currentMenu === "flaws" && "selected"}`}
+        onClick={() => setCurrentMenu("flaws")}
+      >
+        Desvantagens
       </h4>
     </div>
   )

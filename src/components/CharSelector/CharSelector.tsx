@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { MinusCircle, UserCirclePlus } from '@phosphor-icons/react';
 import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
-import faceless from '../../assets/charIcons/faceless.png';
+import faceless from '../../assets/charIcons/palada.png';
 
 import '../../App.scss';
 import ReactModal from 'react-modal';

@@ -1,0 +1,26 @@
+.character-container {
+  .character-header {
+    @include responsive-padding(1rem, 1rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap:  0.75rem;
+      padding-right: 0.5rem;
+
+      svg {
+        cursor: pointer;
+      }
+    }
+
+    .back-button {
+      padding: 0.25rem 0.5rem;
+      background-color: $gray-300;
+      border-radius: 4px;
+    }
+  }
+
+}
