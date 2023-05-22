@@ -32,11 +32,14 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
   const [skillsSum, setSkillsSum] = useState(0);
   const [characterIdSession, setCharacterIdSession] = useSessionStorage('character-id', "")
 
+  console.log(characterIdSession);
+
   const location = useLocation();
 
   // Clear Values when not in character url
   useEffect(() => {
     if (!location.pathname.startsWith('/home/character')) {
+      setCharacterIdSession("");
       setAttributesSum(0);
       setPerksSum(0);
       setFlawsSum(0);
@@ -56,7 +59,7 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
         if (snapshot.exists()) {
           const attributesSumValue = snapshot.data().value;
           setAttributesSum(attributesSumValue);
-          console.log(attributesSumValue);
+          // console.log(attributesSumValue);
         }
       });
   
