@@ -7,7 +7,7 @@ import { CaretCircleDown, CaretCircleUp, TrendUp, UserList, YinYang } from '@pho
 import Collapsible from 'react-collapsible';
 
 export const Character = () => {
-  const [currentFlip, setCurrentFlip] = useState('points-resume');
+  const [currentFlip, setCurrentFlip] = useState('character-resume');
   const [isHeaderOpen, setIsHeaderOpen] = useState(true);
 
   return (
@@ -28,6 +28,7 @@ export const Character = () => {
             onClick={() => setIsHeaderOpen(true)}
           />
         }
+        open={true}
         easing="ease"
         transitionTime={500}
       >
