@@ -1,9 +1,18 @@
 .character-container {
   .character-header {
-    @include responsive-padding(1rem, 1rem);
+    position: relative;
+    @include responsive-padding(1rem, 1rem); 
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    background-color: $gray-100;
+
+    
+
+    .character-header-content {
+      width: 100%;
+    }
 
     .nav-menu {
       display: flex;
@@ -21,6 +30,21 @@
       background-color: $gray-300;
       border-radius: 4px;
     }
-  }
 
+  }
+  
+}
+
+.Collapsible {
+  position: relative;
+
+  .open-close-character-header {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    cursor: pointer;
+    z-index: 5;
+    color: $gray-600;
+  }
 }
