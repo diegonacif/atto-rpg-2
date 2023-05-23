@@ -41,7 +41,11 @@ export const CharSelector = () => {
   // const [alreadyRegistered, setAlreadyRegistered] = useState(false)
 
   const [charName, setCharName] = useState("");
+  const [charGender, setCharGender] = useState("");
   const [experienceValue, setExperienceValue] = useState(0);
+  const [charAge, setCharAge] = useState(0);
+  const [charHeight, setCharHeight] = useState(0);
+  const [charWeight, setCharWeight] = useState(0);
 
   const navigate = useNavigate();
 
@@ -78,7 +82,11 @@ export const CharSelector = () => {
   async function registerChar({ charDocRef }: IregisterChar) {
     return await setDoc(charDocRef, {
       name: charName,
+      gender: charGender,
       xp: experienceValue,
+      age: charAge,
+      height: charHeight,
+      weight: charWeight,
     })
     .then(() => console.log("Registered"))
     .catch((error) => {
@@ -135,7 +143,11 @@ export const CharSelector = () => {
     await registerCharContent({ charsCollectionRef, charDocRef });
 
     setCharName("");
+    setCharGender("");
     setExperienceValue(0);
+    setCharAge(0);
+    setCharHeight(0);
+    setCharWeight(0);
     setCharSelectorRefresh(current => !current);
     setIsModalOpen(false);
   }
@@ -185,6 +197,13 @@ export const CharSelector = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCloseModal = () => {
+    setCharName("");
+    setCharGender("");
+    setExperienceValue(0);
+    setCharAge(0);
+    setCharHeight(0);
+    setCharWeight(0);
+    setCharSelectorRefresh(current => !current);
     setIsModalOpen(false);
   }
 
@@ -242,11 +261,31 @@ export const CharSelector = () => {
             onChange={(e) => setCharName(e.target.value)} 
             placeholder="Insira o nome"
           />
-
+          <input 
+            type="text" 
+            value={charGender} 
+            onChange={(e) => setCharGender(e.target.value)} 
+            placeholder="Insira o gênero"
+          />
           <input 
             type="number" 
             onChange={(e) => setExperienceValue(Number(e.target.value))} 
             placeholder="Insira a experiência"
+          />
+          <input 
+            type="text" 
+            onChange={(e) => setCharAge(Number(e.target.value))} 
+            placeholder="Insira a idade"
+          />
+          <input 
+            type="text" 
+            onChange={(e) => setCharHeight(Number(e.target.value))} 
+            placeholder="Insira a altura"
+          />
+          <input 
+            type="text" 
+            onChange={(e) => setCharWeight(Number(e.target.value))} 
+            placeholder="Insira o peso"
           />
           <button onClick={() => createChar()}>Criar boneco</button>
         </div>
