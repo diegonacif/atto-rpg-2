@@ -261,12 +261,16 @@ export const CharSelector = () => {
             onChange={(e) => setCharName(e.target.value)} 
             placeholder="Insira o nome"
           />
-          <input 
-            type="text" 
-            value={charGender} 
+          <select 
             onChange={(e) => setCharGender(e.target.value)} 
             placeholder="Insira o gênero"
-          />
+            defaultValue=""
+            className={!charGender ? 'disabled' : ''}
+          >
+            <option value="" disabled>Selecione o gênero</option>
+            <option value="female">Feminino</option>
+            <option value="male">Masculino</option>
+          </select>
           <input 
             type="number" 
             onChange={(e) => setExperienceValue(Number(e.target.value))} 
