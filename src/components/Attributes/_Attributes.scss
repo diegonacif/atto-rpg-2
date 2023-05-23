@@ -6,11 +6,22 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 1rem;
+    justify-items: center;
+
+    .attributes-primary {
+      width: 100%;
+      max-width: 18rem;
+    }
+    .attributes-secondary {
+      width: 100%;
+      max-width: 18rem;
+    }
 
     .attribute-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
+      justify-items: center;
 
       span {
         width: fit-content;
@@ -66,6 +77,7 @@
       }
 
       .attribute-cost {
+        justify-self: start;
         padding-left: 0.5rem;
       }
 
