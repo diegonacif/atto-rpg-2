@@ -90,7 +90,7 @@ export const Flaws = () => {
     }, 200);
   };
 
-  // Getting Perks Data
+  // Getting Flaws Data
   useEffect(() => {
     const getFlawsData = async () => {
       const querySnapshot = await getDocs(flawsCollectionRef);

@@ -1,7 +1,19 @@
 .character-resume-container {
   display: flex;
-  // flex-direction: column;
+  width: 100%;
+  
+  .image-wrapper {
+    display: flex;
+    align-self: center;
+    height: fit-content;
+    border-radius: 4px;
 
+    box-shadow: 6px 6px 10px $gray-400, -6px -6px 10px #ffffff;
+
+    img {
+      border-radius: 4px;
+    }
+  }
   .text-wrapper {
     display: flex;
     flex-direction: column;

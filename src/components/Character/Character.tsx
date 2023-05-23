@@ -5,6 +5,7 @@ import { PointsResume } from '../PointsResume/PointsResume';
 import { CharacterResume } from '../CharacterResume/CharacterResume';
 import { CaretCircleDown, CaretCircleUp, TrendUp, UserList, YinYang } from '@phosphor-icons/react';
 import Collapsible from 'react-collapsible';
+import { PerksFlawsResume } from '../PerksFlawsResume/PerksFlawsResume';
 
 export const Character = () => {
   const [currentFlip, setCurrentFlip] = useState('character-resume');
@@ -40,7 +41,7 @@ export const Character = () => {
               currentFlip === 'points-resume' ?
               <PointsResume /> :
               currentFlip === 'perks-and-flaws-resume' ?
-              <h1>Perks'n'Flaws</h1> :
+              <PerksFlawsResume /> :
               null
             }
           </section>
