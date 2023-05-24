@@ -42,8 +42,6 @@ export const CharacterResume = () => {
     face: ""
   })
 
-  console.log(coreInfoData);
-
   // Getting Character Data
   useEffect(() => {
     const getCharacterData = async () => {
@@ -80,25 +78,45 @@ export const CharacterResume = () => {
   return (
     <div className="character-resume-container">
       <div className="text-wrapper">
-        <span>Nome: {coreInfoData?.name}</span>
-        <span>Gênero: 
-          {
-            coreInfoData?.gender === 'male' ?
-            ' Masculino' :
-            coreInfoData?.gender === 'female' ?
-            ' Feminino' :
-            ''
-          }
-        </span>
-        <span>Experiência: {coreInfoData?.xp}</span>
+        <div className="text-row">
+          <label htmlFor="">Nome</label>
+          <span>{coreInfoData?.name}</span>
+        </div>
+        <div className="text-row">
+          <label htmlFor="">Gender</label>
+          <span>
+            {
+              coreInfoData?.gender === 'male' ?
+              ' Masculino' :
+              coreInfoData?.gender === 'female' ?
+              ' Feminino' :
+              ''
+            }
+          </span>
+        </div>
+        <div className="text-row">
+          <label htmlFor="">Experiência</label>
+          <span>{coreInfoData?.xp}</span>
+        </div>
       </div>
+
       <div className="image-wrapper">
         <img src={faceMapping[coreInfoData?.face] || faceless} alt="character image" />
       </div>
+      
       <div className="text-wrapper">
-        <span>Idade: {coreInfoData?.age}</span>
-        <span>Altura: {coreInfoData?.height}</span>
-        <span>Peso: {coreInfoData?.weight}</span>
+        <div className="text-row">
+          <label htmlFor="">Idade</label>
+          <span>{coreInfoData?.age}</span>
+        </div>
+        <div className="text-row">
+          <label htmlFor="">Altura</label>
+          <span>{coreInfoData?.height}</span>
+        </div>
+        <div className="text-row">
+          <label htmlFor="">Peso</label>
+          <span>{coreInfoData?.weight}</span>
+        </div>
       </div>
     </div>
   )
