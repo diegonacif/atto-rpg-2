@@ -6,6 +6,9 @@ import { CharacterResume } from '../CharacterResume/CharacterResume';
 import { CaretCircleDown, CaretCircleUp, TrendUp, UserList, YinYang } from '@phosphor-icons/react';
 import Collapsible from 'react-collapsible';
 import { PerksFlawsResume } from '../PerksFlawsResume/PerksFlawsResume';
+import { Footer } from '../Footer/Footer';
+
+import '../../App.scss';
 
 export const Character = () => {
   const [currentFlip, setCurrentFlip] = useState('character-resume');
@@ -55,6 +58,7 @@ export const Character = () => {
       
       <Menu />
       <Outlet />
+      <Footer />
     </div>
   )
 }

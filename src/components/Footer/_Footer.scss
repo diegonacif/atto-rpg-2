@@ -1,0 +1,40 @@
+@mixin footerOrbsWrapper {
+  position: relative;
+  height: 100%;
+
+  img {
+    height: 100%;
+    filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.75));
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: $font-28;
+    font-weight: bold;
+    color: $gray-200;
+    text-shadow: 3px 3px 4px rgba(0,0,0,0.9);
+  }
+}
+
+.footer-container {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 7.5rem;
+
+  @include responsive-padding;
+
+  .hp-wrapper {
+    @include footerOrbsWrapper;
+  }
+
+  .fp-wrapper {
+    @include footerOrbsWrapper;
+  }
+}
