@@ -5,6 +5,16 @@ import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 
+import faceless from '../../assets/charIcons/faceless.png';
+import male01 from '../../assets/charIcons/male01.png';
+import male02 from '../../assets/charIcons/male02.png';
+import male03 from '../../assets/charIcons/male03.png';
+import male04 from '../../assets/charIcons/male04.png';
+import female01 from '../../assets/charIcons/female01.png';
+import female02 from '../../assets/charIcons/female02.png';
+import female03 from '../../assets/charIcons/female03.png';
+import female04 from '../../assets/charIcons/female04.png';
+
 import '../../App.scss';
 
 interface ICoreInfoData {
@@ -14,6 +24,7 @@ interface ICoreInfoData {
   age: number;
   height: number;
   weight: number;
+  face: string;
 }
 
 export const CharacterResume = () => {
@@ -28,16 +39,10 @@ export const CharacterResume = () => {
     age: 0,
     height: 0,
     weight: 0,
+    face: ""
   })
 
   console.log(coreInfoData);
-  
-  // const [charName, setCharName] = useState("");
-  // const [charGender, setCharGender] = useState("");
-  // const [experienceValue, setExperienceValue] = useState(0);
-  // const [charAge, setCharAge] = useState(0);
-  // const [charHeight, setCharHeight] = useState(0);
-  // const [charWeight, setCharWeight] = useState(0);
 
   // Getting Character Data
   useEffect(() => {
@@ -53,18 +58,24 @@ export const CharacterResume = () => {
             age: data.age,
             height: data.height,
             weight: data.weight,
+            face: data.face
           }
         );
-        // setCharName(data.name);
-        // setCharGender(data.gender);
-        // setExperienceValue(data.xp);
-        // setCharAge(data.age);
-        // setCharHeight(data.height);
-        // setCharWeight(data.weight);
       }
     };
     getCharacterData();
   }, [])
+
+  const faceMapping: {[key: string]: string} = {
+    male01: male01,
+    male02: male02,
+    male03: male03,
+    male04: male04,
+    female01: female01,
+    female02: female02,
+    female03: female03,
+    female04: female04,
+  };
   
   return (
     <div className="character-resume-container">
@@ -82,7 +93,7 @@ export const CharacterResume = () => {
         <span>Experiência: {coreInfoData?.xp}</span>
       </div>
       <div className="image-wrapper">
-        <img src={charImg} alt="character image" />
+        <img src={faceMapping[coreInfoData?.face] || faceless} alt="character image" />
       </div>
       <div className="text-wrapper">
         <span>Idade: {coreInfoData?.age}</span>

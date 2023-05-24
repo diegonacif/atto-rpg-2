@@ -124,3 +124,17 @@
     border-radius: 4px;
   }
 }
+
+.face-char-selector-modal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: fit-content;
+  max-width: 27rem;
+
+  img {
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}

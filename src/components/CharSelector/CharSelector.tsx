@@ -10,15 +10,25 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { MinusCircle, UserCirclePlus } from '@phosphor-icons/react';
 import { PointsResumeContext } from '../../contexts/PointsResumeProvider';
-import faceless from '../../assets/charIcons/palada.png';
+import ReactModal from 'react-modal';
+
+import faceless from '../../assets/charIcons/faceless.png';
+import male01 from '../../assets/charIcons/male01.png';
+import male02 from '../../assets/charIcons/male02.png';
+import male03 from '../../assets/charIcons/male03.png';
+import male04 from '../../assets/charIcons/male04.png';
+import female01 from '../../assets/charIcons/female01.png';
+import female02 from '../../assets/charIcons/female02.png';
+import female03 from '../../assets/charIcons/female03.png';
+import female04 from '../../assets/charIcons/female04.png';
 
 import '../../App.scss';
-import ReactModal from 'react-modal';
 
 interface IChars { 
   id: string,
-  name: string
-  xp: number
+  name: string,
+  face: string,
+  xp: number,
 }
 interface IregisterChar { charDocRef: DocumentReference<firebase.firestore.DocumentData> }
 interface IRegisterUserProps {
@@ -46,6 +56,9 @@ export const CharSelector = () => {
   const [charAge, setCharAge] = useState(0);
   const [charHeight, setCharHeight] = useState(0);
   const [charWeight, setCharWeight] = useState(0);
+  const [charFace, setCharFace] = useState("");
+
+  console.log(charFace);
 
   const navigate = useNavigate();
 
@@ -63,7 +76,7 @@ export const CharSelector = () => {
   useEffect(() => {
     const getChars = async () => {
       const data = await getDocs(charsCollectionRef);
-      setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido", xp: doc.data().xp || 0 })));
+      setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido", xp: doc.data().xp || 0 , face: doc.data().face || "" })));
     }
     getChars();
   }, [charSelectorRefresh])
@@ -87,6 +100,7 @@ export const CharSelector = () => {
       age: charAge,
       height: charHeight,
       weight: charWeight,
+      face: charFace,
     })
     .then(() => console.log("Registered"))
     .catch((error) => {
@@ -148,6 +162,7 @@ export const CharSelector = () => {
     setCharAge(0);
     setCharHeight(0);
     setCharWeight(0);
+    setCharFace("");
     setCharSelectorRefresh(current => !current);
     setIsModalOpen(false);
   }
@@ -195,16 +210,31 @@ export const CharSelector = () => {
 
   // Modal Data
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFaceSelectModalOpen, setIsFaceSelectModalOpen] = useState(false)
 
   const handleCloseModal = () => {
-    setCharName("");
-    setCharGender("");
-    setExperienceValue(0);
-    setCharAge(0);
-    setCharHeight(0);
-    setCharWeight(0);
-    setCharSelectorRefresh(current => !current);
     setIsModalOpen(false);
+  }
+
+  useEffect(() => {
+    if(isModalOpen === false) {
+      setCharSelectorRefresh(current => !current);
+      setTimeout(() => {
+        setCharName("");
+        setCharGender("");
+        setExperienceValue(0);
+        setCharAge(0);
+        setCharHeight(0);
+        setCharWeight(0);
+        setCharFace("");
+      }, 150);
+    }
+  }, [isModalOpen])
+  
+
+  const handleSelectCharFace = (face: string) => {
+    setCharFace(face);
+    setIsFaceSelectModalOpen(false);
   }
 
   const modalCustomStyles = {
@@ -220,6 +250,20 @@ export const CharSelector = () => {
     },
   };
 
+  const faceMapping: {[key: string]: string} = {
+    male01: male01,
+    male02: male02,
+    male03: male03,
+    male04: male04,
+    female01: female01,
+    female02: female02,
+    female03: female03,
+    female04: female04,
+  };
+
+  const currentImg = faceMapping[charFace] || faceless;
+
+
   return (
     <div className="char-selector-container">
       <div className="new-char-button" onClick={() => setIsModalOpen(true)}>
@@ -231,7 +275,7 @@ export const CharSelector = () => {
           chars.map(char => (
             <div className="char-row" key={char.id}>
               <div className="char-face-wrapper">
-                <img src={faceless} alt="char-face" />
+                <img src={faceMapping[char.face] || faceless} alt="char-face" />
               </div>
               <div className="text-content">
                 <li onClick={() => handleSelectChar(char.id)}>{char?.name}</li>
@@ -252,8 +296,8 @@ export const CharSelector = () => {
         ariaHideApp={false}
       >
         <div className="new-char-modal">
-          <div className="new-char-icon-wrapper">
-            <img src={faceless} alt="" />
+          <div className="new-char-icon-wrapper" onClick={() => setIsFaceSelectModalOpen(true)}>
+            <img src={currentImg} alt="" />
           </div>
           <input 
             type="text" 
@@ -293,6 +337,26 @@ export const CharSelector = () => {
           />
           <button onClick={() => createChar()}>Criar boneco</button>
         </div>
+
+        {/* Face Char Selector */}
+        <ReactModal
+          isOpen={isFaceSelectModalOpen}
+          onRequestClose={() => setIsFaceSelectModalOpen(false)}
+          style={modalCustomStyles}
+          closeTimeoutMS={150}
+          ariaHideApp={false}
+        >
+          <div className="face-char-selector-modal">
+            <img src={male01} alt="male face 01" onClick={() => handleSelectCharFace("male01")} />
+            <img src={male02} alt="male face 02" onClick={() => handleSelectCharFace("male02")} />
+            <img src={male03} alt="male face 03" onClick={() => handleSelectCharFace("male03")} />
+            <img src={male04} alt="male face 04" onClick={() => handleSelectCharFace("male04")} />
+            <img src={female01} alt="female face 01" onClick={() => handleSelectCharFace("female01")} />
+            <img src={female02} alt="female face 02" onClick={() => handleSelectCharFace("female02")} />
+            <img src={female03} alt="female face 03" onClick={() => handleSelectCharFace("female03")} />
+            <img src={female04} alt="female face 04" onClick={() => handleSelectCharFace("female04")} />
+          </div>
+        </ReactModal>
       </ReactModal>
     </div>
   )
