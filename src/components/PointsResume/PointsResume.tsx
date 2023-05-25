@@ -5,12 +5,18 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
+import blankOrb from '../../assets/blank-orb.png';
 
 import '../../App.scss';
 
 interface ICoreInfoData {
   name: string;
+  gender: string;
   xp: number;
+  age: number;
+  weight: number;
+  height: number;
+  face: string;
 }
 
 export const PointsResume = () => {
@@ -26,7 +32,12 @@ export const PointsResume = () => {
   
   const [coreInfoData, setCoreInfoData] = useState<ICoreInfoData>({
     name: "",
-    xp: 0
+    gender: "",
+    xp: 0,
+    age: 0,
+    weight: 0,
+    height: 0,
+    face: ""
   })
   const [xp, setXp] = useState(0);
   const [pointsLeft, setPointsLeft] = useState(0);
@@ -47,7 +58,12 @@ export const PointsResume = () => {
         setCoreInfoData(
           {
             name: data.name,
-            xp: data.xp
+            gender: data.gender,
+            xp: data.xp,
+            age: data.age,
+            weight: data.weight,
+            height: data.height,
+            face: data.face
           }
         );
         setXp(data.xp);
@@ -56,11 +72,18 @@ export const PointsResume = () => {
     getCharacterData();
   }, [isXpLocked])
 
+  console.log(coreInfoData);
+
   const handleLockXp = async () => {
     try {
       await setDoc(coreInfoRef, {
         name: coreInfoData.name,
-        xp: xp
+        gender: coreInfoData.gender,
+        xp: xp,
+        age: coreInfoData.age,
+        weight: coreInfoData.weight,
+        height: coreInfoData.height,
+        face: coreInfoData.face
       })
       .then(() => {
         setIsXpLocked(true);
@@ -73,38 +96,49 @@ export const PointsResume = () => {
 
   return (
     <div className="points-resume-container">
-      
       <section className="categories-sum-wrapper">
-        <span>Total: {(attributesSum + perksSum + skillsSum) - flawsSum}</span>
-        <span>Atributos: {attributesSum}</span>
-        <span>Vantagens: {perksSum}</span>
-        <span>Desvantagens: {flawsSum}</span>
-        <span>Perícias: {skillsSum}</span>
+        {/* <span>Total: {(attributesSum + perksSum + skillsSum) - flawsSum}</span> */}
+        <div className="categories-sum-inner">
+          <span>Atributos: {attributesSum}</span>
+          <span>Perícias: {skillsSum}</span>
+          <span>Vantagens: {perksSum}</span>
+          <span>Desvantagens: {flawsSum}</span>
+        </div>
+        <div className="blank-orb-wrapper">
+          <img src={blankOrb} alt="remaining points" id="remaining-points"/>
+          <input type="number" name="points-left" id="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
+        </div>
       </section>
       <section className="points-resume-input-wrapper">
         <div className="input-row">
           <label htmlFor="experience-points">Pontos de Experiência</label>
           {
             isXpLocked ?
-            <>
+            <div className="input-wrapper">
               <input 
-                type="number" name="experience-points" value={xp} readOnly />
-              <Lock size={24} weight="duotone" id="xp-locker" onClick={() => setIsXpLocked(false)} />
-            </> :
-            <>
+                type="number" 
+                name="experience-points" 
+                value={xp} 
+                readOnly 
+              />
+              <Lock size={22} weight="duotone" id="xp-locker" onClick={() => setIsXpLocked(false)} />
+            </div> :
+            <div className="input-wrapper">
               <input 
                 type="number" 
                 name="experience-points"
                 value={xp}
                 onChange={(e) => setXp(Number(e.target.value))}
               />
-              <LockOpen size={24} weight="duotone" id="xp-locker" onClick={() => handleLockXp()} />
-            </>
+              <LockOpen size={22} weight="duotone" id="xp-locker" onClick={() => handleLockXp()} />
+            </div>
           }
         </div>
         <div className="input-row">
-          <label htmlFor="points-left">Pontos disponíveis</label>
-          <input type="number" name="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
+          <label htmlFor="points-left">Soma Total</label>
+          <div className="input-wrapper">
+            <input type="number" name="points-left" value={(attributesSum + perksSum + skillsSum) - flawsSum} readOnly />
+          </div>
         </div>
       </section>
     </div>

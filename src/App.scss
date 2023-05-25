@@ -24,6 +24,11 @@ $tablet-size: "min-width: 510px";
 $notebook-size: "min-width: 768px";
 $desktop-size: "min-width: 1024px";
 
+// Font Family Variables
+$font-primary: 'Saira', sans-serif;
+$font-title: 'Aref Ruqaa', serif;
+// $font-primary: 'Courier Prime', monospace;
+
 // Font Size Variables
 $font-10: 0.625rem;
 $font-12: 0.75rem;
@@ -39,7 +44,7 @@ $font-32: 2rem;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: $font-primary;
 
   -webkit-tap-highlight-color: transparent; // remove color highlight on tap
 

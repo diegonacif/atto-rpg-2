@@ -25,6 +25,8 @@
 
       span {
         width: fit-content;
+        font-weight: 600;
+        font-size: $font-18;
       }
 
       .hexagon {
@@ -79,6 +81,7 @@
       .attribute-cost {
         justify-self: start;
         padding-left: 0.5rem;
+        font-weight: 400;
       }
 
       & + .attribute-wrapper {

@@ -12,6 +12,11 @@
     gap: 0.75rem;
     cursor: pointer;
 
+    h2 {
+      font-family: $font-title;
+      font-weight: 700;
+    }
+
     #d6-dice {
       width: 2rem;
     }
