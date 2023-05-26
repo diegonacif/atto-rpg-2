@@ -3,6 +3,8 @@
   height: 100%;
   min-height: calc(100vh - 4.5rem);
   padding-bottom: 8.5rem;
+  background: rgb(17,24,39);
+  background: linear-gradient(0deg, $gray-900 0%, $gray-700 50%, $gray-500 100%); 
 
   .character-header {
     position: relative;

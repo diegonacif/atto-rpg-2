@@ -13,13 +13,14 @@
 
   .menu-item {
     padding-bottom: 0.5rem;
-    // font-family: $font-headers;
     font-size: $font-18;
     font-weight: 600;
+    color: $gray-100;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
     cursor: pointer;
     
     &.selected {
-      border-bottom: 4px solid blue;
+      border-bottom: 4px solid $green-400;
     }
   }
 

@@ -319,7 +319,9 @@ export const Skills = () => {
             })
           }
 
-          <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">Nova perícia</button>
+          <button onClick={() => handleNewSkillModalOpen()} id="new-skill-button">
+            <span className="yellow-span">Nova perícia</span>
+          </button>
 
           <ReactModal
             isOpen={isModalOpen}
