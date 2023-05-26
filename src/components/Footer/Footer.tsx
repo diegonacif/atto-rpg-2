@@ -24,11 +24,6 @@ export const Footer = () => {
   const [fpValue, setFpValue] = useState("");
   const [refresh, setRefresh] = useState(false);
 
-  console.log({
-    maxHpValue: maxHpValue,
-    maxFpValue: maxFpValue
-  })
-
   // Getting Max HP and FP data
   useEffect(() => {
     const getMaxHpData = async () => {

@@ -32,6 +32,11 @@
         min-width: 10rem;
         cursor: pointer;
       }
+
+      &#skill-attRelative {
+        white-space: nowrap; 
+        overflow: hidden;
+      }
     }
   }
 
