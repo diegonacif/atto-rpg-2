@@ -7,15 +7,28 @@
     filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.75));
   }
 
-  span {
+  input {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 49.5%;
+    left: 50.5%;
+    width: 5.5rem;
+    height: 5.5rem;
     transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 0;
+    border-radius: 9999px;
     font-size: $font-28;
     font-weight: bold;
     color: $gray-200;
+    text-align: center;
     text-shadow: 3px 3px 4px rgba(0,0,0,0.9);
+
+    &#hp-input:focus-visible {
+      outline: 3px solid rgba(255, 41, 41, 0.75);
+    }
+    &#fp-input:focus-visible {
+      outline: 3px solid rgba(132, 39, 255, 0.75);
+    }
   }
 }
 
