@@ -4,8 +4,8 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 
-import hpOrb from '../../assets/hp-orb.png';
-import fpOrb from '../../assets/fp-orb.png';
+import hpOrb from '../../assets/hp-potion.png';
+import fpOrb from '../../assets/mana-potion.png';
 
 export const Footer = () => {
   const { id } = useParams<{ id: string }>();

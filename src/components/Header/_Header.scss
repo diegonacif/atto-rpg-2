@@ -5,6 +5,7 @@
   width: 100%;
   height: 4.5rem;
   @include responsive-padding;
+  background-color: $gray-900;
 
   .title-wrapper {
     display: flex;
@@ -15,6 +16,10 @@
     h2 {
       font-family: $font-title;
       font-weight: 700;
+      background: -webkit-linear-gradient($lightyellow-gurps, $darkyellow-gurps);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     #d6-dice {
@@ -22,20 +27,31 @@
     }
   }
 
-  .user-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 3.5rem;
-    width: 3.5rem;
-    border-radius: 9999px;
-    background-color: $gray-300;
-    cursor: pointer;
-    overflow: hidden;
+  .avatar-frame-wrapper {
+    position: relative;
 
-    img {
-      width: 100%;
+    .user-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3.5rem;
+      width: 3.5rem;
+      border-radius: 9999px;
+      background-color: $gray-300;
+      cursor: pointer;
+      overflow: hidden;
+  
+      img {
+        width: 100%;
+      }
+  
+      #avatar-frame {
+        position: absolute;
+        top: 53%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 4.4rem;
+      }
     }
   }
-
 }

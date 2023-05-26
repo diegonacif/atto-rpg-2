@@ -3,31 +3,37 @@
   height: 100%;
 
   img {
-    height: 100%;
+    height: 5rem;
+    width: 5rem;
     filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.75));
   }
 
   input {
     position: absolute;
-    top: 49.5%;
+    bottom: -0.45rem;
     left: 50.5%;
-    width: 5.5rem;
-    height: 5.5rem;
-    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: fit-content;
+    transform: translateX(-50%);
     background-color: transparent;
     border: 0;
     border-radius: 9999px;
-    font-size: $font-28;
+    font-size: $font-24;
     font-weight: bold;
     color: $gray-200;
     text-align: center;
     text-shadow: 3px 3px 4px rgba(0,0,0,0.9);
+    transition: text-shadow 0.3s;
 
     &#hp-input:focus-visible {
-      outline: 3px solid rgba(255, 41, 41, 0.75);
+      text-shadow: 3px 3px 4px rgba(204, 33, 33, 0.8);
+      transition: text-shadow 0.3s;
+      outline: 0;
+      // outline: 3px solid rgba(255, 41, 41, 0.75);
     }
     &#fp-input:focus-visible {
-      outline: 3px solid rgba(132, 39, 255, 0.75);
+      text-shadow: 3px 3px 4px rgba(105, 29, 204, 0.8);
+      outline: 0;
     }
   }
 }
@@ -39,15 +45,23 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 7.5rem;
+  height: 6rem;
 
   @include responsive-padding;
 
   .hp-wrapper {
     @include footerOrbsWrapper;
+    background-color:rgba(0, 0, 0, 0.25);
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5.25rem;
   }
 
   .fp-wrapper {
     @include footerOrbsWrapper;
+    background-color:rgba(0, 0, 0, 0.25);
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5.25rem;
   }
 }
