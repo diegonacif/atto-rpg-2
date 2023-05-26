@@ -228,7 +228,9 @@ export const Flaws = () => {
             ))
           }
 
-          <button onClick={() => handleNewFlawModalOpen()} id="new-flaw-button">Nova desvantagem</button>
+          <button onClick={() => handleNewFlawModalOpen()} id="new-flaw-button">
+            <span className="yellow-span">Nova desvantagem</span>
+          </button>
 
           <ReactModal
             isOpen={isModalOpen}

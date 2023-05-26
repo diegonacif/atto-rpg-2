@@ -276,7 +276,9 @@ export const Perks = () => {
               />
             ))
           }
-          <button onClick={() => handleNewPerkModalOpen()}>Nova vantagem</button>
+          <button onClick={() => handleNewPerkModalOpen()}>
+            <span className="yellow-span"> Nova vantagem</span>
+          </button>
           <ReactModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}

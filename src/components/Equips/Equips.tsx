@@ -164,7 +164,9 @@ export const Equips = () => {
             ))
           }
 
-          <button onClick={() => handleNewSkillModalOpen()} id="new-equip-button">Novo equipamento</button>
+          <button onClick={() => handleNewSkillModalOpen()} id="new-equip-button">
+            <span className="yellow-span">Novo equipamento</span>
+          </button>
 
           <ReactModal
             isOpen={isModalOpen}
