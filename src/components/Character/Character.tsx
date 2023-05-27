@@ -7,6 +7,7 @@ import { CaretCircleDown, CaretCircleUp, TrendUp, UserList, YinYang } from '@pho
 import Collapsible from 'react-collapsible';
 import { PerksFlawsResume } from '../PerksFlawsResume/PerksFlawsResume';
 import { Footer } from '../Footer/Footer';
+import greenVideo from '../../assets/green-video.mp4';
 
 import '../../App.scss';
 
@@ -36,7 +37,13 @@ export const Character = () => {
         easing="ease"
         transitionTime={500}
       >
+        
         <header className="character-header">
+          <video id="background-video" loop autoPlay muted>
+            <source src={greenVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="video-glass"></div>
           <section className="character-header-content">
             {
               currentFlip === 'character-resume' ?
