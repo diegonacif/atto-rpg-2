@@ -3,7 +3,7 @@ import { User } from '@phosphor-icons/react'
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { useNavigate } from 'react-router-dom';
 
-import diceImg from '../../assets/d6-dice-red.png';
+import diceImg from '../../assets/d6-dice-green.png';
 import avatarFrame from '../../assets/avatar-frame.png';
 
 export const Header = () => {
