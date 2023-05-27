@@ -37,7 +37,6 @@ export const Character = () => {
         easing="ease"
         transitionTime={500}
       >
-        
         <header className="character-header">
           <video id="background-video" loop autoPlay muted>
             <source src={greenVideo} type="video/mp4" />
@@ -56,9 +55,15 @@ export const Character = () => {
             }
           </section>
           <div className="nav-menu">
-            <UserList size={32} weight="duotone" onClick={() => setCurrentFlip('character-resume')}/>
-            <YinYang size={32} weight="duotone" onClick={() => setCurrentFlip('perks-and-flaws-resume')}/>
-            <TrendUp size={32} weight="duotone" onClick={() => setCurrentFlip('points-resume')}/>
+            <div className={`menu-item-wrapper ${currentFlip === 'character-resume' ? 'selected-menu' : ''}`}>
+              <UserList className={`character-menu`} size={32} weight="duotone" onClick={() => setCurrentFlip('character-resume')}/>
+            </div>
+            <div className={`menu-item-wrapper ${currentFlip === 'perks-and-flaws-resume' ? 'selected-menu' : ''}`}>
+              <YinYang className="perks-and-flaws-menu" size={32} weight="duotone" onClick={() => setCurrentFlip('perks-and-flaws-resume')}/>
+            </div>
+            <div className={`menu-item-wrapper ${currentFlip === 'points-resume' ? 'selected-menu' : ''}`}>
+              <TrendUp className="points-menu" size={32} weight="duotone" onClick={() => setCurrentFlip('points-resume')}/>
+            </div>
           </div>
         </header>
       </Collapsible>
