@@ -23,7 +23,7 @@
       width: 100%;
       padding: 0 0.25rem;
       border-radius: 4px;
-      border: 1px solid $gray-400;
+      border: 1px solid rgba(243, 178, 14, 0.6);
       text-align: center;
       color: $gray-100;
       cursor: default;
@@ -56,5 +56,76 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    .equips-modal-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: fit-content;
+      align-items: center;
+      justify-items: center;
+
+      label {
+        font-size: $font-14;
+        font-weight: 400;
+      }
+
+      input, select, span {
+        padding: 0.25rem;
+        border-radius: 4px;
+        border: 1px solid $gray-400;
+        text-align: center;
+        width: 100%;
+        background-color: $gray-100;
+        font-weight: 500;
+        font-size: $font-14;
+    
+        &.disabled  {
+          color: $gray-500;
+        }
+    
+        &:focus-visible {
+          outline: 2px solid $green-gurps;
+        }
+      }
+  
+      .not-editable {
+        background-color:rgba(75, 112, 68, 0.25);
+        cursor: not-allowed;
+      }
+
+      & + .equips-modal-row {
+        margin-top: 0.5rem;
+      }
+
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background-color: #2d462cee;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      color: $darkyellow-gurps;
+      font-weight: 500;
+      margin: 1rem auto 0;
+      transition: color 0.1s, background-color 0.1s, font-weight 0.1s;
+
+      &:disabled {
+        cursor: not-allowed;
+        background-color: #2d462c98;
+        color: $gray-700;
+        transition: color 0.3s, background-color 0.3s, font-weight 0.3s;
+      }
+    }
+
+    .buttons-row {
+      display: flex;
+      justify-content: space-evenly;
+      height: fit-content;
+      margin-top: 1rem;
+
+      button {
+        margin: 0;
+      }
+    }
   }
 }

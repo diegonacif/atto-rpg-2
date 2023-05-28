@@ -176,33 +176,48 @@ export const Equips = () => {
             ariaHideApp={false}
           >
             <div className="equips-modal">
-              <input 
-                type="string"
-                id="equip-description"
-                value={selectedEquip}
-                onChange={(e) => setSelectedEquip(e.target.value)}
-              />
-              <input 
-                type="number"
-                id="equip-weight"
-                value={selectedWeight}
-                pattern="^[0-9]*$"  
-                onChange={(e) => setSelectedWeight(Number(e.target.value))
-                }
-              />
-              <input 
-                type="number"
-                id="equip-cost"
-                value={selectedCost}
-                onChange={(e) => setSelectedCost(Number(e.target.value))}
-              />
+              <div className="equips-modal-row">
+                <label htmlFor="">Descrição:</label>
+                <input 
+                  type="string"
+                  id="equip-description"
+                  value={selectedEquip}
+                  placeholder="Insira a descrição"
+                  onChange={(e) => setSelectedEquip(e.target.value)}
+                />
+              </div>
+              <div className="equips-modal-row">
+                <label htmlFor="">Peso:</label>
+                <input 
+                  type="number"
+                  id="equip-weight"
+                  value={selectedWeight}
+                  pattern="^[0-9]*$"  
+                  onChange={(e) => setSelectedWeight(Number(e.target.value))
+                  }
+                />
+              </div>
+              <div className="equips-modal-row">
+                <label htmlFor="">Custo:</label>
+                <input 
+                  type="number"
+                  id="equip-cost"
+                  value={selectedCost}
+                  onChange={(e) => setSelectedCost(Number(e.target.value))}
+                />
+              </div>
               
               {isNewEquip ? 
-                <button onClick={() => addNewEquip()}>Save</button>  :
-                <>
-                  <button onClick={() => updateEquip()}>Update</button>
-                  <button onClick={() => deleteEquip()}>Delete</button>
-                </>
+                <button 
+                  onClick={() => addNewEquip()}
+                  disabled={selectedEquip === "" ? true : false}
+                >
+                  Adicionar
+                </button>  :
+                <div className="buttons-row">
+                  <button onClick={() => updateEquip()}>Atualizar</button>
+                  <button onClick={() => deleteEquip()}>Deletar</button>
+                </div>
               }
             </div>
           </ReactModal>

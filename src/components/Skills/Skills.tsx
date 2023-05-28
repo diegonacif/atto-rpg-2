@@ -351,34 +351,66 @@ export const Skills = () => {
                   </option>
                 ))}
               </select>
-              <span>{selectedAttRelative?.attribute} / {selectedAttRelative.difficulty}</span>
-              <input 
-                type="number"
-                id="skill-mod"
-                value={selectedMod}
-                onChange={(e) => setSelectedMod(Number(e.target.value))}
-              />
-              <span>nh: {selectedNh}</span>
-              <select 
-                name="select-points" 
-                id="select-points"
-                value={selectedPoints}
-                onChange={(e) => setSelectedPoints(Number(e.target.value))}
-              >
-                {
-                  pointsList.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))
-                }
-              </select>
+
+              {
+                selectedAttRelative?.attribute && selectedAttRelative.difficulty ?
+                <div className="skills-modal-row">
+                  <label htmlFor="">Attributo relativo: </label>
+                  <span className="not-editable">
+                    {selectedAttRelative?.attribute} / {selectedAttRelative.difficulty}
+                  </span> 
+                </div>:
+                <div className="skills-modal-row">
+                  <label htmlFor="">Attributo relativo: </label>
+                  <span className="not-editable">att / dif</span>
+                </div>
+              }
+
+              <div className="skills-modal-row">
+                <label htmlFor="">NH: </label>
+                <span className="not-editable">
+                  {selectedNh}
+                </span>
+              </div>
+              
+              <div className="skills-modal-row">
+                <label htmlFor="">Modificador: </label>
+                <input 
+                  type="number"
+                  id="skill-mod"
+                  value={selectedMod}
+                  onChange={(e) => setSelectedMod(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="skills-modal-row">
+                <label htmlFor="">Pontuação</label>
+                <select 
+                  name="select-points" 
+                  id="select-points"
+                  value={selectedPoints}
+                  onChange={(e) => setSelectedPoints(Number(e.target.value))}
+                >
+                  {
+                    pointsList.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))
+                  }
+                </select>
+              </div>
               {isNewSkill ? 
-                <button onClick={() => addNewSkill()}>Save</button>  :
-                <>
-                  <button onClick={() => updateSkill()}>Update</button>
-                  <button onClick={() => deleteSkill()}>Delete</button>
-                </>
+                <button 
+                  onClick={() => addNewSkill()}
+                  disabled={selectedSkill === "" ? true : false}
+                >
+                  Adicionar
+                </button>  :
+                <div className="buttons-row">
+                  <button onClick={() => updateSkill()}>Atualizar</button>
+                  <button onClick={() => deleteSkill()}>Deletar</button>
+                </div>
               }
             </div>
           </ReactModal>
