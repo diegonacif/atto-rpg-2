@@ -22,6 +22,8 @@ import female02 from '../../assets/charIcons/female02.png';
 import female03 from '../../assets/charIcons/female03.png';
 import female04 from '../../assets/charIcons/female04.png';
 
+import wireframeBg from '../../assets/ceiling-floor-background.png'
+
 import '../../App.scss';
 
 interface IChars { 
@@ -58,11 +60,19 @@ export const CharSelector = () => {
   const [charWeight, setCharWeight] = useState(0);
   const [charFace, setCharFace] = useState("");
 
-  console.log(charFace);
+  const [newCharButtonDisabled, setNewCharButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if(charName !== "" && charGender !== "" && experienceValue !== 0) {
+      setNewCharButtonDisabled(false);
+    } else {
+      setNewCharButtonDisabled(true);
+    }
+  }, [charName, charGender, experienceValue])
+
+  console.log(newCharButtonDisabled)
 
   const navigate = useNavigate();
-
-  // const IdsArray = firestoreLoading ? [] : users?.map((user) => user.id)
 
   // Firestore loading
   const [value, loading, error] = useCollection(usersCollectionRef,
@@ -80,7 +90,6 @@ export const CharSelector = () => {
     }
     getChars();
   }, [charSelectorRefresh])
-
 
   // Create user and char data
   async function registerUser({ userDocRef, userDoc }: IRegisterUserProps) {
@@ -274,11 +283,11 @@ export const CharSelector = () => {
         {
           chars.map(char => (
             <div className="char-row" key={char.id}>
-              <div className="char-face-wrapper">
+              <div className="char-face-wrapper" onClick={() => handleSelectChar(char.id)}>
                 <img src={faceMapping[char.face] || faceless} alt="char-face" />
               </div>
-              <div className="text-content">
-                <li onClick={() => handleSelectChar(char.id)}>{char?.name}</li>
+              <div className="text-content" onClick={() => handleSelectChar(char.id)}>
+                <li >{char?.name}</li>
                 <span>XP: {char?.xp}</span>
               </div>
               <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
@@ -294,7 +303,8 @@ export const CharSelector = () => {
         style={modalCustomStyles}
         closeTimeoutMS={150}
         ariaHideApp={false}
-      >
+      > 
+        <img src={wireframeBg} alt="wireframe background" id="wireframe-background" />
         <div className="new-char-modal">
           <div className="new-char-icon-wrapper" onClick={() => setIsFaceSelectModalOpen(true)}>
             <img src={currentImg} alt="" />
@@ -335,7 +345,7 @@ export const CharSelector = () => {
             onChange={(e) => setCharWeight(Number(e.target.value))} 
             placeholder="Insira o peso"
           />
-          <button onClick={() => createChar()}>Criar boneco</button>
+          <button disabled={newCharButtonDisabled} onClick={() => createChar()}>Criar boneco</button>
         </div>
 
         {/* Face Char Selector */}

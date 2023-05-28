@@ -88,10 +88,14 @@ $font-32: 2rem;
   }
 }
 
+.ReactModal__Content {
+  overflow: hidden !important;
+}
+
 .ReactModal__Overlay {
   opacity: 0;
   transition: opacity 300ms ease-in-out;
-  background-color: rgba(0, 112, 37, 0.6) !important;
+  background-color: rgba(1, 22, 7, 0.75) !important;
   backdrop-filter: blur(2px);
   z-index: 5;
 }

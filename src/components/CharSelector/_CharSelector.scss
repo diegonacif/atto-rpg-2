@@ -1,5 +1,11 @@
 .char-selector-container {
   @include responsive-padding(2rem, 2rem);
+  min-height: calc(100vh - 4.5rem);
+  height: 100%;
+  background: #6ac880;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #1d2d1c, #6ac880);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #1d2d1c, #6ac880); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 
   .new-char-button {
     display: flex;
@@ -8,9 +14,19 @@
     width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    background-color: $gray-300;
+    background-color: #2d462c;
     margin: 0 auto;
+    outline: 1px solid $yellow-gurps;
     cursor: pointer;
+
+    span {
+      color: $darkyellow-gurps; 
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.75);
+    }
+
+    svg {
+      color: $darkyellow-gurps; 
+    }
   }
 
   ul {
@@ -19,7 +35,7 @@
     justify-content: center;
     gap: 1rem;
     list-style-type: none;
-    margin-top: 1rem;
+    margin-top: 2rem;
 
     .char-row {
       display: flex;
@@ -32,9 +48,13 @@
       background-color: $gray-300;
       border-radius: 4px;
       outline: 2px solid transparent;
+      box-shadow: 4px 4px 6px #4e8553;
+      overflow: hidden;
+
 
       .char-face-wrapper {
         height: 100%;
+        cursor: pointer;
 
         img {
           height: 100%;
@@ -43,9 +63,15 @@
 
       .text-content {
         display: flex;
+        align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
         height: 100%;
+        cursor: pointer;
+
+        li {
+          font-weight: 500;
+        }
       }
 
       &:hover {
@@ -56,7 +82,7 @@
 
       li {
         width: fit-content;
-        cursor: pointer;
+        
       }
 
       .delete-char-button {
@@ -68,7 +94,17 @@
     }
 
   }
+}
 
+
+#wireframe-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  filter: blur(2px);
+  z-index: -1;
 }
 
 .new-char-modal {
@@ -76,7 +112,9 @@
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
-  // overflow: hidden;
+  // background: url('./assets/ceiling-floor-background.png');
+  // background-repeat: no-repeat;
+  // background-size: cover;
 
   .new-char-icon-wrapper {
     outline: 2px solid $gray-400;
@@ -87,6 +125,7 @@
 
     img {
       height: 100%;
+      background-color: rgba(255, 255, 255, 0.75);
     }
 
   }
@@ -119,9 +158,19 @@
 
   button {
     margin-top: 1.5rem;
-    background-color: $gray-300;
+    background-color: #2d462cee;
     padding: 0.5rem 1rem;
     border-radius: 4px;
+    color: $darkyellow-gurps;
+    font-weight: 500;
+    transition: color 0.1s, background-color 0.1s, font-weight 0.1s;
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #2d462c98;
+      color: $gray-700;
+      transition: color 0.3s, background-color 0.3s, font-weight 0.3s;
+    }
   }
 }
 
