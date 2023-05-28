@@ -22,8 +22,13 @@
       // top: 0;
       bottom: 0.25rem;
       display: flex;
-      width: fit-content;
-      height: fit-content;
+      width: 5rem;
+      height: 5rem;
+      background-color: rgba(9, 46, 0, 0.6);
+      border-radius: 9999px;
+      outline: 2px solid $darkyellow-gurps;
+      outline-offset: -0.4rem;
+      box-shadow: 6px 6px 10px #5fa166, -6px -6px 10px #94ffb4;
 
       #points-left {
         position: absolute;

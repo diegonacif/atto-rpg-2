@@ -83,7 +83,7 @@ export const CharacterResume = () => {
           <span>{coreInfoData?.name}</span>
         </div>
         <div className="text-row">
-          <label htmlFor="">Gender</label>
+          <label htmlFor="">Gênero</label>
           <span>
             {
               coreInfoData?.gender === 'male' ?

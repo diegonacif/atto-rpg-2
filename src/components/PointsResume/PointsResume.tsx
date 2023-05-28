@@ -105,7 +105,7 @@ export const PointsResume = () => {
           <span>Desvantagens: {flawsSum}</span>
         </div>
         <div className="blank-orb-wrapper">
-          <img src={blankOrb} alt="remaining points" id="remaining-points"/>
+          {/* <img src={blankOrb} alt="remaining points" id="remaining-points"/> */}
           <input type="number" name="points-left" id="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
         </div>
       </section>
