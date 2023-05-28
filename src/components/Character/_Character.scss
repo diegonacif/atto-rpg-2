@@ -67,8 +67,9 @@
           height: 3rem;
           border-radius: 48%;
           background-color: transparent;
+          box-shadow: 0;
           z-index: -1;
-          transition: background-color 0.1s;
+          transition: background-color 0.1s, box-shadow 0.3s;
         }
 
         &.selected-menu {
@@ -82,8 +83,9 @@
             height: 3rem;
             border-radius: 48%;
             background-color: rgba(9, 46, 0, 0.603);
+            box-shadow: 6px 6px 10px #5fa166, -6px -6px 10px #94ffb4;
             z-index: -1;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s;
           }
 
           svg {
