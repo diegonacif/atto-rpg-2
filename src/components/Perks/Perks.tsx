@@ -135,45 +135,65 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
   
   return (
     <div className="perks-modal">
-      <select 
-        id="perk-name"
-        onChange={(e) => {
-          const selectedPerk = perksData.find(perk => perk.name === e.target.value);
-          setSelectedPerk(e.target.value);
-          selectedPerk && setCurrentSelectedPerk(selectedPerk)
-        }}
-        value={selectedPerk}
-      >
-        <option value="">Selecione uma vantagem</option>
-        {perksData.map((option) => (
-          <option key={option.name} value={option.name}>
-            {option.name}
-          </option>
-        ))}
-      </select>
-      <select 
-        id="perk-level"
-        onChange={(e) => setSelectedLevel(Number(e.target.value))}
-        value={selectedLevel}
-      >
-        <option value="">0</option>
-        {currentSelectedPerk?
-          currentSelectedPerk.levels.map((level) => (
-            <option key={`${level}`} value={`${level}`}>
-              {`${level}`}
+      <div className="perks-modal-row">
+        <label htmlFor="">Descrição:</label>
+        <select 
+          id="perk-name"
+          onChange={(e) => {
+            const selectedPerk = perksData.find(perk => perk.name === e.target.value);
+            setSelectedPerk(e.target.value);
+            selectedPerk && setCurrentSelectedPerk(selectedPerk)
+          }}
+          value={selectedPerk}
+        >
+          <option value="">Selecione</option>
+          {perksData.map((option) => (
+            <option key={option.name} value={option.name}>
+              {option.name}
             </option>
-        )):
-        <option value="">0</option>
-      }
-      </select>
-      <span>{selectedPoints}</span>
-      {newPerk ? 
-        <button onClick={() => addNewPerk()}>Save</button>  :
-        <>
-          <button onClick={() => updatePerk()}>Update</button>
-          <button onClick={() => deletePerk()}>Delete</button>
-        </>
-      }
+          ))}
+        </select>
+      </div>
+      <div className="perks-modal-row">
+        <label htmlFor="">Nível</label>
+        <select 
+          id="perk-level"
+          onChange={(e) => setSelectedLevel(Number(e.target.value))}
+          value={selectedLevel}
+        >
+          <option value="">0</option>
+          {currentSelectedPerk?
+            currentSelectedPerk.levels.map((level) => (
+              <option key={`${level}`} value={`${level}`}>
+                {`${level}`}
+              </option>
+          )):
+          <option value="">0</option>
+        }
+        </select>
+      </div>
+      
+
+      
+      <div className="perks-modal-row">
+        <label htmlFor="">Custo</label>
+        <span className="not-editable">{selectedPoints}</span>
+      </div>
+
+      <div className="buttons-row">
+        {newPerk ? 
+          <button 
+            onClick={() => addNewPerk()}
+            disabled={selectedPerk === "" ? true : false}
+          >
+            Adicionar
+          </button>  :
+          <>
+            <button onClick={() => updatePerk()}>Atualizar</button>
+            <button onClick={() => deletePerk()}>Deletar</button>
+          </>
+        }
+      </div>
     </div>
   )
 };

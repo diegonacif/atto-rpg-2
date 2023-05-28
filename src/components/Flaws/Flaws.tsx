@@ -240,44 +240,61 @@ export const Flaws = () => {
             ariaHideApp={false}
           >
             <div className="flaws-modal">
-              <select 
-                id="perk-name"
-                onChange={(e) => {
-                  const currentFlaw = flawsStaticData.find(flaw => flaw.name === e.target.value);
-                  setSelectedFlaw(e.target.value);
-                  selectedFlaw && setCurrentSeletedFlaw(currentFlaw)
-                }}
-                value={selectedFlaw}
-              >
-                <option value="">Selecione uma vantagem</option>
-                {flawsStaticData.map((option) => (
-                  <option key={option.name} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
-              <select 
-                id="perk-level"
-                onChange={(e) => setSelectedLevel(Number(e.target.value))}
-                value={selectedLevel}
-              >
-                <option value="">0</option>
-                {currentSelectedFlaw ?
-                  currentSelectedFlaw?.levels.map((level) => (
-                    <option key={`${level}`} value={`${level}`}>
-                      {`${level}`}
+              <div className="flaws-modal-row">
+                <label htmlFor="">Descrição:</label>
+                <select 
+                  id="perk-name"
+                  onChange={(e) => {
+                    const currentFlaw = flawsStaticData.find(flaw => flaw.name === e.target.value);
+                    setSelectedFlaw(e.target.value);
+                    selectedFlaw && setCurrentSeletedFlaw(currentFlaw)
+                  }}
+                  value={selectedFlaw}
+                >
+                  <option value="">Selecione</option>
+                  {flawsStaticData.map((option) => (
+                    <option key={option.name} value={option.name}>
+                      {option.name}
                     </option>
-                )):
-                <option value="">0</option>
-              }
-              </select>
-              <span>{selectedPoints}</span>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="flaws-modal-row">
+                <label htmlFor="">Nível:</label>
+                <select 
+                  id="perk-level"
+                  onChange={(e) => setSelectedLevel(Number(e.target.value))}
+                  value={selectedLevel}
+                >
+                  <option value="">0</option>
+                  {currentSelectedFlaw ?
+                    currentSelectedFlaw?.levels.map((level) => (
+                      <option key={`${level}`} value={`${level}`}>
+                        {`${level}`}
+                      </option>
+                  )):
+                  <option value="">0</option>
+                }
+                </select>
+              </div>
+              
+              <div className="flaws-modal-row">
+                <label htmlFor="">Custo:</label>
+                <span className="not-editable">{selectedPoints}</span>
+              </div>
+
               {isNewFlaw ? 
-                <button onClick={() => addNewFlaw()}>Save</button>  :
-                <>
-                  <button onClick={() => updateFlaw()}>Update</button>
-                  <button onClick={() => deleteFlaw()}>Delete</button>
-                </>
+                <button 
+                  onClick={() => addNewFlaw()}
+                  disabled={selectedFlaw === "" ? true : false}
+                >
+                  Adicionar
+                </button>  :
+                <div className="buttons-row">
+                  <button onClick={() => updateFlaw()}>Atualizar</button>
+                  <button onClick={() => deleteFlaw()}>Deletar</button>
+                </div>
               }
             </div>
           </ReactModal>
