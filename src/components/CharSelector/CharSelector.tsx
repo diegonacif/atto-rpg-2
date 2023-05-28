@@ -70,8 +70,6 @@ export const CharSelector = () => {
     }
   }, [charName, charGender, experienceValue])
 
-  console.log(newCharButtonDisabled)
-
   const navigate = useNavigate();
 
   // Firestore loading

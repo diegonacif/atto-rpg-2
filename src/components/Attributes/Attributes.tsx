@@ -214,6 +214,10 @@ export const Attributes = () => {
     }
   }
 
+  const [isHexagonActive, setIsHexagonActive] = useState("");
+
+  console.log(isHexagonActive)
+
   return (
     <div className="attributes-container">
       {
@@ -224,29 +228,51 @@ export const Attributes = () => {
             <div className="attributes-primary">
               <div className="attribute-wrapper">
                 <span>For</span>
-                <div className="hexagon">
-                  <input type="number" {...register("strength")}/> 
+                <div className={`hexagon ${isHexagonActive === "strength" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("strength")}
+                    name="strength"
+                    onFocus={() => setIsHexagonActive("strength")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{strCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>Des</span>
-                <div className="hexagon">
-                  <input type="number" {...register("dexterity")}/> 
+                <div className={`hexagon ${isHexagonActive === "dexterity" ? "active" : ""}`}>
+                  <input 
+                    type="number"
+                    {...register("dexterity")}
+                    name="dexterity"
+                    onFocus={() => setIsHexagonActive("dexterity")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{dexCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>Int</span>
-                <div className="hexagon">
-                  <input type="number" {...register("intelligence")}/> 
+                <div className={`hexagon ${isHexagonActive === "intelligence" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("intelligence")}
+                    onFocus={() => setIsHexagonActive("intelligence")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{intCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>Vit</span>
-                <div className="hexagon">
-                  <input type="number" {...register("health")}/> 
+                <div className={`hexagon ${isHexagonActive === "health" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("health")}
+                    onFocus={() => setIsHexagonActive("health")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{hthCost}</span>
               </div>
@@ -254,29 +280,49 @@ export const Attributes = () => {
             <div className="attributes-secondary">
               <div className="attribute-wrapper">
                 <span>PV</span>
-                <div className="hexagon">
-                  <input type="number" {...register("hitPoints")}/> 
+                <div className={`hexagon ${isHexagonActive === "hitPoints" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("hitPoints")}
+                    onFocus={() => setIsHexagonActive("hitPoints")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{hpCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>Vont</span>
-                <div className="hexagon">
-                  <input type="number" {...register("will")}/> 
+                <div className={`hexagon ${isHexagonActive === "will" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("will")}
+                    onFocus={() => setIsHexagonActive("will")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{willCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>Per</span>
-                <div className="hexagon">
-                  <input type="number" {...register("perception")}/> 
+                <div className={`hexagon ${isHexagonActive === "perception" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("perception")}
+                    onFocus={() => setIsHexagonActive("perception")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{perCost}</span>
               </div>
               <div className="attribute-wrapper">
                 <span>PF</span>
-                <div className="hexagon">
-                  <input type="number" {...register("fatiguePoints")}/> 
+                <div className={`hexagon ${isHexagonActive === "fatiguePoints" ? "active" : ""}`}>
+                  <input 
+                    type="number" 
+                    {...register("fatiguePoints")}
+                    onFocus={() => setIsHexagonActive("fatiguePoints")}
+                    onBlur={() => setIsHexagonActive("")}
+                  /> 
                 </div>
                 <span className="attribute-cost">{fpCost}</span>
               </div>
