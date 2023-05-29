@@ -16,6 +16,7 @@ interface IPerksData {
   description: string;
   level: number;
   points: number;
+  obs: string;
 };
 
 interface ILevelPoints {
@@ -34,7 +35,7 @@ const PerksRow = ({ perkData, openModalHandler }: {
 }) => {
   return (
     <div className="perks-row" key={`perk-${perkData.id}`}>
-      <span onClick={() => openModalHandler(perkData)}>{perkData.description}</span>
+      <span onClick={() => openModalHandler(perkData)}>{perkData.description}{perkData.obs ? ` (${perkData.obs})` : ''}</span>
       <span>{perkData.level}</span>
       <span>{perkData.points}</span>
     </div>
@@ -55,8 +56,9 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
   const perksCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "perks")
 
   const [selectedPerk, setSelectedPerk] = useState(currentPerkData.description);
-  const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level)
-  const [selectedPoints, setSelectedPoints] = useState(0)
+  const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level);
+  const [selectedPoints, setSelectedPoints] = useState(0);
+  const [selectedObs, setSelectedObs] = useState(currentPerkData.obs);
   const [currentSelectedPerk, setCurrentSelectedPerk] = useState<ISelectedPerk>({
     name: "",
     levels: [],
@@ -101,7 +103,8 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       await addDoc(perksCollectionRef, {
         description: selectedPerk,
         level: selectedLevel,
-        points: selectedPoints
+        points: selectedPoints,
+        obs: selectedObs,
       }).then(() => notifySuccess("Vantagem adicionada!"))
       setIsModalOpen(false)
     } catch (error) {
@@ -116,7 +119,8 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       await setDoc(docRef, {
         description: selectedPerk,
         level: selectedLevel,
-        points: selectedPoints
+        points: selectedPoints,
+        obs: selectedObs,
       }).then(() => notifySuccess("Vantagem atualizada!"));
       console.log("Documento atualizado com sucesso!");
       setIsModalOpen(false);
@@ -178,11 +182,19 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
         </select>
       </div>
       
-
-      
       <div className="perks-modal-row">
         <label htmlFor="">Custo</label>
         <span className="not-editable">{selectedPoints}</span>
+      </div>
+
+      <div className="perks-modal-row">
+        <label htmlFor="">Observações</label>
+        <input 
+          type="text" 
+          placeholder="Opcional" 
+          onChange={(e) => setSelectedObs(e.target.value)}
+          value={selectedObs}
+        />
       </div>
 
       <div className="buttons-row">
@@ -213,6 +225,7 @@ export const Perks = () => {
     description: "",
     level: 0,
     points: 0,
+    obs: ""
   }])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPerkData, setCurrentPerkData] = useState<IPerksData>({
@@ -220,6 +233,7 @@ export const Perks = () => {
     description: "",
     level: 0,
     points: 0,
+    obs: ""
   })
   const [isNewPerk, setIsNewPerk] = useState(false);
   const [firestoreLoading, setFirestoreLoading] = useState(true)
@@ -247,6 +261,7 @@ export const Perks = () => {
       description: "",
       level: 0,
       points: 0,
+      obs: ""
     });
     setIsNewPerk(true);
     setIsModalOpen(true);
@@ -261,6 +276,7 @@ export const Perks = () => {
         description: doc.data().description,
         level: doc.data().level,
         points: doc.data().points,
+        obs: doc.data().obs,
         ...doc.data()
       })));
       setPerksData(docs)

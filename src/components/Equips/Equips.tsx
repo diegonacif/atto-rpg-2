@@ -187,7 +187,7 @@ export const Equips = () => {
               <div className="equips-modal-row">
                 <label htmlFor="">Descrição:</label>
                 <input 
-                  type="string"
+                  type="text"
                   id="equip-description"
                   value={selectedEquip}
                   placeholder="Insira a descrição"
