@@ -37,6 +37,7 @@ export const flawsData: IFlaws[] = [
   { name: "Cegueira", levels: [5] },
   { name: "Cleptomania", levels: [2] },
   { name: "Cobiça", levels: [2] },
+  { name: "Código de Honra", levels: [1, 2, 3]},
   { name: "Covardia", levels: [2] },
   { name: "Duro de Ouvido", levels: [2] },
   { name: "Excesso de confiança", levels: [1] },
