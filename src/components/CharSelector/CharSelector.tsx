@@ -123,7 +123,7 @@ export const CharSelector = () => {
     const attributes = ['strength', 'dexterity', 'intelligence', 'health', 'hit-points', 'will', 'perception', 'fatigue-points', 'current-fatigue-points', 'current-hit-points']
 
     for (const attribute of attributes) {
-      await setDoc(doc(charDocRef, 'attributes', attribute), { value: 10 });
+      await setDoc(doc(charDocRef, 'attributes', attribute), { value: "10" });
     }
     await setDoc(doc(charDocRef, 'attributes', 'attributes-sum'), { value: 0 });
 
