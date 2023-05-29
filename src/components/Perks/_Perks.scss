@@ -10,6 +10,7 @@
     grid-template-columns: auto 3rem 3rem;
     column-gap: 0.25rem;
     width: 100%;
+    height: fit-content;
 
     & + .perks-row {
       margin-top: 0.5rem;
@@ -28,12 +29,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 1.75rem;
+      height: 100%;
+      min-height: fit-content;
       width: 100%;
       padding: 0 0.25rem;
       border-radius: 4px;
       border: 1px solid rgba(243, 178, 14, 0.6);
       color: $gray-100;
+      text-align: center;
       cursor: default;
 
       &:first-of-type {

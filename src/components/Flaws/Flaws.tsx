@@ -15,6 +15,7 @@ interface IFlawsData {
   description: string;
   level: number;
   points: number;
+  obs: string;
 };
 
 interface ISelectedFlaw {
@@ -36,6 +37,7 @@ export const Flaws = () => {
     description: "",
     level: 0,
     points: 0,
+    obs: ""
   }])
   const [firestoreLoading, setFirestoreLoading] = useState(true)
 
@@ -54,11 +56,13 @@ export const Flaws = () => {
   const [selectedFlaw, setSelectedFlaw] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(0);
   const [selectedPoints, setSelectedPoints] = useState(0);
+  const [selectedObs, setSelectedObs] = useState("");
   const [currentFlawData, setCurrentFlawData] = useState<IFlawsData>({
     id: "",
     description: "",
     level: 0,
     points: 0,
+    obs: ""
   });
   const [currentSelectedFlaw, setCurrentSeletedFlaw] = useState<ISelectedFlaw | undefined>({
     name: "",
@@ -72,6 +76,7 @@ export const Flaws = () => {
     setSelectedFlaw(flaw.description);
     setSelectedLevel(flaw.level);
     setSelectedPoints(flaw.points);
+    setSelectedObs(flaw.obs);
     setIsNewFlaw(false);
     setIsModalOpen(true);
   };
@@ -80,6 +85,7 @@ export const Flaws = () => {
     setSelectedFlaw("");
     setSelectedLevel(0);
     setSelectedPoints(0);
+    setSelectedObs("");
     setIsNewFlaw(true);
     setIsModalOpen(true);
   };
@@ -101,6 +107,7 @@ export const Flaws = () => {
         description: doc.data().description,
         level: doc.data().level,
         points: doc.data().points,
+        obs: doc.data().obs,
         ...doc.data()
       })));
       setFlawsData(docs)
@@ -171,7 +178,8 @@ export const Flaws = () => {
       await addDoc(flawsCollectionRef, {
         description: selectedFlaw,
         level: selectedLevel,
-        points: selectedPoints
+        points: selectedPoints,
+        obs: selectedObs,
       }).then(
         () => {
           handleCloseModal();
@@ -190,7 +198,8 @@ export const Flaws = () => {
       await setDoc(docRef, {
         description: selectedFlaw,
         level: selectedLevel,
-        points: selectedPoints
+        points: selectedPoints,
+        obs: selectedObs,
       }).then(
         () => {
           handleCloseModal();
@@ -229,7 +238,7 @@ export const Flaws = () => {
           {
             flawsData.map((flaw) => (
               <div className="flaws-row" key={`flaw-${flaw.id}`}>
-                <span onClick={() => handleModalOpen(flaw)} id="flaw-name">{flaw.description}</span>
+                <span onClick={() => handleModalOpen(flaw)} id="flaw-name">{flaw.description}{flaw.obs ? ` (${flaw.obs})` : ''}</span>
                 <span id="flaw-level">{flaw.level}</span>
                 <span id="flaw-points">{flaw.points}</span>
               </div>
@@ -290,6 +299,16 @@ export const Flaws = () => {
               <div className="flaws-modal-row">
                 <label htmlFor="">Custo:</label>
                 <span className="not-editable">{selectedPoints}</span>
+              </div>
+
+              <div className="flaws-modal-row">
+                <label htmlFor="">Observações</label>
+                <input 
+                  type="text" 
+                  placeholder="Opcional" 
+                  onChange={(e) => setSelectedObs(e.target.value)}
+                  value={selectedObs}
+                />
               </div>
 
               {isNewFlaw ? 
