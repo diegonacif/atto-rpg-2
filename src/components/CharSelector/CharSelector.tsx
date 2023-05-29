@@ -116,7 +116,7 @@ export const CharSelector = () => {
   }
 
   async function registerCharContent({ charsCollectionRef, charDocRef }:IRegisterCharContent) {
-    const attributes = ['strength', 'dexterity', 'intelligence', 'health', 'hit-points', 'will', 'perception', 'fatigue-points']
+    const attributes = ['strength', 'dexterity', 'intelligence', 'health', 'hit-points', 'will', 'perception', 'fatigue-points', 'current-fatigue-points', 'current-hit-points']
 
     for (const attribute of attributes) {
       await setDoc(doc(charDocRef, 'attributes', attribute), { value: 10 });
