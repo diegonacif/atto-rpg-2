@@ -18,28 +18,31 @@ import { Character } from './components/Character/Character';
 import { CharSelector } from './components/CharSelector/CharSelector';
 import { CharactersProvider } from './contexts/CharactersProvider';
 import { PointsResumeProvider } from './contexts/PointsResumeProvider';
+import { ToastifyProvider } from './contexts/ToastifyProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
     <AuthGoogleProvider>
-    <PointsResumeProvider>
-      <Routes>
-        <Route path={"/"} element={<Login />} />
-        <Route element={<PrivateRoutes />}>
-          <Route path={"home"} element={<App />}>
-            <Route index element={<CharSelector />} />
-            <Route path={"character/:id"} element={<Character />}>
-              <Route index element={<Attributes />} />
-              <Route path={"perks"} element={<Perks />} />
-              <Route path={"flaws"} element={<Flaws />} />
-              <Route path={"skills"} element={<Skills />} />
-              <Route path={"equips"} element={<Equips />} />
+      <ToastifyProvider>
+        <PointsResumeProvider>
+          <Routes>
+            <Route path={"/"} element={<Login />} />
+            <Route element={<PrivateRoutes />}>
+              <Route path={"home"} element={<App />}>
+                <Route index element={<CharSelector />} />
+                <Route path={"character/:id"} element={<Character />}>
+                  <Route index element={<Attributes />} />
+                  <Route path={"perks"} element={<Perks />} />
+                  <Route path={"flaws"} element={<Flaws />} />
+                  <Route path={"skills"} element={<Skills />} />
+                  <Route path={"equips"} element={<Equips />} />
+                </Route>
+              </Route>
             </Route>
-          </Route>
-        </Route>
-      </Routes>
-    </PointsResumeProvider>
+          </Routes>
+        </PointsResumeProvider>
+      </ToastifyProvider>
     </AuthGoogleProvider>
     </BrowserRouter>
   </React.StrictMode>,

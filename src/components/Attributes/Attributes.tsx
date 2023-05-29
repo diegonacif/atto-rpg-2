@@ -6,9 +6,10 @@ import { db } from '../../services/firebase-config';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
+import { numberMask } from '../../utils/numberMask';
 
 import '../../App.scss';
-import { numberMask } from '../../utils/numberMask';
+import { ToastifyContext } from '../../contexts/ToastifyProvider';
 
 interface IFormData {
   strength: string,
@@ -37,6 +38,9 @@ export const Attributes = () => {
   const [attributesSum, setAttributesSum] = useState(0);
   const [firestoreLoading, setFirestoreLoading] = useState(true);
   const [refreshAttributes, setRefreshAttributes] = useState(false);
+
+const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify Context
+
 
   // Firestore loading
   const [value, loading, error] = useCollection(attributesCollectionRef,
@@ -209,10 +213,11 @@ export const Attributes = () => {
       await setDoc(willRef, {value: getValues('will')});
       await setDoc(perceptionRef, {value: getValues('perception')});
       await setDoc(fatiguePointsRef, {value: getValues('fatiguePoints')});
-      await setDoc(attributesSumRef, {value: attributesSum})
+      await setDoc(attributesSumRef, {value: attributesSum}).then(() => notifySuccess("Atributo atualizado."));
       setRefreshAttributes(current => !current)
     } catch (error) {
-      console.error("Erro ao atualizar registro: ", error)
+      console.error("Erro ao atualizar registro: ", error);
+      notifyError("Erro ao atualizar atributo.")
     }
   }
 
