@@ -1,10 +1,10 @@
 .character-resume-container {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   width: 100%;
   padding: 0 0.5rem;
-  
+
   .image-wrapper {
     display: flex;
     align-self: center;
@@ -13,7 +13,7 @@
     width: 4.5rem;
     min-width: 4.5rem;
 
-    box-shadow: 6px 6px 10px #6bb372, -6px -6px 10px #94ffb4;
+    box-shadow: 6px 6px 8px #6bb372, -6px -6px 8px #86df9b;
 
     img {
       width: 100%;
@@ -43,5 +43,22 @@
         text-align: center;
       }
     }
+  }
+
+  .skeleton-span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0.25rem;
+
+    :not(:first-child), :not(:last-child) {
+      margin-top: 0.75rem;
+    }
+  }
+
+  .skeleton-span-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

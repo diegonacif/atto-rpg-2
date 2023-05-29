@@ -14,7 +14,9 @@ import female01 from '../../assets/charIcons/female01.png';
 import female02 from '../../assets/charIcons/female02.png';
 import female03 from '../../assets/charIcons/female03.png';
 import female04 from '../../assets/charIcons/female04.png';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
+import 'react-loading-skeleton/dist/skeleton.css'
 import '../../App.scss';
 
 interface ICoreInfoData {
@@ -42,9 +44,12 @@ export const CharacterResume = () => {
     face: ""
   })
 
+  const [isLoading, setIsLoading] = useState(true);
+
   // Getting Character Data
   useEffect(() => {
     const getCharacterData = async () => {
+      setIsLoading(true);
       const querySnapshot = await getDoc(coreInfoRef);
       const data = querySnapshot.data();
       if(data) {
@@ -60,6 +65,7 @@ export const CharacterResume = () => {
           }
         );
       }
+      setIsLoading(false);
     };
     getCharacterData();
   }, [])
@@ -77,47 +83,67 @@ export const CharacterResume = () => {
   
   return (
     <div className="character-resume-container">
-      <div className="text-wrapper">
-        <div className="text-row">
-          <label htmlFor="">Nome</label>
-          <span>{coreInfoData?.name}</span>
-        </div>
-        <div className="text-row">
-          <label htmlFor="">Gênero</label>
-          <span>
-            {
-              coreInfoData?.gender === 'male' ?
-              ' Masculino' :
-              coreInfoData?.gender === 'female' ?
-              ' Feminino' :
-              ''
-            }
-          </span>
-        </div>
-        <div className="text-row">
-          <label htmlFor="">Experiência</label>
-          <span>{coreInfoData?.xp}</span>
-        </div>
-      </div>
+      {
+        isLoading ?
+        <SkeletonTheme 
+          width="5rem" 
+          height="1rem"
+          baseColor="rgba(43, 102, 48, 0.3)"
+          highlightColor="rgba(105, 199, 127, 0.3)"
+        >
 
-      <div className="image-wrapper">
-        <img src={faceMapping[coreInfoData?.face] || faceless} alt="character image" />
-      </div>
-      
-      <div className="text-wrapper">
-        <div className="text-row">
-          <label htmlFor="">Idade</label>
-          <span>{coreInfoData?.age}</span>
-        </div>
-        <div className="text-row">
-          <label htmlFor="">Altura</label>
-          <span>{coreInfoData?.height}</span>
-        </div>
-        <div className="text-row">
-          <label htmlFor="">Peso</label>
-          <span>{coreInfoData?.weight}</span>
-        </div>
-      </div>
+          <Skeleton count={3} containerClassName="skeleton-span" />
+          <Skeleton 
+            width="4rem"
+            height="4rem"
+            containerClassName="skeleton-span-img" 
+          />
+          <Skeleton count={3} containerClassName="skeleton-span"/>
+        </SkeletonTheme> :
+        <>
+          <div className="text-wrapper">
+            <div className="text-row">
+              <label htmlFor="">Nome</label>
+              <span>{coreInfoData?.name}</span>
+            </div>
+            <div className="text-row">
+              <label htmlFor="">Gênero</label>
+              <span>
+                {
+                  coreInfoData?.gender === 'male' ?
+                  ' Masculino' :
+                  coreInfoData?.gender === 'female' ?
+                  ' Feminino' :
+                  ''
+                }
+              </span>
+            </div>
+            <div className="text-row">
+              <label htmlFor="">Experiência</label>
+              <span>{coreInfoData?.xp}</span>
+            </div>
+          </div>
+
+          <div className="image-wrapper">
+            <img src={faceMapping[coreInfoData?.face] || faceless} alt="character image" />
+          </div>
+          
+          <div className="text-wrapper">
+            <div className="text-row">
+              <label htmlFor="">Idade</label>
+              <span>{coreInfoData?.age}</span>
+            </div>
+            <div className="text-row">
+              <label htmlFor="">Altura</label>
+              <span>{coreInfoData?.height}</span>
+            </div>
+            <div className="text-row">
+              <label htmlFor="">Peso</label>
+              <span>{coreInfoData?.weight}</span>
+            </div>
+          </div>
+        </>
+      }
     </div>
   )
 }
