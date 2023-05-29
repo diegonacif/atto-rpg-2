@@ -25,6 +25,7 @@ import female04 from '../../assets/charIcons/female04.png';
 import wireframeBg from '../../assets/ceiling-floor-background.png'
 
 import '../../App.scss';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 interface IChars { 
   id: string,
@@ -61,6 +62,7 @@ export const CharSelector = () => {
   const [charFace, setCharFace] = useState("");
 
   const [newCharButtonDisabled, setNewCharButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if(charName !== "" && charGender !== "" && experienceValue !== 0) {
@@ -82,11 +84,13 @@ export const CharSelector = () => {
 
   // Chars Data
   useEffect(() => {
+    setIsLoading(true);
     const getChars = async () => {
       const data = await getDocs(charsCollectionRef);
       setChars(data.docs.map((doc) => ({ ...doc.data(), id: doc.id, name: doc.data().name || "Nome não fornecido", xp: doc.data().xp || 0 , face: doc.data().face || "" })));
     }
     getChars();
+    setIsLoading(false);
   }, [charSelectorRefresh])
 
   // Create user and char data
@@ -278,22 +282,40 @@ export const CharSelector = () => {
         <UserCirclePlus size={32} weight="duotone" id="new-char-icon" />
       </div>
       <ul>
-        {
-          chars.map(char => (
-            <div className="char-row" key={char.id}>
-              <div className="char-face-wrapper" onClick={() => handleSelectChar(char.id)}>
-                <img src={faceMapping[char.face] || faceless} alt="char-face" />
-              </div>
-              <div className="text-content" onClick={() => handleSelectChar(char.id)}>
-                <li >{char?.name}</li>
-                <span>XP: {char?.xp}</span>
-              </div>
-              <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
-                <MinusCircle size={32} />
-              </button>
-            </div>
-          ))
-        }
+        <SkeletonTheme 
+          width="18rem" 
+          height="5rem"
+          baseColor="#4fa066"
+          highlightColor="#60c47c"
+        >
+          {
+            isLoading ?
+            <>
+              <Skeleton /> 
+              <Skeleton /> 
+              <Skeleton /> 
+            </>
+            :
+            <>
+              {
+                chars.map(char => (
+                  <div className="char-row" key={char.id}>
+                    <div className="char-face-wrapper" onClick={() => handleSelectChar(char.id)}>
+                      <img src={faceMapping[char.face] || faceless} alt="char-face" />
+                    </div>
+                    <div className="text-content" onClick={() => handleSelectChar(char.id)}>
+                      <li >{char?.name}</li>
+                      <span>XP: {char?.xp}</span>
+                    </div>
+                    <button className="delete-char-button" onClick={() => deleteChar(char.id)}>
+                      <MinusCircle size={32} />
+                    </button>
+                  </div>
+                ))
+              }
+            </>
+          }
+        </SkeletonTheme>
       </ul>
       <ReactModal
         isOpen={isModalOpen}
