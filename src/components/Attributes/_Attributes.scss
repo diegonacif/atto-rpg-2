@@ -102,5 +102,21 @@
         margin-top: 0.5rem;
       }
     }
+
+    .save-button-wrapper {
+      width: fit-content;
+      grid-column-start: span 2;
+      margin-top: 1.5rem;
+
+      #save-button {
+        background-color: $darkgreen-gurps;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        outline: 1px solid $darkyellow-gurps;
+        color: $darkyellow-gurps;
+        font-weight: 600;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.75);
+      }
+    }
   }
 }

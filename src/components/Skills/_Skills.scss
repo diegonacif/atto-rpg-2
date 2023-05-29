@@ -10,6 +10,7 @@
     grid-template-columns: auto 2.5rem 2.5rem 4.5rem 2.5rem;
     column-gap: 0.25rem;
     width: 100%;
+    height: fit-content;
 
     & + .skills-row {
       margin-top: 0.5rem;
@@ -19,7 +20,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 1.75rem;
+      height: 100%;
       width: 100%;
       padding: 0 0.25rem;
       border-radius: 4px;

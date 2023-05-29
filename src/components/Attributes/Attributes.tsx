@@ -351,14 +351,9 @@ const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify 
               <div className="save-button-wrapper">
                 <button
                   onClick={() => updateAttributesData()}
-                  style={{ 
-                    margin: "2rem 0 0 1rem", 
-                    padding: "0.25rem 0.5rem", 
-                    backgroundColor: "#D1D5DB", 
-                    borderRadius: "4px" 
-                  }} 
+                  id="save-button"
                 >
-                  Save
+                  Salvar alterações
                 </button>
               </div>
             }
