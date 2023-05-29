@@ -292,12 +292,12 @@ export const Skills = () => {
         () => {
           handleCloseModal();
           console.log("perícia deletada com sucesso!");
-          notifySuccess("Perícia deletada!");
+          notifySuccess("Perícia removida!");
         }
       )
     } catch (error) {
       console.error("Erro ao deletar perícia", error);
-      notifyError("Erro ao deletar perícia");
+      notifyError("Erro ao remover perícia");
     };
   }
   

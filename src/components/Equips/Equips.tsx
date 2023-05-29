@@ -7,6 +7,7 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 import ReactModal from 'react-modal';
+import { ToastifyContext } from '../../contexts/ToastifyProvider';
 
 interface IEquipsData {
   id: string;
@@ -18,6 +19,7 @@ interface IEquipsData {
 export const Equips = () => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
+  const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify Context
   const equipsCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "equips")
   const [equipsData, setEquipsData] = useState<IEquipsData[]>([{
     id: "",
@@ -112,10 +114,12 @@ export const Equips = () => {
         cost: selectedCost
       }).then(() => {
         handleCloseModal();
-        console.log("equipamento criado com sucesso!")
+        console.log("equipamento criado com sucesso!");
+        notifySuccess("Equipamento adicionado!");
       })
     } catch (error) {
-      console.log("Erro ao criar equipamento")
+      console.log("Erro ao criar equipamento");
+      notifyError("Erro ao adicionar equipamento!");
     }
   };
 
@@ -128,10 +132,12 @@ export const Equips = () => {
         cost: selectedCost
       }).then (() => {
         handleCloseModal();
-        console.log("Equipamento atualizado com sucesso!")
+        console.log("Equipamento atualizado com sucesso!");
+        notifySuccess("Equipamento atualizado!");
       })
     } catch (error) {
-      console.log("Erro ao atualizar equipamento: ", error)
+      console.log("Erro ao atualizar equipamento: ", error);
+      notifyError("Erro ao atualizar equipamento!");
     }
   }
 
@@ -141,10 +147,12 @@ export const Equips = () => {
       await deleteDoc(docRef)
       .then(() => {
         handleCloseModal();
-        console.log("Equipamento deletado com sucesso!")
+        console.log("Equipamento removido com sucesso!");
+        notifySuccess("Equipamento deletado!");
       })
     } catch (error) {
-      console.log("Erro ao deletar equipamento: ", error)
+      console.log("Erro ao deletar equipamento: ", error);
+      notifyError("Erro ao remover equipamento!");
     }
   }
 

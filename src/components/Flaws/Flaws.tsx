@@ -8,6 +8,7 @@ import { flawsData as flawsStaticData} from '../../services/gameData';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 import '../../App.scss';
+import { ToastifyContext } from '../../contexts/ToastifyProvider';
 
 interface IFlawsData {
   id: string;
@@ -28,6 +29,7 @@ interface ILevelPoints {
 export const Flaws = () => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
+  const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify Context
   const flawsCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "flaws")
   const [flawsData, setFlawsData] = useState<IFlawsData[]>([{
     id: "",
@@ -174,10 +176,12 @@ export const Flaws = () => {
         () => {
           handleCloseModal();
           console.log("Desvantagem criada com sucesso");
+          notifySuccess("Desvantagem adicionada!")
         }
       )
     } catch (error) {
-      console.error('Erro ao criar desvantagem :', error)
+      console.error('Erro ao criar desvantagem :', error);
+      notifyError("Erro ao adicionar desvantagem!")
     }
   }
   const updateFlaw = async () => {
@@ -191,10 +195,12 @@ export const Flaws = () => {
         () => {
           handleCloseModal();
           console.log("Desvantagem atualizada com sucesso!");
+          notifySuccess("Desvantagem atualizada!")
         }
       )
     } catch (error) {
-      console.error('Erro ao atualizar desvantagem :', error)
+      console.error('Erro ao atualizar desvantagem :', error);
+      notifyError("Erro ao atualizar desvantagem!")
     }
   }
   const deleteFlaw = async () => {
@@ -205,10 +211,12 @@ export const Flaws = () => {
         () => {
           handleCloseModal();
           console.log("Desvantagem excluída com sucesso!");
+          notifySuccess("Desvantagem removida!")
         }
       )
     } catch (error) {
       console.error("Erro ao excluir desvantagem", error);
+      notifyError("Erro ao remover desvantagem!");
     }
   }
 

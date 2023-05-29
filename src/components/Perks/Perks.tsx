@@ -9,6 +9,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 import '../../App.scss';
+import { ToastifyContext } from '../../contexts/ToastifyProvider';
 
 interface IPerksData {
   id: string;
@@ -50,6 +51,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
   }) => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
+  const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify Context
   const perksCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "perks")
 
   const [selectedPerk, setSelectedPerk] = useState(currentPerkData.description);
@@ -100,10 +102,11 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
         description: selectedPerk,
         level: selectedLevel,
         points: selectedPoints
-      })
+      }).then(() => notifySuccess("Vantagem adicionada!"))
       setIsModalOpen(false)
     } catch (error) {
-      console.error('Erro ao criar documento :', error)
+      console.error('Erro ao criar documento :', error);
+      notifyError("Erro ao adicionar vantagem!")
     }
   }
 
@@ -114,22 +117,24 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
         description: selectedPerk,
         level: selectedLevel,
         points: selectedPoints
-      });
+      }).then(() => notifySuccess("Vantagem atualizada!"));
       console.log("Documento atualizado com sucesso!");
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Erro ao atualizar documento :', error)
+      console.error('Erro ao atualizar documento :', error);
+      notifyError("Erro ao atualizar vantagem!")
     }
   }
 
   const deletePerk = async () => {
     const docRef = doc(perksCollectionRef, currentPerkData.id)
     try {
-      await deleteDoc(docRef);
+      await deleteDoc(docRef).then(() => notifySuccess("Vantagem removida!"));
       console.log("Documento excluído com sucesso!");
       setIsModalOpen(false);
     } catch (error) {
       console.error("Erro ao excluir documento", error);
+      notifyError("Erro ao remover vantagem!");
     }
   } 
   
