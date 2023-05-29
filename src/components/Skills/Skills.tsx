@@ -215,11 +215,10 @@ export const Skills = () => {
     -3 :
     0;
 
-    
-    setSelectedNh(attributeValue + ((selectedPoints / 4) - 1) + difficultyValue + selectedMod)
-    
+    setSelectedNh(Number(attributeValue) + ((selectedPoints / 4) - 1) + difficultyValue + selectedMod)
 
   }, [selectedPoints, selectedMod, selectedAttRelative, selectedSkill])  
+
 
   const modalCustomStyles = {
     content: {
