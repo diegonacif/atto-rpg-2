@@ -8,6 +8,7 @@ import ReactModal from 'react-modal';
 import { skillsData as skillsStaticData } from '../../services/gameData';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
+import { ToastifyContext } from '../../contexts/ToastifyProvider';
 
 interface ISkillsData {
   id: string;
@@ -32,6 +33,7 @@ interface ISelectedSkill {
 export const Skills = () => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
+  const { notifySuccess, notifyError } = useContext(ToastifyContext); // Toastify Context
   const skillsCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "skills")
   const [skillsData, setSkillsData] = useState<ISkillsData[]>([{
     id: "",
@@ -249,10 +251,12 @@ export const Skills = () => {
         () => {
           handleCloseModal();
           console.log("perícia criada com sucesso!");
+          notifySuccess("Perícia adicionada!");
         }
       )
     } catch (error) {
-      console.error("Erro ao criar perícia: ", error)
+      console.error("Erro ao criar perícia: ", error);
+      notifyError("Erro ao adicionar perícia");
     }
   }
 
@@ -272,10 +276,12 @@ export const Skills = () => {
         () => {
           handleCloseModal();
           console.log("perícia atualizada com sucesso!")
+          notifySuccess("Perícia atualizada!");
         }
       )
     } catch (error) {
-      console.error("Erro ao atualizar perícia: ", error)
+      console.error("Erro ao atualizar perícia: ", error);
+      notifyError("Erro ao atualizar perícia");
     }
   }
 
@@ -286,11 +292,13 @@ export const Skills = () => {
       .then(
         () => {
           handleCloseModal();
-          console.log("perícia deletada com sucesso!")
+          console.log("perícia deletada com sucesso!");
+          notifySuccess("Perícia deletada!");
         }
       )
     } catch (error) {
-      console.error("Erro ao deletar perícia", error)
+      console.error("Erro ao deletar perícia", error);
+      notifyError("Erro ao deletar perícia");
     };
   }
   
