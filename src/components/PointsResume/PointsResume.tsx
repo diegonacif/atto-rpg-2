@@ -8,6 +8,7 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import blankOrb from '../../assets/blank-orb.png';
 
 import '../../App.scss';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 interface ICoreInfoData {
   name: string;
@@ -42,6 +43,7 @@ export const PointsResume = () => {
   const [xp, setXp] = useState(0);
   const [pointsLeft, setPointsLeft] = useState(0);
   const [isXpLocked, setIsXpLocked] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   // Points left update
   useEffect(() => {
@@ -51,6 +53,7 @@ export const PointsResume = () => {
 
   // Getting Character Data
   useEffect(() => {
+    setIsLoading(true);
     const getCharacterData = async () => {
       const querySnapshot = await getDoc(coreInfoRef);
       const data = querySnapshot.data();
@@ -70,9 +73,8 @@ export const PointsResume = () => {
       }
     };
     getCharacterData();
+    setIsLoading(false);
   }, [isXpLocked])
-
-  console.log(coreInfoData);
 
   const handleLockXp = async () => {
     try {
@@ -96,51 +98,72 @@ export const PointsResume = () => {
 
   return (
     <div className="points-resume-container">
-      <section className="categories-sum-wrapper">
-        {/* <span>Total: {(attributesSum + perksSum + skillsSum) - flawsSum}</span> */}
-        <div className="categories-sum-inner">
-          <span>Atributos: {attributesSum}</span>
-          <span>Perícias: {skillsSum}</span>
-          <span>Vantagens: {perksSum}</span>
-          <span>Desvantagens: {flawsSum}</span>
-        </div>
-        <div className="blank-orb-wrapper">
-          {/* <img src={blankOrb} alt="remaining points" id="remaining-points"/> */}
-          <input type="number" name="points-left" id="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
-        </div>
-      </section>
-      <section className="points-resume-input-wrapper">
-        <div className="input-row">
-          <label htmlFor="experience-points">Pontos de Experiência</label>
-          {
-            isXpLocked ?
-            <div className="input-wrapper">
-              <input 
-                type="number" 
-                name="experience-points" 
-                value={xp} 
-                readOnly 
-              />
-              <Lock size={22} weight="duotone" id="xp-locker" onClick={() => setIsXpLocked(false)} />
-            </div> :
-            <div className="input-wrapper">
-              <input 
-                type="number" 
-                name="experience-points"
-                value={xp}
-                onChange={(e) => setXp(Number(e.target.value))}
-              />
-              <LockOpen size={22} weight="duotone" id="xp-locker" onClick={() => handleLockXp()} />
-            </div>
-          }
-        </div>
-        <div className="input-row">
-          <label htmlFor="points-left">Soma Total</label>
-          <div className="input-wrapper">
-            <input type="number" name="points-left" value={(attributesSum + perksSum + skillsSum) - flawsSum} readOnly />
+      <SkeletonTheme 
+        width="3rem" 
+        height="1.25rem"
+        baseColor="#4fa066"
+        highlightColor="#60c47c"
+      >
+        <section className="categories-sum-wrapper">
+          <div className="categories-sum-inner">
+            <span>Atributos: {attributesSum}</span>
+            <span>Perícias: {skillsSum}</span>
+            <span>Vantagens: {perksSum}</span>
+            <span>Desvantagens: {flawsSum}</span>
           </div>
-        </div>
-      </section>
+          <div className="blank-orb-wrapper">
+            {
+              isLoading ?
+              <Skeleton containerClassName="skeleton-span-orb" /> :
+              <input type="number" name="points-left" id="points-left" value={isNaN(pointsLeft) ? 0 : pointsLeft } readOnly />
+            }
+          </div>
+        </section>
+        <section className="points-resume-input-wrapper">
+          <div className="input-row">
+            <label htmlFor="experience-points">Pontos de Experiência</label>
+            {
+              isXpLocked ?
+              <div className="input-wrapper">
+                {
+                  isLoading ?
+                  <Skeleton /> :
+                  <>
+                    <input 
+                      type="number" 
+                      name="experience-points" 
+                      value={xp} 
+                      readOnly 
+                    />
+                    <Lock size={22} weight="duotone" id="xp-locker" onClick={() => setIsXpLocked(false)} />
+                  </>
+                }
+              </div> :
+              <div className="input-wrapper">
+                {
+                  isLoading ?
+                  <span>Loading</span> :
+                  <>
+                    <input 
+                      type="number" 
+                      name="experience-points"
+                      value={xp}
+                      onChange={(e) => setXp(Number(e.target.value))}
+                    />
+                    <LockOpen size={22} weight="duotone" id="xp-locker" onClick={() => handleLockXp()} />
+                  </>
+                }
+              </div>
+            }
+          </div>
+          <div className="input-row">
+            <label htmlFor="points-left">Soma Total</label>
+            <div className="input-wrapper">
+              <input type="number" name="points-left" value={(attributesSum + perksSum + skillsSum) - flawsSum} readOnly />
+            </div>
+          </div>
+        </section>
+      </SkeletonTheme>
     </div>
   )
 }

@@ -44,6 +44,13 @@
         font-size: $font-16;
         text-shadow: 3px 3px 4px rgba(0,0,0,0.9);
       }
+
+      .skeleton-span-orb {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
   
       #remaining-points {
         width: 5rem;

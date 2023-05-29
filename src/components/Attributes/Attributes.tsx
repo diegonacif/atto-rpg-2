@@ -159,19 +159,18 @@ export const Attributes = () => {
   const [originalFatiguePoints, setOriginalFatiguePoints] = useState("");
 
   useEffect(() => {
-    setTimeout(() => {
-      if(
-        originalStrength !== getValues("strength") ||
-        originalDexterity !== getValues("dexterity") ||
-        originalIntelligence !== getValues("intelligence") ||
-        originalHealth !== getValues("health") ||
-        originalHitpoints !== getValues("hitPoints") ||
-        originalWill !== getValues("will") ||
-        originalPerception !== getValues("perception") ||
-        originalFatiguePoints !== getValues("fatiguePoints")
-      ) { return setSaveButtonShow(true); } 
-      else { return setSaveButtonShow(false); }
-    }, 100);
+    if(
+      originalStrength !== getValues("strength") ||
+      originalDexterity !== getValues("dexterity") ||
+      originalIntelligence !== getValues("intelligence") ||
+      originalHealth !== getValues("health") ||
+      originalHitpoints !== getValues("hitPoints") ||
+      originalWill !== getValues("will") ||
+      originalPerception !== getValues("perception") ||
+      originalFatiguePoints !== getValues("fatiguePoints")
+    ) {
+      return setSaveButtonShow(true); 
+    } else { return setSaveButtonShow(false); }
   }, [watch()])
 
   // Getting Attributes Data
