@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
 import { db } from '../../services/firebase-config';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 interface IPerksFlawsData {
   id: string;
@@ -32,11 +33,12 @@ export const PerksFlawsResume = () => {
     points: 0,
   }])
 
-  console.log(flawsData)
+  const [isLoading, setIsLoading] = useState(true);
 
   // Getting Perks Data
   useEffect(() => {
     const getPerksData = async () => {
+      setIsLoading(true);
       const querySnapshot = await getDocs(perksCollectionRef);
       const docs = querySnapshot.docs.map((doc) => (({
         id: doc.id, 
@@ -46,6 +48,7 @@ export const PerksFlawsResume = () => {
         ...doc.data()
       })))
       setPerksData(docs);
+      setIsLoading(false);
     }
     getPerksData();
   }, []);
@@ -53,6 +56,7 @@ export const PerksFlawsResume = () => {
   // Getting Flaws Data
   useEffect(() => {
     const getFlawsData = async () => {
+      setIsLoading(true);
       const querySnapshot = await getDocs(flawsCollectionRef);
       const docs = querySnapshot.docs.map((doc) => (({ 
         id: doc.id, 
@@ -61,29 +65,49 @@ export const PerksFlawsResume = () => {
         points: doc.data().points,
         ...doc.data()
       })));
-      setFlawsData(docs)
+      setFlawsData(docs);
+      setIsLoading(false);
     }
     getFlawsData();
   }, [])
 
   return (
     <div className="perks-flaws-resume-container">
-      <section className="perks">
-        <h4>Vantagens</h4>
-        {
-          perksData.map((perk) => (
-            <span key={perk?.id}>{perk?.description}</span>
-          ))
-        }
-      </section>
-      <section className="flaws">
-        <h4>Desvantagens</h4>
-        {
-          flawsData.map((flaw) => (
-            <span key={flaw?.id}>{flaw?.description}</span>
-          ))
-        }
-      </section>
+      <SkeletonTheme 
+        width="4.5rem" 
+        height="1rem"
+        baseColor="#4fa066"
+        highlightColor="#60c47c"
+      >
+        <section className="perks">
+          <h4>Vantagens</h4>
+          {
+            isLoading ?
+            <Skeleton count={3} containerClassName="skeleton-span" /> :
+            <>
+              {
+                perksData.map((perk) => (
+                  <span key={perk?.id}>{perk?.description}</span>
+                ))
+              }
+            </>
+          }
+        </section>
+        <section className="flaws">
+          <h4>Desvantagens</h4>
+          {
+            isLoading ?
+            <Skeleton count={3} containerClassName="skeleton-span" /> :
+            <>
+              {
+                flawsData.map((flaw) => (
+                  <span key={flaw?.id}>{flaw?.description}</span>
+                ))
+              }
+            </>
+          }
+        </section>
+      </SkeletonTheme>
     </div>
   )
 }

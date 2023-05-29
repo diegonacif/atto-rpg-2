@@ -17,6 +17,21 @@
   height: 100%;
   overflow-y: auto;
 
+  .skeleton-span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0.25rem;
+
+    :first-child {
+      margin-bottom: 0.75rem;
+    }
+
+    :not(:first-child), :not(:last-child) {
+      margin-top: 0.35rem;
+    }
+  }
+
   .perks {
     @include perksFlawsResumeSection;
   }

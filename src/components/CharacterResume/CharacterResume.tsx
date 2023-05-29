@@ -88,17 +88,17 @@ export const CharacterResume = () => {
         <SkeletonTheme 
           width="5rem" 
           height="1rem"
-          baseColor="rgba(43, 102, 48, 0.3)"
-          highlightColor="rgba(105, 199, 127, 0.3)"
+          baseColor="#4fa066"
+          highlightColor="#60c47c"
         >
 
-          <Skeleton count={3} containerClassName="skeleton-span" />
+          <Skeleton count={3} containerClassName="skeleton-span" width="7.5rem" />
           <Skeleton 
             width="4rem"
             height="4rem"
             containerClassName="skeleton-span-img" 
           />
-          <Skeleton count={3} containerClassName="skeleton-span"/>
+          <Skeleton count={3} containerClassName="skeleton-span" width="4rem"/>
         </SkeletonTheme> :
         <>
           <div className="text-wrapper">
