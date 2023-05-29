@@ -32,7 +32,7 @@ export const PointsResumeProvider = ({ children }: { children: ReactNode }) => {
   const [skillsSum, setSkillsSum] = useState(0);
   const [characterIdSession, setCharacterIdSession] = useSessionStorage('character-id', "")
 
-  console.log(characterIdSession);
+  // console.log(characterIdSession);
 
   const location = useLocation();
 

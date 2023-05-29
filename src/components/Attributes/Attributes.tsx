@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from "react-router-dom";
 import { DocumentData, DocumentReference, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
@@ -8,6 +8,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 import '../../App.scss';
+import { numberMask } from '../../utils/numberMask';
 
 interface IFormData {
   strength: string,
@@ -148,38 +149,40 @@ export const Attributes = () => {
 
   // Save button condition
   const [saveButtonShow, setSaveButtonShow] = useState(false);
-  const [originalStrength, setOriginalStrength] = useState(0);
-  const [originalDexterity, setOriginalDexterity] = useState(0);
-  const [originalIntelligence, setOriginalIntelligence] = useState(0);
-  const [originalHealth, setOriginalHealth] = useState(0);
-  const [originalHitpoints, setOriginalHitpoints] = useState(0);
-  const [originalWill, setOriginalWill] = useState(0);
-  const [originalPerception, setOriginalPerception] = useState(0);
-  const [originalFatiguePoints, setOriginalFatiguePoints] = useState(0);
+  const [originalStrength, setOriginalStrength] = useState("");
+  const [originalDexterity, setOriginalDexterity] = useState("");
+  const [originalIntelligence, setOriginalIntelligence] = useState("");
+  const [originalHealth, setOriginalHealth] = useState("");
+  const [originalHitpoints, setOriginalHitpoints] = useState("");
+  const [originalWill, setOriginalWill] = useState("");
+  const [originalPerception, setOriginalPerception] = useState("");
+  const [originalFatiguePoints, setOriginalFatiguePoints] = useState("");
 
   useEffect(() => {
-    if(
-      originalStrength !== parseInt(getValues("strength")) ||
-      originalDexterity !== parseInt(getValues("dexterity")) ||
-      originalIntelligence !== parseInt(getValues("intelligence")) ||
-      originalHealth !== parseInt(getValues("health")) ||
-      originalHitpoints !== parseInt(getValues("hitPoints")) ||
-      originalWill !== parseInt(getValues("will")) ||
-      originalPerception !== parseInt(getValues("perception")) ||
-      originalFatiguePoints !== parseInt(getValues("fatiguePoints"))
-    ) { return setSaveButtonShow(true); } 
-    else { return setSaveButtonShow(false); }
+    setTimeout(() => {
+      if(
+        originalStrength !== getValues("strength") ||
+        originalDexterity !== getValues("dexterity") ||
+        originalIntelligence !== getValues("intelligence") ||
+        originalHealth !== getValues("health") ||
+        originalHitpoints !== getValues("hitPoints") ||
+        originalWill !== getValues("will") ||
+        originalPerception !== getValues("perception") ||
+        originalFatiguePoints !== getValues("fatiguePoints")
+      ) { return setSaveButtonShow(true); } 
+      else { return setSaveButtonShow(false); }
+    }, 100);
   }, [watch()])
 
   // Getting Attributes Data
   const getAttributeData = async (
       attributeRef: DocumentReference<DocumentData>,
       formRegister: any,
-      setter: React.Dispatch<React.SetStateAction<number>>,
+      setter: React.Dispatch<React.SetStateAction<string>>,
     ) => {
     const docSnap = await getDoc(attributeRef);
     if (docSnap.exists()) {
-      const attributeData = docSnap.data() as { value: number };
+      const attributeData = docSnap.data() as { value: string };
       setValue(formRegister, attributeData.value);
       setter(attributeData.value)
     }
@@ -199,14 +202,14 @@ export const Attributes = () => {
   // Update attributes data
   const updateAttributesData = async () => {
     try{
-      await setDoc(strengthRef, {value: parseInt(getValues('strength'))});
-      await setDoc(dexterityRef, {value: parseInt(getValues('dexterity'))});
-      await setDoc(intelligenceRef, {value: parseInt(getValues('intelligence'))});
-      await setDoc(healthRef, {value: parseInt(getValues('health'))});
-      await setDoc(hitPointsRef, {value: parseInt(getValues('hitPoints'))});
-      await setDoc(willRef, {value: parseInt(getValues('will'))});
-      await setDoc(perceptionRef, {value: parseInt(getValues('perception'))});
-      await setDoc(fatiguePointsRef, {value: parseInt(getValues('fatiguePoints'))});
+      await setDoc(strengthRef, {value: getValues('strength')});
+      await setDoc(dexterityRef, {value: getValues('dexterity')});
+      await setDoc(intelligenceRef, {value: getValues('intelligence')});
+      await setDoc(healthRef, {value: getValues('health')});
+      await setDoc(hitPointsRef, {value: getValues('hitPoints')});
+      await setDoc(willRef, {value: getValues('will')});
+      await setDoc(perceptionRef, {value: getValues('perception')});
+      await setDoc(fatiguePointsRef, {value: getValues('fatiguePoints')});
       await setDoc(attributesSumRef, {value: attributesSum})
       setRefreshAttributes(current => !current)
     } catch (error) {
@@ -216,7 +219,18 @@ export const Attributes = () => {
 
   const [isHexagonActive, setIsHexagonActive] = useState("");
 
-  console.log(isHexagonActive)
+  // Applying only numbers mask on inputs
+  useEffect(() => {
+    setValue('strength', numberMask(watch('strength')))
+    setValue('dexterity', numberMask(watch('dexterity')))
+    setValue('intelligence', numberMask(watch('intelligence')))
+    setValue('health', numberMask(watch('health')))
+    setValue('hitPoints', numberMask(watch('hitPoints')))
+    setValue('will', numberMask(watch('will')))
+    setValue('perception', numberMask(watch('perception')))
+    setValue('fatiguePoints', numberMask(watch('fatiguePoints')))
+  },[watch('strength'), watch('dexterity'), watch('intelligence'), watch('health'),
+    watch('hitPoints'), watch('will'), watch('perception'), watch('fatiguePoints')])
 
   return (
     <div className="attributes-container">
@@ -230,7 +244,8 @@ export const Attributes = () => {
                 <span>For</span>
                 <div className={`hexagon ${isHexagonActive === "strength" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
+                    maxLength={4}
                     {...register("strength")}
                     name="strength"
                     onFocus={() => setIsHexagonActive("strength")}
@@ -243,7 +258,7 @@ export const Attributes = () => {
                 <span>Des</span>
                 <div className={`hexagon ${isHexagonActive === "dexterity" ? "active" : ""}`}>
                   <input 
-                    type="number"
+                    type="text"
                     {...register("dexterity")}
                     name="dexterity"
                     onFocus={() => setIsHexagonActive("dexterity")}
@@ -256,7 +271,7 @@ export const Attributes = () => {
                 <span>Int</span>
                 <div className={`hexagon ${isHexagonActive === "intelligence" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("intelligence")}
                     onFocus={() => setIsHexagonActive("intelligence")}
                     onBlur={() => setIsHexagonActive("")}
@@ -268,7 +283,7 @@ export const Attributes = () => {
                 <span>Vit</span>
                 <div className={`hexagon ${isHexagonActive === "health" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("health")}
                     onFocus={() => setIsHexagonActive("health")}
                     onBlur={() => setIsHexagonActive("")}
@@ -282,7 +297,7 @@ export const Attributes = () => {
                 <span>PV</span>
                 <div className={`hexagon ${isHexagonActive === "hitPoints" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("hitPoints")}
                     onFocus={() => setIsHexagonActive("hitPoints")}
                     onBlur={() => setIsHexagonActive("")}
@@ -294,7 +309,7 @@ export const Attributes = () => {
                 <span>Vont</span>
                 <div className={`hexagon ${isHexagonActive === "will" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("will")}
                     onFocus={() => setIsHexagonActive("will")}
                     onBlur={() => setIsHexagonActive("")}
@@ -306,7 +321,7 @@ export const Attributes = () => {
                 <span>Per</span>
                 <div className={`hexagon ${isHexagonActive === "perception" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("perception")}
                     onFocus={() => setIsHexagonActive("perception")}
                     onBlur={() => setIsHexagonActive("")}
@@ -318,7 +333,7 @@ export const Attributes = () => {
                 <span>PF</span>
                 <div className={`hexagon ${isHexagonActive === "fatiguePoints" ? "active" : ""}`}>
                   <input 
-                    type="number" 
+                    type="text" 
                     {...register("fatiguePoints")}
                     onFocus={() => setIsHexagonActive("fatiguePoints")}
                     onBlur={() => setIsHexagonActive("")}
