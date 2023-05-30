@@ -38,7 +38,7 @@ export const Character = () => {
         transitionTime={500}
       >
         <header className="character-header">
-          <video id="background-video" loop autoPlay muted>
+          <video id="background-video" loop autoPlay muted playsInline webkit-playsinline>
             <source src={greenVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>

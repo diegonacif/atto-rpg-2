@@ -76,6 +76,7 @@
       font-weight: 500;
       font-size: $font-16;
       margin-bottom: 0.75rem;
+      color: $gray-950;
     }
 
     .skills-modal-row {
@@ -99,6 +100,8 @@
         background-color: $gray-100;
         font-weight: 500;
         font-size: $font-14;
+        // color: $gray-950;
+        color: $gray-950;
     
         &.disabled  {
           color: $gray-500;
