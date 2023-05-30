@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu } from '../Menu/Menu'
 import { Outlet } from 'react-router-dom'
 import { PointsResume } from '../PointsResume/PointsResume';
@@ -8,12 +8,29 @@ import Collapsible from 'react-collapsible';
 import { PerksFlawsResume } from '../PerksFlawsResume/PerksFlawsResume';
 import { Footer } from '../Footer/Footer';
 import greenVideo from '../../assets/green-video.mp4';
+import greenVideoTumb from '../../assets/green-video-tumb.png';
 
 import '../../App.scss';
 
 export const Character = () => {
   const [currentFlip, setCurrentFlip] = useState('character-resume');
   const [isHeaderOpen, setIsHeaderOpen] = useState(true);
+
+  // Video when in Safari
+  const isSafari = () => {
+    const ua = navigator.userAgent.toLowerCase();
+    return ua.indexOf("safari") > -1 && ua.indexOf("chrome") < 0;
+  };
+
+  const [shouldUseImage, setShouldUseImage] = useState(true);
+
+  useEffect(() => {
+    if (isSafari()) {
+      setShouldUseImage(true);
+    } else {
+      setShouldUseImage(false);
+    }
+  }, []);
 
   return (
     <div className="character-container">
@@ -38,10 +55,21 @@ export const Character = () => {
         transitionTime={500}
       >
         <header className="character-header">
-          <video id="background-video" loop autoPlay muted playsInline webkit-playsinline>
-            <source src={greenVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          {
+            shouldUseImage ?
+            <img src={greenVideoTumb} alt="" id="background-video" /> :
+            <div dangerouslySetInnerHTML={{ __html: `
+              <video
+                loop
+                muted
+                autoplay
+                playsinline
+                id="background-video"
+              >
+              <source src="${greenVideo}" type="video/mp4" />
+              </video>
+            ` }}></div>
+          }
           <div className="video-glass"></div>
           <section className="character-header-content">
             {

@@ -9,8 +9,16 @@
   height: 100vh;
   overflow: hidden;
 
-  #background-video {
+  .video-wrapper {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  #background-video {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -27,11 +35,13 @@
     }
   }
 
+
   .hexagon {
     position: relative;
     width: 14rem;
     height: 13rem;
     margin-bottom: 6rem;
+    z-index: 5;
 
     &:before {
       content: "";
@@ -55,7 +65,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      cursor: pointer;
+      cursor: default;
       z-index: 2;
   
       h2 {
