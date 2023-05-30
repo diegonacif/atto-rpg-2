@@ -235,6 +235,11 @@ export const Flaws = () => {
         firestoreLoading ?
         <LoadingSquare /> :
         <>
+          <div className="flaws-row-title">
+            <span className="flaws-row-title-item">Descrição</span>
+            <span className="flaws-row-title-item">Nível</span>
+            <span className="flaws-row-title-item">Pontos</span>
+          </div>
           {
             flawsData.map((flaw) => (
               <div className="flaws-row" key={`flaw-${flaw.id}`}>

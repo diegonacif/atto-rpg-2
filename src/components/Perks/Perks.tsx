@@ -308,6 +308,11 @@ export const Perks = () => {
         firestoreLoading ?
         <LoadingSquare /> :
         <>
+          <div className="perks-row-title">
+            <span className="perks-row-title-item">Descrição</span>
+            <span className="perks-row-title-item">Nível</span>
+            <span className="perks-row-title-item">Pontos</span>
+          </div>
           {
             perksData.map((perk) => (
               <PerksRow

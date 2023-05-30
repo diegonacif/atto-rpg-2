@@ -5,6 +5,21 @@
   max-width: 100vw;
   overflow: hidden;
 
+  .perks-row-title {
+    display: grid;
+    grid-template-columns: auto 3rem 3rem;
+    justify-items: center;
+    column-gap: 0.25rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+
+    .perks-row-title-item {
+      color: $gray-100;
+      font-size: $font-12;
+      font-weight: 600;
+    }
+  }
+
   .perks-row {
     display: grid;
     grid-template-columns: auto 3rem 3rem;

@@ -3,6 +3,21 @@
   overflow-x: hidden;
   @include responsive-padding(2rem, 2rem);
 
+  .flaws-row-title {
+    display: grid;
+    grid-template-columns: auto 4rem 3rem;
+    column-gap: 0.25rem;
+    width: 100%;
+    justify-items: center;
+    margin-bottom: 0.5rem;
+
+    .flaws-row-title-item {
+      color: $gray-100;
+      font-size: $font-12;
+      font-weight: 600;
+    }
+  }
+
   .flaws-row {
     display: grid;
     grid-template-columns: auto 4rem 3rem;

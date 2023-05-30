@@ -162,6 +162,11 @@ export const Equips = () => {
         firestoreLoading ?
         <LoadingSquare /> :
         <>
+          <div className="equips-row-title">
+            <span className="equips-row-title-item">Descrição</span>
+            <span className="equips-row-title-item">Peso</span>
+            <span className="equips-row-title-item">Custo</span>
+          </div>
           {
             equipsData.map((equip) => (
               <div className="equips-row" key={`equip-${equip.id}`}>

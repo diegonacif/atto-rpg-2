@@ -5,6 +5,22 @@
   overflow-x: hidden;
   @include responsive-padding(2rem, 2rem);
 
+  .equips-row-title {
+    display: grid;
+    grid-template-columns: auto 3rem 3rem;
+    justify-items: center;
+    column-gap: 0.25rem;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 0.5rem;
+
+    .equips-row-title-item {
+      color: $gray-100;
+      font-size: $font-12;
+      font-weight: 600;
+    }
+  }
+
   .equips-row {
     display: grid;
     grid-template-columns: auto 3rem 3rem;

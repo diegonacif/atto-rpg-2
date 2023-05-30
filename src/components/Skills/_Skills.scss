@@ -5,6 +5,22 @@
   overflow-x: hidden;
   @include responsive-padding(2rem, 2rem);
 
+  .skills-row-title {
+    display: grid;
+    grid-template-columns: auto 2.5rem 2.5rem 4.5rem 2.5rem;
+    justify-items: center;
+    column-gap: 0.25rem;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 0.5rem;
+
+    .skills-row-title-item {
+      color: $gray-100;
+      font-size: $font-12;
+      font-weight: 600;
+    }
+  }
+
   .skills-row {
     display: grid;
     grid-template-columns: auto 2.5rem 2.5rem 4.5rem 2.5rem;
@@ -66,18 +82,64 @@
     flex-direction: column;
     gap: 0.5rem;
 
-    #skill-name {
-      padding: 0.25rem;
+    .select-wrapper {
+      position: relative;
+      width: 100%;
+      height: min-content;
+
       border-radius: 4px;
       border: 1px solid $gray-400;
-      text-align: center;
-      width: 100%;
       background-color: $gray-100;
-      font-weight: 500;
-      font-size: $font-16;
-      margin-bottom: 0.75rem;
-      color: $gray-950;
+      
+      &.select-title {
+        margin: 1.25rem 0 1.75rem 0;
+      }
+
+      #skill-name {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0.25rem;
+        border: 0;
+        text-align: center;
+        width: fit-content;
+        height: 2.25rem;
+        font-weight: 500;
+        font-size: $font-16;
+        color: $gray-950;
+        background-color: $gray-100;
+        border-radius: 4px;
+        border: 1px solid $gray-400;
+      }
     }
+
+    .select-wrapper-inner {
+      position: relative;
+      width: 100%;
+      height: 2rem;
+
+      border-radius: 4px;
+      border: 1px solid $gray-400;
+      background-color: $gray-100;
+
+      #select-points {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0.25rem;
+        border: 0;
+        text-align: center;
+        width: fit-content;
+        font-weight: 500;
+        font-size: $font-14;
+        color: $gray-950;
+        background-color: $gray-100;
+        border-radius: 4px;
+      }
+    }
+
 
     .skills-modal-row {
       display: grid;
@@ -91,7 +153,7 @@
         font-weight: 400;
       }
 
-      input, select, span {
+      input, span {
         padding: 0.25rem;
         border-radius: 4px;
         border: 1px solid $gray-400;
@@ -110,6 +172,8 @@
         &:focus-visible {
           outline: 2px solid $green-gurps;
         }
+
+        
       }
   
       .not-editable {

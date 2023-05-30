@@ -307,6 +307,13 @@ export const Skills = () => {
         firestoreLoading ?
         <LoadingSquare /> :
         <>
+          <div className="skills-row-title">
+            <span className="skills-row-title-item">Descrição</span>
+            <span className="skills-row-title-item">Mod.</span>
+            <span className="skills-row-title-item">NH</span>
+            <span className="skills-row-title-item">Att Relativo</span>
+            <span className="skills-row-title-item">Pontos</span>
+          </div>
           {
             skillsData.map((skill) => {
               const attributeValue = skill.attRelative?.attribute;
@@ -338,26 +345,28 @@ export const Skills = () => {
             ariaHideApp={false}
           >
             <div className="skills-modal">
-              <select 
-                id="skill-name"
-                onChange={(e) => {
-                  const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
-                  setSelectedSkill(e.target.value);
-                  // selectedSkill && setCurrentSeletedSkill(currentSkill)
-                  setSelectedAttRelative({
-                    attribute: currentSkill?.attRelative?.attribute,
-                    difficulty: currentSkill?.attRelative?.difficulty
-                  })
-                }}
-                value={selectedSkill}
-              >
-                <option value="">Selecione uma perícia</option>
-                {skillsStaticData.map((option) => (
-                  <option key={option.name} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <div className="select-wrapper select-title">
+                <select 
+                  id="skill-name"
+                  onChange={(e) => {
+                    const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
+                    setSelectedSkill(e.target.value);
+                    // selectedSkill && setCurrentSeletedSkill(currentSkill)
+                    setSelectedAttRelative({
+                      attribute: currentSkill?.attRelative?.attribute,
+                      difficulty: currentSkill?.attRelative?.difficulty
+                    })
+                  }}
+                  value={selectedSkill}
+                >
+                  <option value="">Selecione uma perícia</option>
+                  {skillsStaticData.map((option) => (
+                    <option key={option.name} value={option.name}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {
                 selectedAttRelative?.attribute && selectedAttRelative.difficulty ?
@@ -392,20 +401,22 @@ export const Skills = () => {
 
               <div className="skills-modal-row">
                 <label htmlFor="">Pontuação</label>
-                <select 
-                  name="select-points" 
-                  id="select-points"
-                  value={selectedPoints}
-                  onChange={(e) => setSelectedPoints(Number(e.target.value))}
-                >
-                  {
-                    pointsList.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))
-                  }
-                </select>
+                <div className="select-wrapper-inner">
+                  <select 
+                    name="select-points" 
+                    id="select-points"
+                    value={selectedPoints}
+                    onChange={(e) => setSelectedPoints(Number(e.target.value))}
+                  >
+                    {
+                      pointsList.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))
+                    }
+                  </select>
+                </div>
               </div>
               {isNewSkill ? 
                 <button 
