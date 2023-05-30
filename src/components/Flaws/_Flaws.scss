@@ -45,7 +45,8 @@
     background-color: #2d462c;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    outline: 1px solid $yellow-gurps;
+    // outline: 1px solid $yellow-gurps;
+    box-shadow: 0 0 0 1px $yellow-gurps;
 
     .yellow-span {
       font-weight: 600;

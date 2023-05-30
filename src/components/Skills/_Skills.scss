@@ -1,8 +1,8 @@
 .skills-container {
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   width: 100vw;
-  overflow-x: auto;
+  overflow-x: hidden;
   @include responsive-padding(2rem, 2rem);
 
   .skills-row {
@@ -42,12 +42,15 @@
   }
 
   #new-skill-button {
-    align-self: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     margin-top: 1rem;
     background-color: #2d462c;
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
-    outline: 1px solid $yellow-gurps;
+    // outline: 1px solid $yellow-gurps;
+    box-shadow: 0 0 0 1px $yellow-gurps;
 
     .yellow-span {
       font-weight: 600;
