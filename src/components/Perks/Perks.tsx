@@ -35,7 +35,7 @@ const PerksRow = ({ perkData, openModalHandler }: {
 }) => {
   return (
     <div className="perks-row" key={`perk-${perkData.id}`}>
-      <span onClick={() => openModalHandler(perkData)}>{perkData.description}{perkData.obs ? ` (${perkData.obs})` : ''}</span>
+      <span onClick={() => openModalHandler(perkData)} id="perk-name">{perkData.description}{perkData.obs ? ` (${perkData.obs})` : ''}</span>
       <span>{perkData.level}</span>
       <span>{perkData.points}</span>
     </div>
