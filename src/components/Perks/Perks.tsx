@@ -144,10 +144,9 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
   
   return (
     <div className="perks-modal">
-      <div className="perks-modal-row">
-        <label htmlFor="">Descrição:</label>
+      <div className="perks-modal-row perks-title">
         <select 
-          id="perk-name"
+          className={`perk-name ${selectedPerk === "" ? "empty-perk" : ""}`}
           onChange={(e) => {
             const selectedPerk = perksData.find(perk => perk.name === e.target.value);
             setSelectedPerk(e.target.value);
@@ -155,7 +154,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
           }}
           value={selectedPerk}
         >
-          <option value="">Selecione</option>
+          <option value="">Selecione uma vantagem</option>
           {perksData.map((option) => (
             <option key={option.name} value={option.name}>
               {option.name}

@@ -80,7 +80,7 @@
 
     .equips-modal-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 2fr;
       height: fit-content;
       align-items: center;
       justify-items: center;
@@ -95,7 +95,7 @@
         border-radius: 4px;
         border: 1px solid $gray-400;
         text-align: center;
-        width: 100%;
+        width: 80%;
         background-color: $gray-100;
         font-weight: 500;
         font-size: $font-14;
@@ -116,6 +116,24 @@
 
       & + .equips-modal-row {
         margin-top: 0.5rem;
+      }
+
+      &.equips-modal-title {
+        position: relative;
+        border-radius: 4px;
+        border: 1px solid $gray-400;
+        background-color: $gray-100;
+        margin: 1.12rem 0 1.75rem 0;
+
+        #equip-description {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80%;
+          font-size: $font-16;
+          height: 2.25rem;
+        }
       }
 
     }

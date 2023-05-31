@@ -95,7 +95,7 @@
         margin: 1.25rem 0 1.75rem 0;
       }
 
-      #skill-name {
+      .skill-name {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -111,12 +111,16 @@
         background-color: $gray-100;
         border-radius: 4px;
         border: 1px solid $gray-400;
+
+        &.empty-skill {
+          color: $gray-500;
+        }
       }
     }
 
     .select-wrapper-inner {
       position: relative;
-      width: 100%;
+      width: 80%;
       height: 2rem;
 
       border-radius: 4px;
@@ -143,7 +147,7 @@
 
     .skills-modal-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 2fr;
       height: fit-content;
       align-items: center;
       justify-items: center;
@@ -151,6 +155,8 @@
       label {
         font-size: $font-14;
         font-weight: 400;
+        padding: 0 0.25rem;
+        text-align: center;
       }
 
       input, span {
@@ -158,12 +164,11 @@
         border-radius: 4px;
         border: 1px solid $gray-400;
         text-align: center;
-        width: 100%;
+        width: 80%;
         background-color: $gray-100;
         font-weight: 500;
         font-size: $font-14;
-        // color: $gray-950;
-        color: $gray-950;
+        color: $gray-900;
     
         &.disabled  {
           color: $gray-500;

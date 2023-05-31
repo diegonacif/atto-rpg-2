@@ -365,7 +365,7 @@ export const CharSelector = () => {
             onChange={(e) => setCharWeight(Number(e.target.value))} 
             placeholder="Insira o peso"
           />
-          <button disabled={newCharButtonDisabled} onClick={() => createChar()}>Criar boneco</button>
+          <button disabled={newCharButtonDisabled} onClick={() => createChar()}>Criar personagem</button>
         </div>
 
         {/* Face Char Selector */}

@@ -262,10 +262,9 @@ export const Flaws = () => {
             ariaHideApp={false}
           >
             <div className="flaws-modal">
-              <div className="flaws-modal-row">
-                <label htmlFor="">Descrição:</label>
+              <div className="flaws-modal-row flaws-modal-title">
                 <select 
-                  id="perk-name"
+                  className={`flaw-name ${selectedFlaw === "" ? "empty-flaw" : ""}`}
                   onChange={(e) => {
                     const currentFlaw = flawsStaticData.find(flaw => flaw.name === e.target.value);
                     setSelectedFlaw(e.target.value);
@@ -273,7 +272,7 @@ export const Flaws = () => {
                   }}
                   value={selectedFlaw}
                 >
-                  <option value="">Selecione</option>
+                  <option value="">Selecione uma desvantagem</option>
                   {flawsStaticData.map((option) => (
                     <option key={option.name} value={option.name}>
                       {option.name}

@@ -189,8 +189,7 @@ export const Equips = () => {
             ariaHideApp={false}
           >
             <div className="equips-modal">
-              <div className="equips-modal-row">
-                <label htmlFor="">Descrição:</label>
+              <div className="equips-modal-row equips-modal-title">
                 <input 
                   type="text"
                   id="equip-description"

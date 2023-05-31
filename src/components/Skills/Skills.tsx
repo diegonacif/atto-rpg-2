@@ -347,7 +347,7 @@ export const Skills = () => {
             <div className="skills-modal">
               <div className="select-wrapper select-title">
                 <select 
-                  id="skill-name"
+                  className={`skill-name ${selectedSkill === "" ? "empty-skill" : ""}`}
                   onChange={(e) => {
                     const currentSkill = skillsStaticData.find(skill => skill.name === e.target.value);
                     setSelectedSkill(e.target.value);
