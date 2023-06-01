@@ -6,6 +6,20 @@ Cada usuário se registra com sua conta Google, onde terá acesso ao seu reposit
 
 
 
+## Demonstração
+
+[![Watch the video](https://i.imgur.com/D1Zt9wy.png)](https://www.youtube.com/watch?v=1I00gvmnbDI)
+## Screenshots
+
+![atto-01](https://i.imgur.com/coCNZNv.png)
+
+![atto-02](https://i.imgur.com/B4mSktj.png)
+
+![atto-03](https://i.imgur.com/4o2irjN.png)
+
+![atto-04](https://i.imgur.com/mMTIUSb.png)
+
+
 ## Rodando localmente
 
 Clone o projeto
@@ -45,9 +59,6 @@ Link para o deploy do projeto:
 - Criação de personagens
 - Edição de artibutos, perícias, equipamentos, vantagens e desvantagens, com automatização dos cálculos de pontos de personagem.
 
-
-
-## Demonstração
 
 
 ## Tecnologias utilizadas
