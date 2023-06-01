@@ -3,5 +3,4 @@ export const numberMask = (value: string | undefined) => {
 
   return value
     .replace(/\D+/, '')
-    // .replace(/[^0-9]/, '')
 }

@@ -26,6 +26,8 @@ import wireframeBg from '../../assets/ceiling-floor-background.png'
 
 import '../../App.scss';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { numberMask } from '../../utils/numberMask';
+import { numberWithDecimalsMask } from '../../utils/numberWithDecimalsMask';
 
 interface IChars { 
   id: string,
@@ -55,22 +57,39 @@ export const CharSelector = () => {
 
   const [charName, setCharName] = useState("");
   const [charGender, setCharGender] = useState("");
-  const [experienceValue, setExperienceValue] = useState(0);
-  const [charAge, setCharAge] = useState(0);
-  const [charHeight, setCharHeight] = useState(0);
-  const [charWeight, setCharWeight] = useState(0);
+  const [experienceValue, setExperienceValue] = useState("");
+  const [charAge, setCharAge] = useState("");
+  const [charHeight, setCharHeight] = useState("");
+  const [charWeight, setCharWeight] = useState("");
   const [charFace, setCharFace] = useState("");
 
   const [newCharButtonDisabled, setNewCharButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log({
+    experienceValue: experienceValue,
+    charAge: charAge,
+    charHeight: charHeight,
+    charWeight: charWeight
+  })
+
+  // Is create button disabled
   useEffect(() => {
-    if(charName !== "" && charGender !== "" && experienceValue !== 0) {
+    if(charName !== "" && charGender !== "" && experienceValue !== "") {
       setNewCharButtonDisabled(false);
     } else {
       setNewCharButtonDisabled(true);
     }
   }, [charName, charGender, experienceValue])
+
+  // Input mask control
+  useEffect(() => {
+    setExperienceValue(numberMask(experienceValue));
+    setCharAge(numberMask(charAge));
+    setCharHeight(numberWithDecimalsMask(charHeight));
+    setCharWeight(numberWithDecimalsMask(charWeight));
+  }, [experienceValue, charAge, charHeight, charWeight])
+  
 
   const navigate = useNavigate();
 
@@ -107,7 +126,7 @@ export const CharSelector = () => {
     return await setDoc(charDocRef, {
       name: charName,
       gender: charGender,
-      xp: experienceValue,
+      xp: Number(experienceValue),
       age: charAge,
       height: charHeight,
       weight: charWeight,
@@ -130,12 +149,16 @@ export const CharSelector = () => {
     const perksRef = collection(charDocRef, "perks");
     await setDoc(doc(perksRef), {
       description: "",
+      level: 0,
+      obs: "",
       points: 0
     });
 
     const flawsRef = collection(charDocRef, "flaws");
     await setDoc(doc(flawsRef), {
       description: "",
+      level: 0,
+      obs: "",
       points: 0
     });
 
@@ -169,10 +192,10 @@ export const CharSelector = () => {
 
     setCharName("");
     setCharGender("");
-    setExperienceValue(0);
-    setCharAge(0);
-    setCharHeight(0);
-    setCharWeight(0);
+    setExperienceValue("");
+    setCharAge("");
+    setCharHeight("");
+    setCharWeight("");
     setCharFace("");
     setCharSelectorRefresh(current => !current);
     setIsModalOpen(false);
@@ -233,10 +256,10 @@ export const CharSelector = () => {
       setTimeout(() => {
         setCharName("");
         setCharGender("");
-        setExperienceValue(0);
-        setCharAge(0);
-        setCharHeight(0);
-        setCharWeight(0);
+        setExperienceValue("");
+        setCharAge("");
+        setCharHeight("");
+        setCharWeight("");
         setCharFace("");
       }, 150);
     }
@@ -346,24 +369,28 @@ export const CharSelector = () => {
             <option value="male">Masculino</option>
           </select>
           <input 
-            type="number" 
-            onChange={(e) => setExperienceValue(Number(e.target.value))} 
+            type="text" 
+            onChange={(e) => setExperienceValue(e.target.value)} 
             placeholder="Insira a experiência"
+            value={experienceValue}
           />
           <input 
             type="text" 
-            onChange={(e) => setCharAge(Number(e.target.value))} 
+            onChange={(e) => setCharAge(e.target.value)} 
             placeholder="Insira a idade"
+            value={charAge}
           />
           <input 
             type="text" 
-            onChange={(e) => setCharHeight(Number(e.target.value))} 
+            onChange={(e) => setCharHeight(e.target.value)} 
             placeholder="Insira a altura"
+            value={charHeight}
           />
           <input 
             type="text" 
-            onChange={(e) => setCharWeight(Number(e.target.value))} 
+            onChange={(e) => setCharWeight(e.target.value)} 
             placeholder="Insira o peso"
+            value={charWeight}
           />
           <button disabled={newCharButtonDisabled} onClick={() => createChar()}>Criar personagem</button>
         </div>
