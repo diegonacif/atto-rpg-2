@@ -150,6 +150,7 @@ export const CharSelector = () => {
     await setDoc(doc(perksRef), {
       description: "",
       level: 0,
+      mod: 0,
       obs: "",
       points: 0
     });

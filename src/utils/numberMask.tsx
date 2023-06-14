@@ -1,6 +1,12 @@
+// export const numberMask = (value: string | undefined) => {
+//   if (!value || typeof value !== 'string') return '';
+
+//   return value
+//     .replace(/\D+/, '')
+// }
+
 export const numberMask = (value: string | undefined) => {
   if (!value || typeof value !== 'string') return '';
 
-  return value
-    .replace(/\D+/, '')
+  return value.replace(/[^-?\d]+/, '');
 }

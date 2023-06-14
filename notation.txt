@@ -59,9 +59,8 @@ user > char selector > char
 (ok) Dados estáticos de perks, flaws e skills precisam estar disponíveis.
 (ok) CRUD Vantagens
 (ok) CRUD Desvantagens
-() CRUD Perícias
-() Criar contexto que controla as informações que entram e saem do database.
-() Linkar cada uma das categorias, com sua página específica.
+(ok) CRUD Perícias
+(ok) Linkar cada uma das categorias, com sua página específica.
 () 
 
 obs: 

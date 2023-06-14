@@ -10,6 +10,8 @@ import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 
 import '../../App.scss';
 import { ToastifyContext } from '../../contexts/ToastifyProvider';
+import { numberMask } from '../../utils/numberMask';
+import { numberMaskWithNegative } from '../../utils/numberMaskWithNegative';
 
 interface IPerksData {
   id: string;
@@ -17,6 +19,7 @@ interface IPerksData {
   level: number;
   points: number;
   obs: string;
+  mod: number;
 };
 
 interface ILevelPoints {
@@ -59,6 +62,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
   const [selectedLevel, setSelectedLevel] = useState(currentPerkData.level);
   const [selectedPoints, setSelectedPoints] = useState(0);
   const [selectedObs, setSelectedObs] = useState(currentPerkData.obs);
+  const [selectedMod, setSelectedMod] = useState(currentPerkData.mod);
   const [currentSelectedPerk, setCurrentSelectedPerk] = useState<ISelectedPerk>({
     name: "",
     levels: [],
@@ -83,8 +87,8 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       name: currentPerk?.name ?? "",
       levels: currentPerk?.levels ?? []
     });
-    setSelectedPoints(calculatePoints(selectedLevel));
-  }, [selectedPerk, selectedLevel])
+    setSelectedPoints(calculatePoints(selectedLevel) + selectedMod);
+  }, [selectedPerk, selectedLevel, selectedMod])
 
   const isMounted = useRef(false);
   useEffect(() => {
@@ -105,6 +109,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
         level: selectedLevel,
         points: selectedPoints,
         obs: selectedObs,
+        mod: selectedMod,
       }).then(() => notifySuccess("Vantagem adicionada!"))
       setIsModalOpen(false)
     } catch (error) {
@@ -121,6 +126,7 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
         level: selectedLevel,
         points: selectedPoints,
         obs: selectedObs,
+        mod: selectedMod,
       }).then(() => notifySuccess("Vantagem atualizada!"));
       console.log("Documento atualizado com sucesso!");
       setIsModalOpen(false);
@@ -141,6 +147,29 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       notifyError("Erro ao remover vantagem!");
     }
   } 
+
+  // Applying only numbers mask on inputs
+  // const getCursorPosition = (inputElement) => {
+  //   return inputElement.selectionStart || 0;
+  // };
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value: inputValue, selectionStart } = e.target;
+  //   const cursorPosition = selectionStart || 0;
+  
+  //   const sanitizedValue = numberMaskWithNegative(inputValue, cursorPosition);
+
+  //   console.log(sanitizedValue)
+  
+    // Faça algo com o valor sanitizado
+  // };
+
+  // useEffect(() => {
+  //   setSelectedMod(numberMask(selectedMod))
+    
+  // },[selectedMod])
+
+  console.log(Number(selectedMod));
   
   return (
     <div className="perks-modal">
@@ -187,6 +216,21 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
       </div>
 
       <div className="perks-modal-row">
+        <label htmlFor="">Modificador</label>
+        <input 
+          type="text" 
+          placeholder="0" 
+          // onChange={(e) => setSelectedMod(e.target.value)}
+          onChange={(e) => setSelectedMod(
+            isNaN(Number(numberMask(e.target.value))) ?
+            0 :
+            Number(numberMask(e.target.value))
+          )}
+          value={selectedMod}
+        />
+      </div>
+
+      <div className="perks-modal-row">
         <label htmlFor="">Observações</label>
         <input 
           type="text" 
@@ -224,7 +268,8 @@ export const Perks = () => {
     description: "",
     level: 0,
     points: 0,
-    obs: ""
+    obs: "",
+    mod: 0
   }])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPerkData, setCurrentPerkData] = useState<IPerksData>({
@@ -232,7 +277,8 @@ export const Perks = () => {
     description: "",
     level: 0,
     points: 0,
-    obs: ""
+    obs: "",
+    mod: 0
   })
   const [isNewPerk, setIsNewPerk] = useState(false);
   const [firestoreLoading, setFirestoreLoading] = useState(true)
@@ -260,7 +306,8 @@ export const Perks = () => {
       description: "",
       level: 0,
       points: 0,
-      obs: ""
+      obs: "",
+      mod: 0
     });
     setIsNewPerk(true);
     setIsModalOpen(true);
@@ -276,6 +323,7 @@ export const Perks = () => {
         level: doc.data().level,
         points: doc.data().points,
         obs: doc.data().obs,
+        mod: doc.data().mod,
         ...doc.data()
       })));
       setPerksData(docs)
