@@ -19,6 +19,7 @@ import { CharSelector } from './components/CharSelector/CharSelector';
 import { CharactersProvider } from './contexts/CharactersProvider';
 import { PointsResumeProvider } from './contexts/PointsResumeProvider';
 import { ToastifyProvider } from './contexts/ToastifyProvider';
+import { Spells } from './components/Spells/Spells';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                   <Route path={"flaws"} element={<Flaws />} />
                   <Route path={"skills"} element={<Skills />} />
                   <Route path={"equips"} element={<Equips />} />
+                  <Route path={"spells"} element={<Spells />} />
                 </Route>
               </Route>
             </Route>

@@ -41,6 +41,12 @@ export const Menu = () => {
       >
         Desvantagens
       </h4>
+      <h4 
+        className={`menu-item ${currentMenu === "spells" && "selected"}`}
+        onClick={() => setCurrentMenu("spells")}
+      >
+        Magias
+      </h4>
     </div>
   )
 }
