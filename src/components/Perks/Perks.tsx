@@ -82,7 +82,6 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
 
   useEffect(() => {
     const currentPerk = perksData.find((perk: ISelectedPerk) => perk.name === selectedPerk);
-    console.log(currentPerk)
     setCurrentSelectedPerk({
       name: currentPerk?.name ?? "",
       levels: currentPerk?.levels ?? []
@@ -148,29 +147,6 @@ const PerksModal = ({ currentPerkData, newPerk, setIsModalOpen }:
     }
   } 
 
-  // Applying only numbers mask on inputs
-  // const getCursorPosition = (inputElement) => {
-  //   return inputElement.selectionStart || 0;
-  // };
-
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value: inputValue, selectionStart } = e.target;
-  //   const cursorPosition = selectionStart || 0;
-  
-  //   const sanitizedValue = numberMaskWithNegative(inputValue, cursorPosition);
-
-  //   console.log(sanitizedValue)
-  
-    // Faça algo com o valor sanitizado
-  // };
-
-  // useEffect(() => {
-  //   setSelectedMod(numberMask(selectedMod))
-    
-  // },[selectedMod])
-
-  console.log(Number(selectedMod));
-  
   return (
     <div className="perks-modal">
       <div className="perks-modal-row perks-title">

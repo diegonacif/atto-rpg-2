@@ -9,6 +9,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { LoadingSquare } from '../LoadingSquare/LoadingSquare';
 import '../../App.scss';
 import { ToastifyContext } from '../../contexts/ToastifyProvider';
+import { numberMask } from '../../utils/numberMask';
 
 interface IFlawsData {
   id: string;
@@ -16,6 +17,7 @@ interface IFlawsData {
   level: number;
   points: number;
   obs: string;
+  mod: number;
 };
 
 interface ISelectedFlaw {
@@ -37,7 +39,8 @@ export const Flaws = () => {
     description: "",
     level: 0,
     points: 0,
-    obs: ""
+    obs: "",
+    mod: 0
   }])
   const [firestoreLoading, setFirestoreLoading] = useState(true)
 
@@ -57,12 +60,14 @@ export const Flaws = () => {
   const [selectedLevel, setSelectedLevel] = useState(0);
   const [selectedPoints, setSelectedPoints] = useState(0);
   const [selectedObs, setSelectedObs] = useState("");
+  const [selectedMod, setSelectedMod] = useState(0);
   const [currentFlawData, setCurrentFlawData] = useState<IFlawsData>({
     id: "",
     description: "",
     level: 0,
     points: 0,
-    obs: ""
+    obs: "",
+    mod: 0
   });
   const [currentSelectedFlaw, setCurrentSeletedFlaw] = useState<ISelectedFlaw | undefined>({
     name: "",
@@ -77,6 +82,7 @@ export const Flaws = () => {
     setSelectedLevel(flaw.level);
     setSelectedPoints(flaw.points);
     setSelectedObs(flaw.obs);
+    setSelectedMod(flaw.mod);
     setIsNewFlaw(false);
     setIsModalOpen(true);
   };
@@ -86,6 +92,7 @@ export const Flaws = () => {
     setSelectedLevel(0);
     setSelectedPoints(0);
     setSelectedObs("");
+    setSelectedMod(0);
     setIsNewFlaw(true);
     setIsModalOpen(true);
   };
@@ -108,6 +115,7 @@ export const Flaws = () => {
         level: doc.data().level,
         points: doc.data().points,
         obs: doc.data().obs,
+        mod: doc.data().mod,
         ...doc.data()
       })));
       setFlawsData(docs)
@@ -131,8 +139,10 @@ export const Flaws = () => {
   // Updating Current Selected Flaw from Static Data
   useEffect(() => {
     const currentFlaw = flawsStaticData.find(flaw => flaw.name === selectedFlaw);
-    setCurrentSeletedFlaw(currentFlaw)
-  }, [selectedFlaw]);
+    console.log(currentFlaw);
+    setCurrentSeletedFlaw(currentFlaw);
+    setSelectedPoints(calculatePoints(selectedLevel) + selectedMod);
+  }, [selectedFlaw, selectedLevel, selectedMod]);
 
   // Modal Row clear when change flaw selection
   const levelPoints: ILevelPoints = {
@@ -159,19 +169,24 @@ export const Flaws = () => {
         isMounted.current = true;
       }, 300);
     } else {
+      setSelectedPoints(0);
       setSelectedLevel(0);
     }
   }, [selectedFlaw]);
 
+  // console.log({
+  //   selectedLevel: selectedLevel,
+  //   selectedMod: selectedMod,
+  //   selectedPoints: selectedPoints
+  // })
+
   useEffect(() => {
     if(isMounted.current) {
-      setSelectedPoints(calculatePoints(selectedLevel));
+      setSelectedPoints(calculatePoints(selectedLevel) + selectedMod);
     } else {
       return;
     }
-  }, [selectedLevel]);
-  
-  
+  }, [selectedLevel, selectedMod]);
 
   const addNewFlaw = async () => {
     try {
@@ -180,6 +195,7 @@ export const Flaws = () => {
         level: selectedLevel,
         points: selectedPoints,
         obs: selectedObs,
+        mod: selectedMod
       }).then(
         () => {
           handleCloseModal();
@@ -200,6 +216,7 @@ export const Flaws = () => {
         level: selectedLevel,
         points: selectedPoints,
         obs: selectedObs,
+        mod: selectedMod
       }).then(
         () => {
           handleCloseModal();
@@ -303,6 +320,21 @@ export const Flaws = () => {
               <div className="flaws-modal-row">
                 <label htmlFor="">Custo:</label>
                 <span className="not-editable">{selectedPoints}</span>
+              </div>
+
+              <div className="flaws-modal-row">
+                <label htmlFor="">Modificador</label>
+                <input 
+                  type="text" 
+                  placeholder="0" 
+                  // onChange={(e) => setSelectedMod(e.target.value)}
+                  onChange={(e) => setSelectedMod(
+                    isNaN(Number(numberMask(e.target.value))) ?
+                    0 :
+                    Number(numberMask(e.target.value))
+                  )}
+                  value={selectedMod}
+                />
               </div>
 
               <div className="flaws-modal-row">
