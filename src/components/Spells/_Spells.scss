@@ -2,4 +2,71 @@
   max-width: 100vw;
   overflow-x: hidden;
   @include responsive-padding(2rem, 2rem);
+
+  .spells-row-title {
+    display: grid;
+    grid-template-columns: auto 2.5rem 2.5rem 2.5rem;
+    column-gap: 0.25rem;
+    width: 100%;
+    justify-items: center;
+    margin-bottom: 0.5rem;
+
+    .spells-row-title-item {
+      color: $gray-100;
+      font-size: $font-12;
+      font-weight: 600;
+    }
+  }
+
+  .skills-row {
+    display: grid;
+    grid-template-columns: auto 2.5rem 2.5rem 2.5rem;
+    column-gap: 0.25rem;
+    width: 100%;
+    // height: 1.8rem;
+
+    & + .skills-row {
+      margin-top: 0.5rem;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: fit-content;
+      height: 100%;
+      width: 100%;
+      padding: 0 0.25rem;
+      color: $gray-100;
+      border-radius: 4px;
+      text-align: center;
+      border: 1px solid rgba(243, 178, 14, 0.6);
+
+      &#skill-name {
+        cursor: pointer;
+        min-height: fit-content;
+      }
+      &:is(#skill-level, #skill-points) {
+        cursor: default;
+      }
+    }
+  }
+
+  #new-spell-button {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 1rem auto 0;
+    background-color: #2d462c;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    // outline: 1px solid $yellow-gurps;
+    box-shadow: 0 0 0 1px $yellow-gurps;
+
+    .yellow-span {
+      font-weight: 600;
+      color: $yellow-gurps;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.75);
+    }
+  }
 }
