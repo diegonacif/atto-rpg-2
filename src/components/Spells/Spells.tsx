@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import '../../App.scss';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
@@ -209,9 +209,30 @@ export const Spells = () => {
       notifyError("Erro ao adicionar magia");
     }
   }
+
   const updateSpell = async () => {
-    console.log('Updating spell');
+    const docRef = doc(spellsCollectionRef, currentSpellData.id);
+    try {
+      await setDoc(docRef, {
+        description: selectedSpell,
+        level: currentSelectedSpell ? currentSelectedSpell.level : 0,
+        mod: selectedMod,
+        nh: selectedNh,
+        obs: selectedObs,
+        points: selectedPoints,
+      }).then(
+        () => {
+          handleCloseModal();
+          console.log("Magia atualizada com sucesso!")
+          notifySuccess("Magia atualizada!");
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao atualizar magia: ", error);
+      notifyError("Erro ao atualizar magia");
+    }
   }
+
   const deleteSpell = async () => {
     const docRef = doc(spellsCollectionRef, currentSpellData.id)
     try {
