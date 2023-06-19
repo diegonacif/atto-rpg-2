@@ -163,7 +163,32 @@ export const skillsData: ISkills[] = [
 ]
 
 export const spellsData: ISpells[] = [
+  { name: "Purificar Ar", level: 1 },
+  { name: "Criar Ar", level: 1 },
   { name: "Criar Fogo", level: 1 },
+  { name: "Coceira", level: 1 },
+  { name: "Sentir Inimigos", level: 1 },
+  { name: "Moldar Terra", level: 1 },
+  { name: "Lufada de Vento", level: 2 },
+  { name: "Controlar Animal", level: 2 },
   { name: "Cura Maior", level: 2 },
-  { name: "Metamorfose Maior", level: 5 }
+  { name: "Força", level: 2 },
+  { name: "Graciosidade", level: 2 },
+  { name: "Vigor", level: 2 },
+  { name: "Veracidade", level: 2 },
+  { name: "Bênção dos Idiomas", level: 2 },
+  { name: "Bênção da Literatura", level: 2 },
+  { name: "Ciclone", level: 3 },
+  { name: "Falar com Animais", level: 3 },
+  { name: "Metamorfose", level: 3 },
+  { name: "Reflexos em Combate", level: 3 },
+  { name: "Paralisia Total", level: 3 },
+  { name: "Leitura da Mente", level: 3 },
+  { name: "Telepatia", level: 3 },
+  { name: "Metamorfose Parcial", level: 4 },
+  { name: "Possessão Feral", level: 4 },
+  { name: "Metamorfose Maior", level: 5 },
+  { name: "Terremoto", level: 5 },
 ]
+
+// Continuar nas magias de fogo
