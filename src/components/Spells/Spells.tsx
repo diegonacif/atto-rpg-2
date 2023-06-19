@@ -20,6 +20,24 @@ interface ISpellsData {
   mod: number;
 };
 
+interface IPerksData {
+  id: string;
+  description: string;
+  level: number;
+  points: number;
+  obs: string;
+  mod: number;
+};
+
+interface IMagery {
+  id: string;
+  description: string;
+  level: number;
+  mod: number;
+  obs: string;
+  points: number;
+}
+
 interface ISelectedSpell {
   name: string,
   level: number;
@@ -30,6 +48,7 @@ export const Spells = () => {
   const { id } = useParams<{ id: string }>();
   const { userId } = useContext(AuthGoogleContext);
   const spellsCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "spells")
+  const perksCollectionRef = collection(db, "users", userId, "characters", id ? id : "", "perks")
   const [spellsData, setSpellsData] = useState<ISpellsData[]>([{
     id: "",
     description: "",
@@ -38,7 +57,17 @@ export const Spells = () => {
     nh: 0,
     obs: "",
     mod: 0
-  }])
+  }]);
+  const [perksData, setPerksData] = useState<IPerksData[]>([{
+    id: "",
+    description: "",
+    level: 0,
+    points: 0,
+    obs: "",
+    mod: 0
+  }]);
+  const [magery, setMagery] = useState<IPerksData | undefined>();
+
   const [firestoreLoading, setFirestoreLoading] = useState(true)
 
   // Firestore loading
@@ -94,15 +123,15 @@ export const Spells = () => {
   });
   const [isNewSpell, setIsNewSpell] = useState(false);
 
-  console.log({
-    selectedSpell: selectedSpell,
-    selectedLevel: selectedLevel,
-    selectedNh: selectedNh,
-    selectedMod: selectedMod,
-    selectedObs: selectedObs,
-    selectedPoints: selectedPoints,
-    currentSelectedSpell: currentSelectedSpell
-  })
+  // console.log({
+  //   selectedSpell: selectedSpell,
+  //   selectedLevel: selectedLevel,
+  //   selectedNh: selectedNh,
+  //   selectedMod: selectedMod,
+  //   selectedObs: selectedObs,
+  //   selectedPoints: selectedPoints,
+  //   currentSelectedSpell: currentSelectedSpell
+  // })
 
   const isMounted = useRef(false);
 
@@ -158,16 +187,41 @@ export const Spells = () => {
       setSpellsData(docs)
     }
     getSpellsData();
-  }, [isModalOpen])
+  }, [isModalOpen]);
+
+  // Getting Perks Data
+  useEffect(() => {
+    const getPerksData = async () => {
+      const querySnapshot = await getDocs(perksCollectionRef);
+      const docs = querySnapshot.docs.map((doc) => (({ 
+        id: doc.id, 
+        description: doc.data().description,
+        level: doc.data().level,
+        points: doc.data().points,
+        obs: doc.data().obs,
+        mod: doc.data().mod,
+        ...doc.data()
+      })));
+      setPerksData(docs)
+    }
+    getPerksData();
+  }, [isModalOpen, loading]);
+
+  // Find if there is "Aptidão Mágica"
+  useEffect(() => {
+    const isMagery = perksData.find(perk => perk.description === "Aptidão Mágica");
+    setMagery(isMagery);
+  }, [isModalOpen, loading])
 
   // NH Calculation
   useEffect(() => {
+    const mageryLevel = magery ? magery.level : 0;
     if(selectedSpell === "") {
       setSelectedNh(0);
     } else {
-      setSelectedNh(Number(intelligence) + ((selectedPoints / 4) - 1) - 3 + selectedMod)
+      setSelectedNh(Number(intelligence) + ((selectedPoints / 4) - 1) - 3 + selectedMod + mageryLevel)
     }
-  }, [selectedPoints, selectedMod, intelligence, selectedSpell])  
+  }, [selectedPoints, selectedMod, intelligence, selectedSpell, magery])  
 
   const modalCustomStyles = {
     content: {
