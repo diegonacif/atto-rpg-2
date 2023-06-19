@@ -214,8 +214,8 @@ export const Spells = () => {
   }, [isModalOpen, loading])
 
   // NH Calculation
+  const mageryLevel = magery ? magery.level : 0;
   useEffect(() => {
-    const mageryLevel = magery ? magery.level : 0;
     if(selectedSpell === "") {
       setSelectedNh(0);
     } else {
@@ -353,9 +353,10 @@ export const Spells = () => {
                   value={selectedSpell}
                 >
                   <option value="">Selecione uma magia</option>
-                  {spellsStaticData.map((option) => (
+                  {spellsStaticData.filter(option => option.level <= mageryLevel)
+                  .map((option) => (
                     <option key={option.name} value={option.name}>
-                      {option.name}
+                      {option.name} ({option.level})
                     </option>
                   ))}
                 </select>

@@ -164,5 +164,6 @@ export const skillsData: ISkills[] = [
 
 export const spellsData: ISpells[] = [
   { name: "Criar Fogo", level: 1 },
-  { name: "Cura Maior", level: 2 }
+  { name: "Cura Maior", level: 2 },
+  { name: "Metamorfose Maior", level: 5 }
 ]
