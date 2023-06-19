@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import '../../App.scss';
-import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../services/firebase-config';
 import { useParams } from 'react-router-dom';
 import { AuthGoogleContext } from '../../contexts/AuthGoogleProvider';
@@ -94,25 +94,40 @@ export const Spells = () => {
   });
   const [isNewSpell, setIsNewSpell] = useState(false);
 
-  // console.log({
-  //   selectedSpell: selectedSpell,
-  //   selectedLevel: selectedLevel,
-  //   selectedNh: selectedNh,
-  //   selectedMod: selectedMod,
-  //   selectedObs: selectedObs,
-  //   selectedPoints: selectedPoints,
-  //   currentSelectedSpell: currentSelectedSpell
-  // })
+  console.log({
+    selectedSpell: selectedSpell,
+    selectedLevel: selectedLevel,
+    selectedNh: selectedNh,
+    selectedMod: selectedMod,
+    selectedObs: selectedObs,
+    selectedPoints: selectedPoints,
+    currentSelectedSpell: currentSelectedSpell
+  })
 
   const isMounted = useRef(false);
 
-  // Handling Modals
-    const handleNewSpellModalOpen = () => {
+  const clearInputsData = () => {
     setSelectedSpell("");
     setSelectedLevel(0);
     setSelectedPoints(4);
     setSelectedObs("");
     setSelectedMod(0);
+  }
+
+  // Handling Modals
+  const handleModalOpen = (spell: ISpellsData) => {
+    setCurrentSpellData(spell);
+    setSelectedSpell(spell.description);
+    setSelectedLevel(spell.level);
+    setSelectedPoints(spell.points);
+    setSelectedObs(spell.obs);
+    setSelectedMod(spell.mod);
+    setIsNewSpell(false);
+    setIsModalOpen(true);
+  };
+
+    const handleNewSpellModalOpen = () => {
+    clearInputsData();
     setIsNewSpell(true);
     setIsModalOpen(true);
   };
@@ -122,6 +137,7 @@ export const Spells = () => {
     setIsModalOpen(false);
     setTimeout(() => {
       setIsNewSpell(false);
+      clearInputsData();
     }, 200);
   };
 
@@ -149,11 +165,6 @@ export const Spells = () => {
     if(selectedSpell === "") {
       setSelectedNh(0);
     } else {
-      // console.log({
-      //   intelligence: intelligence,
-      //   selectedPoints: selectedPoints,
-      //   selectedMod: selectedMod
-      // })
       setSelectedNh(Number(intelligence) + ((selectedPoints / 4) - 1) - 3 + selectedMod)
     }
   }, [selectedPoints, selectedMod, intelligence, selectedSpell])  
@@ -167,7 +178,6 @@ export const Spells = () => {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       padding: '1rem',
-
     },
   };
 
@@ -203,7 +213,20 @@ export const Spells = () => {
     console.log('Updating spell');
   }
   const deleteSpell = async () => {
-    console.log('Deleting new spell');
+    const docRef = doc(spellsCollectionRef, currentSpellData.id)
+    try {
+      await deleteDoc(docRef)
+      .then(
+        () => {
+          handleCloseModal();
+          console.log("Magia deletada com sucesso!");
+          notifySuccess("Magia removida!");
+        }
+      )
+    } catch (error) {
+      console.error("Erro ao deletar magia", error);
+      notifyError("Erro ao remover magia");
+    };
   }
 
   return (
@@ -225,7 +248,7 @@ export const Spells = () => {
           {
             spellsData.map((spell) => (
               <div className="spells-row" key={`spell-${spell.id}`}>
-                <span onClick={() => console.log("abrir modal")} id="spell-name">{spell.description}</span>
+                <span onClick={() => handleModalOpen(spell)} id="spell-name">{spell.description}</span>
                 <span id="spell-level">{spell.level}</span>
                 <span id="spell-nh">{spell.mod}</span>
                 <span id="spell-nh">{spell.nh}</span>
