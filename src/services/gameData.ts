@@ -15,6 +15,11 @@ interface ISkills {
   }
 }
 
+interface ISpells {
+  name: string;
+  level: number;
+}
+
 export const perksData: IPerks[] = [
   { name: "Aparência", levels: [1, 2, 3] },
   { name: "Ambidestria", levels: [1] },
@@ -155,4 +160,9 @@ export const skillsData: ISkills[] = [
       difficulty: "md",
     }
   },
+]
+
+export const spellsData: ISpells[] = [
+  { name: "Criar Fogo", level: 1 },
+  { name: "Cura Maior", level: 2 }
 ]
