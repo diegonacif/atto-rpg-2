@@ -157,11 +157,6 @@ export const Flaws = () => {
   };
 
   const isMounted = useRef(false);
-  // console.log({
-  //   selectedFlaw: selectedFlaw,
-  //   isMounted: isMounted.current,
-  //   selectedLevel: selectedLevel
-  // });
 
   useEffect(() => {
     if(!isMounted.current && isModalOpen) {
@@ -173,12 +168,6 @@ export const Flaws = () => {
       setSelectedLevel(0);
     }
   }, [selectedFlaw]);
-
-  // console.log({
-  //   selectedLevel: selectedLevel,
-  //   selectedMod: selectedMod,
-  //   selectedPoints: selectedPoints
-  // })
 
   useEffect(() => {
     if(isMounted.current) {

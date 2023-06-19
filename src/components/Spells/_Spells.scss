@@ -18,14 +18,14 @@
     }
   }
 
-  .skills-row {
+  .spells-row {
     display: grid;
     grid-template-columns: auto 2.5rem 2.5rem 2.5rem;
     column-gap: 0.25rem;
     width: 100%;
     // height: 1.8rem;
 
-    & + .skills-row {
+    & + .spells-row {
       margin-top: 0.5rem;
     }
 
@@ -42,11 +42,11 @@
       text-align: center;
       border: 1px solid rgba(243, 178, 14, 0.6);
 
-      &#skill-name {
+      &#spell-name {
         cursor: pointer;
         min-height: fit-content;
       }
-      &:is(#skill-level, #skill-points) {
+      &:is(#spell-level, #spell-points) {
         cursor: default;
       }
     }

@@ -179,6 +179,16 @@ export const CharSelector = () => {
       weight: 0,
       cost: 0
     });
+
+    const spellsRef = collection(charDocRef, "spells");
+    await setDoc(doc(spellsRef), {
+      description: "",
+      level: 0,
+      points: 0,
+      nh: 0,
+      mod: 0,
+      obs: ""
+    });
   }
 
   async function createChar() {
